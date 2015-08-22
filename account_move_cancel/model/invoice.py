@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- encoding: utf-8 -*-
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
@@ -26,7 +25,7 @@
 from openerp.osv import osv, fields
 
 
-class account_invoice(osv.Model):
+class AccountInvoice(osv.Model):
     _inherit = 'account.invoice'
 
     _columns = {

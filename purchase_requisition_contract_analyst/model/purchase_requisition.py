@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- encoding: utf-8 -*-
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
@@ -26,13 +25,36 @@
 from openerp.osv import osv, fields
 
 
-class purchase_requisition(osv.Model):
+class PurchaseRequisition(osv.Model):
 
     _inherit = 'purchase.requisition'
     _columns = {
         'purchaser_id': fields.many2one(
             'res.users',
             'P&C Analyst',
+            domain=[('is_purchaser', '=', True)],
             help=('Contract Analyst responsible to evaluate the current'
                   ' purchase requisition.')),
     }
+
+    def copy(self, cr, uid, id, default=None, context=None):
+        default = default or {}
+        default.update({'purchaser_id': False})
+        return super(PurchaseRequisition, self).copy(cr, uid, id, default,
+                                                      context=context)
+
+
+class ResPartner(osv.Model):
+
+    _inherit = 'res.partner'
+    _columns = {
+        'is_purchaser': fields.boolean(
+            'P&C Analyst',
+            help='Is this a Purchaser?'),
+    }
+
+    def copy(self, cr, uid, id, default=None, context=None):
+        default = default or {}
+        default.update({'is_purchaser': False})
+        return super(ResPartner, self).copy(cr, uid, id, default,
+                                             context=context)

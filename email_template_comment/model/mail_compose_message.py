@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- encoding: utf-8 -*-
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
@@ -25,7 +24,7 @@
 from openerp.osv import osv
 
 
-class mail_compose_message(osv.TransientModel):
+class MailComposeMessage(osv.TransientModel):
 
     _inherit = 'mail.compose.message'
 
@@ -34,7 +33,7 @@ class mail_compose_message(osv.TransientModel):
             context = {}
 
         email_template_obj = self.pool.get('email.template')
-        result = super(mail_compose_message, self).default_get(cr, uid, fields, context=context)
+        result = super(MailComposeMessage, self).default_get(cr, uid, fields, context=context)
 
         template_id = context.get('default_template_id', [])
 

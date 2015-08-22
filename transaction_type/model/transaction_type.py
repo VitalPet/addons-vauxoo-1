@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- encoding: utf-8 -*-
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
@@ -26,7 +25,7 @@
 from openerp.osv import osv, fields
 
 
-class transaction_type(osv.Model):
+class TransactionType(osv.Model):
 
     _name = 'transaction.type'
     _columns = {

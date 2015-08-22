@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- encoding: utf-8 -*-
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
@@ -23,28 +22,25 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ###############################################################################
 {
-    "name": "Incoterm Decription", 
-    "version": "0.1", 
-    "author": "Vauxoo", 
-    "category": "Generic Modules/Sales", 
-    "description": """
-    Add Formal Description to Incoterms.
-                    """, 
-    "website": "http://vauxoo.com", 
-    "license": "", 
+    "name": "Incoterm Decription",
+    "version": "0.6",
+    "author": "Vauxoo",
+    "category": "Generic Modules/Sales",
+    "website": "http://vauxoo.com",
+    "license": "",
     "depends": [
-        "sale", 
+        "sale",
         "stock"
-    ], 
-    "demo": [], 
+    ],
+    "demo": [],
     "data": [
         "incoterm_view.xml"
-    ], 
-    "test": [], 
-    "js": [], 
-    "css": [], 
-    "qweb": [], 
-    "installable": True, 
-    "auto_install": False, 
+    ],
+    "test": [],
+    "js": [],
+    "css": [],
+    "qweb": [],
+    "installable": True,
+    "auto_install": False,
     "active": False
 }

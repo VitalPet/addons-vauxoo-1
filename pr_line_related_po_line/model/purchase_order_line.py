@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- encoding: utf-8 -*-
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
@@ -27,7 +26,7 @@ from openerp.osv import fields, osv
 from openerp.tools.translate import _
 
 
-class purchase_order_line(osv.Model):
+class PurchaseOrderLine(osv.Model):
 
     _inherit = 'purchase.order.line'
 
@@ -37,7 +36,7 @@ class purchase_order_line(osv.Model):
     }
 
 
-class purchase_requisition(osv.Model):
+class PurchaseRequisition(osv.Model):
 
     _inherit = 'purchase.requisition'
 
@@ -49,7 +48,7 @@ class purchase_requisition(osv.Model):
             context = {}
         assert partner_id, 'Supplier should be specified'
         purchase_order = self.pool.get('purchase.order')
-        purchase_order_line = self.pool.get('purchase.order.line')
+        PurchaseOrderLine = self.pool.get('purchase.order.line')
         res_partner = self.pool.get('res.partner')
         fiscal_position = self.pool.get('account.fiscal.position')
         supplier = res_partner.browse(cr, uid, partner_id, context=context)
@@ -79,16 +78,16 @@ class purchase_requisition(osv.Model):
                     seller_price, qty, default_uom_po_id, date_planned = self._seller_details_without_product(cr, uid, line, supplier, context=context)
                 taxes_ids = product.supplier_taxes_id
                 taxes = fiscal_position.map_tax(cr, uid, supplier.property_account_position, taxes_ids)
-                purchase_order_line.create(cr, uid, {
+                PurchaseOrderLine.create(cr, uid, {
                     'order_id': purchase_id,
                     # change
                     'purchase_requisition_line_id': line.id,
                     # end change
                     'name': product and product.partner_ref or '',
-                    'product_qty': qty,
+                    'product_qty': line.product_qty or qty,
                     'product_id': product and product.id or False,
-                    'product_uom': default_uom_po_id,
-                    'price_unit': seller_price,
+                    'product_uom': line.product_uom_id.id or default_uom_po_id,
+                    'price_unit': 0.0,
                     'date_planned': date_planned,
                     'taxes_id': [(6, 0, taxes)],
                 }, context=context)

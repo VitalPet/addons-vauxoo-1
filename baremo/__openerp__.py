@@ -19,30 +19,27 @@
 #
 ##############################################################################
 {
-    "name": "Baremo Para calculo de Comisiones", 
-    "version": "0.1", 
-    "author": "Netquatro", 
-    "category": "Generic Modules", 
-    "description": """
-    Crea un modelo para el calculo de comisiones.
-                    """, 
-    "website": "http://openerp.netquatro.com", 
-    "license": "", 
+    "name": "Baremo for calculating commissions",
+    "version": "0.6",
+    "author": "Vauxoo",
+    "category": "Generic Modules",
+    "website": "http://www.vauxoo.com",
+    "license": "",
     "depends": [
-        "base", 
+        "base",
         "decimal_precision"
-    ], 
-    "demo": [], 
+    ],
+    "demo": [],
     "data": [
-        "security/baremo_security.xml", 
-        "security/ir.model.access.csv", 
-        "baremo_view.xml"
-    ], 
-    "test": [], 
-    "js": [], 
-    "css": [], 
-    "qweb": [], 
-    "installable": True, 
-    "auto_install": False, 
+        "security/baremo_security.xml",
+        "security/ir.model.access.csv",
+        "view/baremo_view.xml",
+    ],
+    "test": [],
+    "js": [],
+    "css": [],
+    "qweb": [],
+    "installable": True,
+    "auto_install": False,
     "active": False
 }

@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- encoding: utf-8 -*-
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
@@ -28,17 +27,17 @@ from openerp.tools.translate import _
 import time
 
 
-class stock_picking(osv.Model):
+class StockPicking(osv.Model):
     _inherit = 'stock.picking'
     _columns = {
         'date_contract_expiry': fields.date(
-            'Expiration of Contract Date',
-            help='Expiration of Contract Date'),
+            'Contract Due Date',
+            help='Contract Due Date'),
     }
 
     def action_process(self, cur, uid, ids, context=None):
         """
-        overwrite the method to add a verification of the contract Expiration
+        overwrite the method to add a verification of the contract due
         date before process the stock picking.
         """
         context = context or {}
@@ -48,38 +47,37 @@ class stock_picking(osv.Model):
         if ((not sp_brw.date_contract_expiry) or
                 (sp_brw.date_contract_expiry and cr_date <= sp_brw.date_contract_expiry) or
                 context.get('force_expiry_pickings', False)):
-            res = super(stock_picking, self).action_process(
+            res = super(StockPicking, self).action_process(
                 cur, uid, [sp_brw.id], context=context)
         else:
             raise osv.except_osv(_('Invalid Procedure'),
-                _('The Contract Expiration Date already pass. You cannot'
+                _('The Contract Due Date already pass. You cannot'
                   ' process the stock picking.'))
         return res
 
-    def copy(self, cur, uid, id, default=None, context=None):
+    def copy(self, cur, uid, ids, default=None, context=None):
         """
         Ovwerwrite the copy method to also copy the date_contract_expiry value.
         """
         default = default or {}
         context = context or {}
-        picking_brw = self.browse(cur, uid, id, context=context)
         default['date_contract_expiry'] = False
-        res = super(stock_picking, self).copy(
-            cur, uid, id, default=default, context=context)
+        res = super(StockPicking, self).copy(
+            cur, uid, ids, default=default, context=context)
         return res
 
 
-class stock_picking_in(osv.Model):
+class StockPickingIn(osv.Model):
     _inherit = 'stock.picking.in'
     _columns = {
         'date_contract_expiry': fields.date(
-            'Expiration of Contract Date',
-            help='Expiration of Contract Date'),
+            'Contract Due Date',
+            help='Contract Due Date'),
     }
 
     def action_process(self, cur, uid, ids, context=None):
         """
-        overwrite the method to add a verification of the contract Expiration
+        overwrite the method to add a verification of the contract due
         date before process the stock picking in.
         """
         context = context or {}
@@ -89,38 +87,37 @@ class stock_picking_in(osv.Model):
         if ((not sp_brw.date_contract_expiry) or
                 (sp_brw.date_contract_expiry and cr_date <= sp_brw.date_contract_expiry) or
                 context.get('force_expiry_pickings', False)):
-            res = super(stock_picking_in, self).action_process(
+            res = super(StockPickingIn, self).action_process(
                 cur, uid, [sp_brw.id], context=context)
         else:
             raise osv.except_osv(_('Invalid Procedure'),
-                _('The Contract Expiration Date already pass. You cannot'
+                _('The Contract Due Date already pass. You cannot'
                   ' process the stock picking in.'))
         return res
 
-    def copy(self, cur, uid, id, default=None, context=None):
+    def copy(self, cur, uid, ids, default=None, context=None):
         """
         Ovwerwrite the copy method to also copy the date_contract_expiry value.
         """
         default = default or {}
         context = context or {}
-        picking_brw = self.browse(cur, uid, id, context=context)
         default['date_contract_expiry'] = False
-        res = super(stock_picking_in, self).copy(
-            cur, uid, id, default=default, context=context)
+        res = super(StockPickingIn, self).copy(
+            cur, uid, ids, default=default, context=context)
         return res
 
 
-class stock_picking_out(osv.Model):
+class StockPickingOut(osv.Model):
     _inherit = 'stock.picking.out'
     _columns = {
         'date_contract_expiry': fields.date(
-            'Expiration of Contract Date',
-            help='Expiration of Contract Date'),
+            'Contract Due Date',
+            help='Contract Due Date'),
     }
 
     def action_process(self, cur, uid, ids, context=None):
         """
-        overwrite the method to add a verification of the contract Expiration
+        overwrite the method to add a verification of the contract due
         date before process the stock picking out.
         """
         context = context or {}
@@ -130,22 +127,21 @@ class stock_picking_out(osv.Model):
         if ((not sp_brw.date_contract_expiry) or
                 (sp_brw.date_contract_expiry and cr_date <= sp_brw.date_contract_expiry) or
                 context.get('force_expiry_pickings', False)):
-            res = super(stock_picking_out, self).action_process(
+            res = super(StockPickingOut, self).action_process(
                 cur, uid, [sp_brw.id], context=context)
         else:
             raise osv.except_osv(_('Invalid Procedure'),
-                _('The Contract Expiration Date already pass. You cannot'
+                _('The Contract Due Date already pass. You cannot'
                   ' process the stock picking out.'))
         return res
 
-    def copy(self, cur, uid, id, default=None, context=None):
+    def copy(self, cur, uid, ids, default=None, context=None):
         """
         Ovwerwrite the copy method to also copy the date_contract_expiry value.
         """
         default = default or {}
         context = context or {}
-        picking_brw = self.browse(cur, uid, id, context=context)
         default['date_contract_expiry'] = False
-        res = super(stock_picking_out, self).copy(
-            cur, uid, id, default=default, context=context)
+        res = super(StockPickingOut, self).copy(
+            cur, uid, ids, default=default, context=context)
         return res

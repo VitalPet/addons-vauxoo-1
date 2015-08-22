@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- encoding: utf-8 -*-
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
@@ -26,7 +25,7 @@ from openerp.osv import fields, osv
 from openerp.tools.translate import _
 
 
-class attach_invoice_to_expense_wizard(osv.TransientModel):
+class AttachInvoiceToExpenseWizard(osv.TransientModel):
     _name = 'attach.invoice.to.expense.wizard'
     _columns = {
         'expense_id': fields.many2one('hr.expense.expense', 'Expense',

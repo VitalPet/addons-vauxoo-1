@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- encoding: utf-8 -*-
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
@@ -26,5 +25,5 @@
 from openerp.osv import osv
 
 
-class mrp_request_return(osv.TransientModel):
+class MrpRequestReturn(osv.TransientModel):
     _inherit = 'mrp.request.return'

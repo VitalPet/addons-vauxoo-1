@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- encoding: utf-8 -*-
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
@@ -25,18 +24,10 @@
 
 {
     'name': 'Stock Purchase Expiry',
-    'version': '1.0',
+    'version': '1.6',
     'author': 'Vauxoo',
     'website': 'http://www.vauxoo.com/',
     'category': '',
-    'description': '''
-Stock Purchase Expiry
-=====================
-
-Add a contract expiry date to the purchase order that will control the payment
-and invoice loads of a supplier.
-
-''',
     'depends': [
         'purchase',
         'stock',

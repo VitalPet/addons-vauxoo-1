@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- encoding: utf-8 -*-
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
@@ -26,7 +25,7 @@
 from openerp.osv import osv, fields
 
 
-class product_product(osv.Model):
+class ProductProduct(osv.Model):
 
     """
     To add two fields which determine if a product is show in restaurant and/or delivery

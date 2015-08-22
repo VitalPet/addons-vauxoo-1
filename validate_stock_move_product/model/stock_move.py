@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- encoding: utf-8 -*-
 #
 #    Module Writen to OpenERP, Open Source Management Solution
@@ -24,7 +23,7 @@ from openerp.osv import osv
 from openerp.tools.translate import _
 
 
-class stock_move(osv.Model):
+class StockMove(osv.Model):
     _inherit = "stock.move"
 
     def onchange_validate_product_exist(self, cr, uid, ids, prod_id=False,

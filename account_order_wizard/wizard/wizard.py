@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- encoding: utf-8 -*-
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
@@ -38,7 +37,7 @@ Entonces escriba:  1, 12, 123, 1234, 1234567
 '''
 
 
-class account_order_wizard_pattern(osv.TransientModel):
+class AccountOrderWizardPattern(osv.TransientModel):
     _name = 'account.order.wizard.pattern'
     _rec_name = 'pattern'
     _columns = {
@@ -48,7 +47,7 @@ class account_order_wizard_pattern(osv.TransientModel):
     }
 
 
-class account_order_wizard(osv.TransientModel):
+class AccountOrderWizard(osv.TransientModel):
     _name = 'account.order.wizard'
     _columns = {
         'select_patter': fields.selection([

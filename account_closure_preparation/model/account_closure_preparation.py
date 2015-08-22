@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- encoding: utf-8 -*-
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
@@ -26,7 +25,7 @@
 from openerp.osv import osv, fields
 
 
-class account_closure_preparation(osv.TransientModel):
+class AccountClosurePreparation(osv.TransientModel):
 
     '''Prepare a Chart of Account to be used properly when closing a
     fiscayear'''

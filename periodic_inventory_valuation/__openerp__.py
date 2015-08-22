@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- encoding: utf-8 -*-
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
@@ -23,34 +22,28 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ###############################################################################
 {
-    "name": "Periodic Inventory Valuation", 
-    "version": "1.0", 
-    "author": "Vauxoo", 
-    "category": "Accounting", 
-    "description": """
-Periodic Inventory Valuation.
-=============================
-
-To generate journal items per period inventory valuation
-""", 
-    "website": "http://vauxoo.com", 
-    "license": "", 
+    "name": "Periodic Inventory Valuation",
+    "version": "1.6",
+    "author": "Vauxoo",
+    "category": "Accounting",
+    "website": "http://vauxoo.com",
+    "license": "",
     "depends": [
-        "account", 
-        "product", 
+        "account",
+        "product",
         "stock"
-    ], 
-    "demo": [], 
+    ],
+    "demo": [],
     "data": [
-        "security/security.xml", 
-        "security/ir.model.access.csv", 
+        "security/security.xml",
+        "security/ir.model.access.csv",
         "view/periodic_inventory_valuation_view.xml"
-    ], 
-    "test": [], 
-    "js": [], 
-    "css": [], 
-    "qweb": [], 
-    "installable": True, 
-    "auto_install": False, 
+    ],
+    "test": [],
+    "js": [],
+    "css": [],
+    "qweb": [],
+    "installable": True,
+    "auto_install": False,
     "active": False
 }

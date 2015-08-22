@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- encoding: utf-8 -*-
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
@@ -23,35 +22,26 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ###############################################################################
 {
-    "name": "MRP Request Add Item", 
-    "version": "1.0", 
-    "author": "Vauxoo C.A", 
-    "category": "MRP", 
-    "description": """
-
-MRP Request Add Item
-====================
-
-Allows you to add new requests of materials through mrp_request_return button not belonging to the
-BOM.
-
-""", 
-    "website": "http://vauxoo.com", 
-    "license": "AGPL-3", 
+    "name": "MRP Request Add Item",
+    "version": "1.6",
+    "author": "Vauxoo",
+    "category": "MRP",
+    "website": "http://vauxoo.com",
+    "license": "AGPL-3",
     "depends": [
-        "mrp", 
-        "mrp_consume_produce", 
+        "mrp",
+        "mrp_consume_produce",
         "mrp_request_return"
-    ], 
-    "demo": [], 
+    ],
+    "demo": [],
     "data": [
         "wizard/mrp_request_return_view.xml"
-    ], 
-    "test": [], 
-    "js": [], 
-    "css": [], 
-    "qweb": [], 
-    "installable": True, 
-    "auto_install": False, 
+    ],
+    "test": [],
+    "js": [],
+    "css": [],
+    "qweb": [],
+    "installable": True,
+    "auto_install": False,
     "active": False
 }

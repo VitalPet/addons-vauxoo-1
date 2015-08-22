@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- encoding: utf-8 -*-
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
@@ -39,7 +38,7 @@ LEVEL_JOB = [
 ]
 
 
-class hr_job(osv.Model):
+class HrJob(osv.Model):
 
     _inherit = "hr.job"
 

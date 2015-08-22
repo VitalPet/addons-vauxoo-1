@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- encoding: utf-8 -*-
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
@@ -26,7 +25,7 @@
 from openerp.osv import osv, fields
 
 
-class wh_iva_doc(osv.Model):
+class WhIvaDoc(osv.Model):
     _inherit = 'account.wh.iva'
 
     _columns = {

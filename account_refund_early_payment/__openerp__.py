@@ -4,7 +4,7 @@
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://www.vauxoo.com>).
 #    All Rights Reserved
-############# Credits #########################################################
+#  ############ Credits #######################################################
 #    Coded by: Yanina Aular <yani@vauxoo.com>
 #    Planified by: Nhomar Hernandez <nhomar@vauxoo.com>
 #    Audited by: Jose Morales <jose@vauxoo.com>
@@ -25,12 +25,10 @@
 
 {
     'name': 'Account Refund Early Payment',
-    'version': '1.0',
+    'version': '1.6',
     'author': 'Vauxoo',
     'website': 'http://www.vauxoo.com/',
     'category': '',
-    'description': '''
-''',
     'depends': ['account_accountant'],
     'data': [
         'data/data.xml',

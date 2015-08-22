@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- encoding: utf-8 -*-
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
@@ -27,10 +26,12 @@ from openerp.osv import osv, fields
 from openerp.tools.translate import _
 
 
-class purchase_order(osv.Model):
+class PurchaseOrder(osv.Model):
 
     _inherit = 'purchase.order'
     _columns = {
+        'rfq_notes': fields.text('RFQ Notes',
+                                 help=_('Notes for RFQ')),
         'description': fields.text('Description',
-            help=_('Description of Purchase Order')),
+                                   help=_('Description of Purchase Order')),
     }

@@ -1,12 +1,40 @@
-Vauxoo Addons for Odoo
---
+[![Build Status](http://runbot.odoo.com/logo.png)](http://runbot.vauxoo.com/runbot/)
+[![Build Status](https://travis-ci.org/Vauxoo/addons-vauxoo.svg)](https://travis-ci.org/Vauxoo/addons-vauxoo)
 
-All our modules related to developments that solves generic issues on Odoo, or that solve internal 
-problems on Odoo Core.
+Vauxoo modules for Odoo
+===
 
-Here you will find a set of generic little features that improve odoo or make it more usable in a generic way.
+On this project we try to mantain all our generic modules that can be used as
+little extensions of odoo.
 
-This modules may not work all together, you need strong technical knowledge in most of them to use them, some of them are very 
-simple or even simply solve specific bugs in an extensible way.
+If a module is here frequently is because such need comply a very specific need
+of a customer and we considered such feature is generic enought to share on
+this repository.
 
-Do you need paid support? Better call to [Vauxoo](http://vauxoo.com).
+The combination of several of this modules compliment other projects like
+odoo-mexico, odoo-venezuela, odoo-ifrs, odoo-afr look on [our github
+page](https://github.com/Vauxoo) for such repositories and the utilities where
+this modules are used.
+
+Repositories which we depend from.
+---
+
+Read the repo_dependencies.txt file for more information. TODO:
+
+Python Libraries which we depend from.
+---
+
+Read the requirements.txt file for more information.
+
+Paid support and warranties.
+---
+
+Are you planning to use this modules in a production environment that can hire
+some work from the team behind this work?
+
+Do you want to contribute?
+---
+
+[Read the way](https://github.com/Vauxoo/addons-vauxoo/blob/8.0/CONTRIBUTING.md).
+
+#Better go with [Vauxoo](http://vauxoo.com)

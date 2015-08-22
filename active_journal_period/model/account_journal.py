@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- encoding: utf-8 -*-
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
@@ -25,7 +24,7 @@
 from openerp.osv import osv, fields
 
 
-class account_journal(osv.Model):
+class AccountJournal(osv.Model):
     _inherit = 'account.journal'
 
     _columns = {

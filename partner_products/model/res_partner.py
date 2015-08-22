@@ -1,10 +1,9 @@
-#!/usr/bin/python
 # -*- encoding: utf-8 -*-
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://www.vauxoo.com>).
 #    All Rights Reserved
-############# Credits #########################################################
+# Credits #####################################################################
 #    Coded by: Katherine Zaoral <kathy@vauxoo.com>
 #    Planified by: Humberto Arocha <hbto@vauxoo.com>
 #    Audited by: Humberto Arocha <hbto@vauxoo.com>
@@ -26,7 +25,7 @@
 from openerp.osv import osv, fields
 
 
-class res_partner(osv.Model):
+class ResPartner(osv.Model):
 
     _inherit = 'res.partner'
     _columns = {
@@ -38,12 +37,12 @@ class res_partner(osv.Model):
             help='Supplier List of Offered Products'),
     }
 
-    def copy(self, cur, uid, id, default=None, context=None):
+    def copy(self, cur, uid, ids, default=None, context=None):
         """
         overwrite the copy orm method to clean the produc_ids list.
         """
         context = context or {}
         default = default or {}
         default.update({'product_ids': []})
-        return super(res_partner, self).copy(
-            cur, uid, id, default=default, context=context)
+        return super(ResPartner, self).copy(
+            cur, uid, ids, default=default, context=context)

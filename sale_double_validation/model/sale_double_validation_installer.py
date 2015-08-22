@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- encoding: utf-8 -*-
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
@@ -27,7 +26,7 @@
 from openerp.osv import osv, fields
 
 
-class sale_double_validation_installer(osv.TransientModel):
+class SaleDoubleValidationInstaller(osv.TransientModel):
     _name = 'sale.double.validation.installer'
     _inherit = 'res.config'
     _columns = {

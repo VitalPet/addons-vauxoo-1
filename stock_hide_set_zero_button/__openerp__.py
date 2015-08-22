@@ -26,15 +26,14 @@
 
 {
     "name": "Stock hide set zero button",
-    "version": "1.0",
-    "author": "Vauxoo ( Federico Manuel Echeverri Choux ) ",
+    "version": "1.6",
+    "author": "Vauxoo",
     "category": "",
-    "description": """ Stock hide set zero button   """,
     "website": "http://www.vauxoo.com/",
     "license": "AGPL-3",
     "depends": [
-            "base",
-            "stock",
+        "base",
+        "stock",
         ],
     "demo": [],
     "data": [

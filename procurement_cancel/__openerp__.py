@@ -26,20 +26,19 @@
 
 {
     "name": "Procurement Cancel",
-    "version": "1.0",
-    "author": "Vauxoo ( Federico Manuel Echeverri Choux ) ",
+    "version": "1.6",
+    "author": "Vauxoo",
     "category": "",
-    "description": """ This module can cancel massively Procurements   """,
     "website": "http://www.vauxoo.com/",
     "license": "AGPL-3",
     "depends": [
-            "base",
-            "procurement",
+        "base",
+        "procurement",
     ],
     "demo": [],
     "data": [
-            "security/procurement_cancel.xml",
-            "wizard/procurement_cancel_view.xml",
+        "security/procurement_cancel.xml",
+        "wizard/procurement_cancel_view.xml",
     ],
     "installable": True,
     "active": False,

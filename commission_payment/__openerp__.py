@@ -28,27 +28,33 @@
 #
 ##############################################################################
 {
-    "name": "Cálculo de Pago de Comisiones por producto pagado",
-    "version": "0.1",
+    "name": "Salespeople Commission based on Payments",
+    "version": "0.6",
     "author": "Vauxoo",
     "category": "Generic Modules/Others",
-    "description": """
-Cálculo de Pago de Comisiones por producto pagado
-""",
-    "website": "http://wiki.openerp.org.ve/",
+    "website": "http://www.vauxoo.com",
     "license": "",
     "depends": [
+        "base",
         "account",
-        "account_voucher",
         "product_historical_price",
-        "baremo"
+        "mail",
+        "baremo",
+        "message_post_model",
+        "report",
     ],
-    "demo": [],
+    "demo": [
+        "demo/account_invoice_demo.xml",
+    ],
     "data": [
         "security/commission_payment_security.xml",
         "security/ir.model.access.csv",
+        "report/layouts.xml",
+        "report/template.xml",
+        "data/report_paperformat.xml",
         "view/commission_report.xml",
-        "view/commission_view.xml"
+        "view/commission_view.xml",
+        "view/account_view.xml",
     ],
     "test": [],
     "js": [],
@@ -56,5 +62,10 @@ Cálculo de Pago de Comisiones por producto pagado
     "qweb": [],
     "installable": True,
     "auto_install": False,
-    "active": False
+    "active": False,
+    "external_dependencies": {
+        "python": [
+            'pandas',
+        ]
+    }
 }

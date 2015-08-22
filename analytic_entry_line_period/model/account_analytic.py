@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- encoding: utf-8 -*-
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
@@ -27,7 +26,7 @@
 from openerp.osv import fields, osv
 
 
-class account_analytic_line(osv.Model):
+class AccountAnalyticLine(osv.Model):
 
     _inherit = 'account.analytic.line'
 

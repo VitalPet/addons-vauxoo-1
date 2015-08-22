@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- encoding: utf-8 -*-
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
@@ -41,7 +40,7 @@ SUMINISTRO = [('comprar', 'Comprar'),
               ]
 
 
-class stock_count(osv.TransientModel):
+class StockCount(osv.TransientModel):
 
     """
     Conteo del Stock
