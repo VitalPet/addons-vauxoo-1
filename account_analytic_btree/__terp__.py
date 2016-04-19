@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -28,13 +28,12 @@
     "name": "Creacion de parent_left y parent_right en analiticas",
     "version": "1.0",
     "author": "Vauxoo",
+    "license": "AGPL-3",
     "category": "Localization/Mexico",
-    "description": """This module creates parent_left y paret_right en analytic's accounts""",
     "website": "http://www.vauxoo.com/",
     "depends": ["account", "project"],
     "init_xml": [],
     "demo_xml": [],
     "update_xml": [],
     "installable": True,
-    "active": False,
 }

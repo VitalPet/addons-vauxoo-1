@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
@@ -25,10 +25,11 @@
 
 {
     "name": "AutoMerge Records",
-    "version": "1.6",
+    "version": "8.0.0.1.6",
     "author": "Vauxoo",
     "category": "Tools",
     "website": "http://www.serpentcs.com",
+    "license": "AGPL-3",
     'depends': [
         'base'
     ],
@@ -41,5 +42,3 @@
     'application': True,
     'auto_install': False,
 }
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

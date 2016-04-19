@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://openerp.com.ve>).
@@ -45,7 +45,8 @@ class CleanGroups(osv.TransientModel):
                 if context.get('active_ids') and SUPERUSER_ID not in context.get('active_ids', []):
                     self.pool.get('res.users').write(cr, uid,
                                                      context.get('active_ids'),
-                                                     {'groups_id': [(6, 0, [])]},
+                                                     {'groups_id': [
+                                                         (6, 0, [])]},
                                                      context=context)
 
                 else:

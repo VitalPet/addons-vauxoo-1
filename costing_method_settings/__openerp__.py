@@ -1,4 +1,4 @@
-#!/usr/bin/python
+# coding: utf-8
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://www.vauxoo.com>).
@@ -26,9 +26,10 @@
 {
     "name": "Costing Method Settings",
     "summary": "Set product default cost method",
-    "version": "1.6",
+    "version": "8.0.0.1.6",
     "author": "Vauxoo",
     "website": "http://www.vauxoo.com/",
+    "license": "AGPL-3",
     "category": "Settings",
     "depends": [
         "purchase",

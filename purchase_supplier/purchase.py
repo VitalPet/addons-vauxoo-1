@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -37,15 +37,15 @@ class PurchaseOrder(osv.Model):
             'res.users').browse(cr, uid, uid).company_id.id
         product_obj = self.pool.get('product.template')
         if super(PurchaseOrder, self).wkf_confirm_order(cr, uid, ids,
-                                                         context=context):
+                                                        context=context):
             for po in self.browse(cr, uid, ids, context=context):
                 partner_id = po.partner_id.id
                 for line in po.order_line:
                     product_id = line.product_id.product_tmpl_id.id
                     if not product_supp_obj.search(cr, uid,
-                                                   [('product_id', '=',
+                                                   [('product_tmpl_id', '=',
                                                                    product_id),
-                                                   ('name', '=', partner_id)]):
+                                                    ('name', '=', partner_id)]):
                         product_obj.write(cr, uid, [product_id],
                                           {
                                           'seller_ids': [(0, 0,
@@ -53,16 +53,16 @@ class PurchaseOrder(osv.Model):
                                                            'min_qty': 1.0,
                                                            'delay': 1,
                                                            'sequence': 10,
-                                                           'product_id':
+                                                           'product_tmpl_id':
                                                            product_id,
                                                            'company_id':
                                                            company_id,
                                                            'product_uom':
                                                            line and
-                                                         line.product_id and
-                                                         line.product_id.
+                                                           line.product_id and
+                                                           line.product_id.
                                                            uom_id and
-                                                         line.product_id.
+                                                           line.product_id.
                                                            uom_id.id})]})
             return True
         else:

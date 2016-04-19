@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -25,7 +25,7 @@
 ##############################################################################
 {
     "name": "Product hierarchical view",
-    "version": "0.6",
+    "version": "8.0.0.0.6",
     "author": "Vauxoo",
     "category": "Customization",
     "website": "http://vauxoo.com",
@@ -44,5 +44,4 @@
     "qweb": [],
     "installable": True,
     "auto_install": False,
-    "active": False
 }

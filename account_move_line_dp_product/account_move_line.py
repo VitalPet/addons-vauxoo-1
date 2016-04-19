@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) Vauxoo (<http://vauxoo.com>).
@@ -29,9 +29,9 @@ class AccountMoveLine(osv.Model):
 
     _columns = {
         'quantity': fields.float('Quantity',
-             digits_compute=dp.get_precision(
-                 'Product UoM'),
-            help="The optional quantity expressed by this line,\
+                                 digits_compute=dp.get_precision(
+                                     'Product UoM'),
+                                 help="The optional quantity expressed by this line,\
              eg: number of product sold. The quantity is not a legal\
              requirement but is very useful for some reports."),
     }

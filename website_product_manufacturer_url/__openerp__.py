@@ -1,10 +1,11 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 {
     "name": "Website Product Manufacturer URL",
-    "version": "1.6",
+    "version": "8.0.0.1.6",
     "author": "Vauxoo",
     "category": "eCommerce",
     "website": "http://www.vauxoo.com/",
+    "license": "AGPL-3",
     "depends": [
         "purchase",
         "website_sale",
@@ -21,5 +22,4 @@
     ],
     "installable": True,
     "auto_install": False,
-    "active": False
 }

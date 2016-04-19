@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) Vauxoo (<http://vauxoo.com>).
@@ -23,7 +23,7 @@
 ###############################################################################
 {
     "name": "Incoterm Decription",
-    "version": "0.6",
+    "version": "8.0.0.0.6",
     "author": "Vauxoo",
     "category": "Generic Modules/Sales",
     "website": "http://vauxoo.com",
@@ -42,5 +42,4 @@
     "qweb": [],
     "installable": True,
     "auto_install": False,
-    "active": False
 }

@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -25,7 +25,7 @@
 ##############################################################################
 {
     "name": "Decimal Precision to Rate Tax",
-    "version": "0.6",
+    "version": "8.0.0.0.6",
     "author": "Vauxoo",
     "category": "Administracion/Personalizacion/Estructura de la base de datos/Precision Decimal",
     "website": "http://vauxoo.com",
@@ -45,5 +45,4 @@
     "qweb": [],
     "installable": True,
     "auto_install": False,
-    "active": False
 }

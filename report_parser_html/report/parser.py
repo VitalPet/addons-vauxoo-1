@@ -1,3 +1,4 @@
+# coding: utf-8
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
@@ -25,6 +26,7 @@ from lxml import html
 
 
 class ReportParserHtml(report_sxw.rml_parse):
+
     def __init__(self, cr, uid, name, context=None):
         context = context or {}
         super(ReportParserHtml, self).__init__(
@@ -43,5 +45,3 @@ class ReportParserHtml(report_sxw.rml_parse):
             text_data = text_data.encode('ascii', 'xmlcharrefreplace')
             return text_data
         return ''
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

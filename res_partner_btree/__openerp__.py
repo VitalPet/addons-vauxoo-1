@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -22,7 +22,7 @@
 ##############################################################################
 {
     "name": "Parent_left and parent_right Partner Creation",
-    "version": "1.6",
+    "version": "8.0.0.1.6",
     "author": "Vauxoo",
     "category": "",
     "website": "http://www.vauxoo.com/",
@@ -38,5 +38,4 @@
     "qweb": [],
     "installable": True,
     "auto_install": False,
-    "active": False
 }

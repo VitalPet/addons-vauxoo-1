@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) Vauxoo (<http://vauxoo.com>).
@@ -28,5 +28,5 @@ class MrpBom(osv.Model):
 
     _columns = {
         'standard_price': fields.related('product_id', 'standard_price',
-            type='float', relation='product.template', string='Cost price'),
+                                         type='float', relation='product.template', string='Cost price'),
     }

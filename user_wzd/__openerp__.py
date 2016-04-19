@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -27,7 +27,7 @@
 {
     "name": "Employee from User",
     "summary": "Create an Employee from the User Form",
-    "version": "1.6",
+    "version": "8.0.0.1.6",
     "author": "Vauxoo",
     "category": "Generic Modules/Human Resources",
     "website": "http://www.vauxoo.com/",
@@ -45,5 +45,4 @@
     "qweb": [],
     "installable": True,
     "auto_install": False,
-    "active": False,
 }

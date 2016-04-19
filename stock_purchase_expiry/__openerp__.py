@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://www.vauxoo.com>).
@@ -24,24 +24,24 @@
 
 {
     'name': 'Stock Purchase Expiry',
-    'version': '1.6',
+    'version': '8.0.0.1.6',
     'author': 'Vauxoo',
     'website': 'http://www.vauxoo.com/',
+    'license': 'AGPL-3',
     'category': '',
     'depends': [
         'purchase',
         'stock',
-        ],
+    ],
     'data': [
         'view/purchase_order_view.xml',
         'view/stock_picking_view.xml',
         'wizard/stock_invoice_onshipping_view.xml',
-        ],
+    ],
     'demo': [],
     'test': [],
     'qweb': [],
     'js': [],
     'css': [],
-    'active': False,
     'installable': False,
 }

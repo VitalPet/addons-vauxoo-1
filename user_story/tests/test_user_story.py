@@ -1,3 +1,4 @@
+# coding: utf-8
 import threading
 
 from openerp import SUPERUSER_ID
@@ -228,7 +229,7 @@ class TestUserStory(TransactionCase):
         approve_user_id = self.user.create(cr, uid, {
             'name': 'Approver User', 'login': 'user_approver',
             'email': 'approver@test.com',
-            })
+        })
         self.assertTrue(approve_user_id)
         user_brw = self.user.browse(cr, uid, approve_user_id)
         # Adding user story group to the user created previously
@@ -240,10 +241,12 @@ class TestUserStory(TransactionCase):
         i = 0
         for criterial in user_brw and story_brw and story_brw.accep_crit_ids:
             if i == 0:
-                mes = 'El criterio%{0}%ha sido aceptado por%'.\
-                    format(criterial.name)
+                mes = ('The acceptability criterion %{criteria}%'
+                       ' has been accepted by %').format(
+                           criteria=criterial.name)
                 self.assertFalse(criterial.accepted)
                 self.criterial.approve(cr, user_brw.id, [criterial.id])
+                self.assertTrue(criterial.accepted)
                 m_id = self.message.search(cr, uid,
                                            [('res_id', '=', story_brw.id),
                                             ('body', 'ilike', mes)])
@@ -251,7 +254,7 @@ class TestUserStory(TransactionCase):
                 msg_data = self.message.read(cr, uid, m_id, [
                     'model', 'author_id', 'create_uid', 'write_uid',
                     'email_from', 'notified_partner_ids', 'partner_ids',
-                    ])[0]
+                ])[0]
                 self.partner = self.registry('res.partner')
                 author_id = msg_data.get('author_id')[0]
                 approver_partner = self.user.browse(
@@ -262,8 +265,7 @@ class TestUserStory(TransactionCase):
                                 "The criterial was not accepted")
 
             elif i == 1:
-                mes = 'El criterio%{0}%ha sido terminado por%'.\
-                    format(criterial.name)
+                mes = 'Please Review%{0}'.format(criterial.name)
                 self.criterial.ask_review(cr, user_brw.id, [criterial.id])
                 m_id = self.message.search(cr, uid,
                                            [('res_id', '=', story_brw.id),

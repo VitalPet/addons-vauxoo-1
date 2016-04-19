@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ##############################################################################
 # Copyright (c) 2011 Vauxoo (http://vauxoo.com)
 # All Rights Reserved.
@@ -47,5 +47,4 @@
     "qweb": [],
     "installable": True,
     "auto_install": False,
-    "active": False
 }

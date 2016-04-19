@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://openerp.com.ve>).
@@ -22,7 +22,7 @@
 ###############################################################################
 {
     "name": "Pos Calculator",
-    "version": "0.6",
+    "version": "8.0.0.0.6",
     "author": "Vauxoo",
     "category": "Point Of Sale",
     "website": "http://vauxoo.com",
@@ -47,5 +47,4 @@
     ],
     "installable": True,
     "auto_install": False,
-    "active": False
 }

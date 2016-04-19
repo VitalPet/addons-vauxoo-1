@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) Vauxoo (<http://vauxoo.com>).
@@ -24,7 +24,7 @@
 ##############################################################################
 {
     "name": "Update Period",
-    "version": "1.6",
+    "version": "8.0.0.1.6",
     "author": "Vauxoo",
     "category": "Tools",
     "website": "http://wiki.openerp.org.ve/",
@@ -42,5 +42,4 @@
     "qweb": [],
     "installable": True,
     "auto_install": False,
-    "active": False
 }

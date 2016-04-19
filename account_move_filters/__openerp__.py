@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 #
 #
 #    OpenERP, Open Source Management Solution
@@ -25,7 +25,7 @@
 #
 {
     "name": "Account move type account filter",
-    "version": "1.6",
+    "version": "8.0.0.1.6",
     "author": "Vauxoo",
     "category": "Generic Modules",
     "website": "http://www.vauxoo.com",
@@ -43,4 +43,3 @@
     "installable": True,
     "auto_install": False
 }
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

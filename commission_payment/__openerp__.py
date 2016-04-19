@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ##############################################################################
 #
 # Copyright (c) 2010 Vauxoo C.A. (http://openerp.com.ve/) All Rights Reserved.
@@ -29,7 +29,7 @@
 ##############################################################################
 {
     "name": "Salespeople Commission based on Payments",
-    "version": "0.6",
+    "version": "8.0.0.0.6",
     "author": "Vauxoo",
     "category": "Generic Modules/Others",
     "website": "http://www.vauxoo.com",
@@ -62,7 +62,6 @@
     "qweb": [],
     "installable": True,
     "auto_install": False,
-    "active": False,
     "external_dependencies": {
         "python": [
             'pandas',

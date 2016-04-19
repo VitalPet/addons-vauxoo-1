@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 #
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -26,14 +26,14 @@
 
 {
     "name": "HR Employee Last Name",
-    "version": "1.6",
+    "version": "8.0.0.1.6",
     "author": "Vauxoo",
     "category": "hr",
     "website": "http://www.vauxoo.com/",
     "license": "AGPL-3",
     "depends": [
         "hr",
-        ],
+    ],
     "test": [
         "test/test_employee.yml",
     ],

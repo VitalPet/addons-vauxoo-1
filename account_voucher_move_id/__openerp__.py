@@ -1,3 +1,4 @@
+# coding: utf-8
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
@@ -19,7 +20,7 @@
 ##############################################################################
 {
     "name": "Show Journal Entry in voucher",
-    "version": "0.6",
+    "version": "8.0.0.0.6",
     "author": "Vauxoo",
     "category": "Accounting",
     "website": "http://www.vauxoo.com",
@@ -37,5 +38,4 @@
     "qweb": [],
     "installable": True,
     "auto_install": False,
-    "active": False
 }

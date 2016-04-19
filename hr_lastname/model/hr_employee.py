@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 #
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -103,4 +103,4 @@ class HrEmployee(osv.Model):
                     'last_name', 'second_last_name'], 50),
             }, method=True, help='Full last name of employee, conformed by: \
             Last name + Second last name'),
-        }
+    }

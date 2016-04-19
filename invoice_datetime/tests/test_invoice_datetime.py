@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 #
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -32,6 +32,7 @@ _logger = logging.getLogger(__name__)
 
 
 class TestInvoiceDatetime(TransactionCase):
+
     def setUp(self):
         super(TestInvoiceDatetime, self).setUp()
         self.user = self.registry('res.users')

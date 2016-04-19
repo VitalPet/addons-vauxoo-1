@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 
 from openerp import fields, models, api
 
@@ -43,7 +43,6 @@ class UserStory(models.Model):
         us_ids = self.search([('sk_id', '!=', False)])
         for us in us_ids:
             us.write({'sprint_ids': [(4, us.sk_id.id)]})
-
 
 
 class AcceptabilityCriteria(models.Model):

@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 # #############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://openerp.com.ve>).
@@ -23,7 +23,7 @@
 ###############################################################################
 import time
 from openerp.osv import fields, osv
-from openerp import workflow
+from openerp import api, workflow
 from openerp.addons import decimal_precision as dp
 from openerp.tools.translate import _
 
@@ -810,7 +810,7 @@ class HrExpenseExpense(osv.Model):
         aml_obj = self.pool.get('account.move.line')
         exp = self.browse(cr, uid, ids, context=context)
         vals = {}.fromkeys(['partner_id', 'debit', 'credit',
-                           'name', 'move_id', 'account_id'])
+                            'name', 'move_id', 'account_id'])
         vals['move_id'] = am_id
         no_advance_account = \
             exp.employee_id.address_home_id.property_account_payable.id
@@ -1051,7 +1051,8 @@ class HrExpenseExpense(osv.Model):
             self.write(cr, uid, exp.id, {'state': 'paid'}, context=context)
         return True
 
-    def copy(self, cr, uid, ids, default=None, context=None):
+    @api.one
+    def copy(self, default=None):
         if default is None:
             default = {}
         default = default.copy()
@@ -1062,8 +1063,7 @@ class HrExpenseExpense(osv.Model):
                         'ait_ids': [],
                         'date_post': False,
                         })
-        return super(HrExpenseExpense, self).copy(cr, uid, ids, default,
-                                                    context=context)
+        return super(HrExpenseExpense, self).copy(default)
 
     def show_entries(self, cr, uid, ids, context=None):
         context = context or {}
@@ -1072,7 +1072,7 @@ class HrExpenseExpense(osv.Model):
 
         return {
             'domain': "[('id','in',\
-                ["+','.join([str(res_id) for res_id in res[ids[0]]])+"])]",
+                [" + ','.join([str(res_id) for res_id in res[ids[0]]]) + "])]",
             'name': _('Entries'),
             'view_type': 'form',
             'view_mode': 'tree,form',

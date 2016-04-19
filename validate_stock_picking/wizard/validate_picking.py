@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://openerp.com.ve>).
@@ -9,8 +9,8 @@
 #    Audited by: Vauxoo C.A.
 #############################################################################
 #    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
+#    it under the terms of the GNU Affero General Public License as published
+#    by the Free Software Foundation, either version 3 of the License, or
 #    (at your option) any later version.
 #
 #    This program is distributed in the hope that it will be useful,
@@ -66,10 +66,11 @@ class ValidatePicking(osv.TransientModel):
                                                             'date'], copy_ctx)
                             dicts.get('move_ids') and \
                                 dicts.update({'move_ids': [(0, 0, i)
-                                              for i in dicts.get('move_ids')]})
+                                                           for i in dicts.get(
+                                                               'move_ids')]})
                             partial_id = do_partial.create(cr, uid, dicts)
                             do_partial.do_partial(cr, uid,
-                                                 [partial_id], copy_ctx)
+                                                  [partial_id], copy_ctx)
                     elif 'stock.move' in context.get('active_model'):
                         context.update({'no_change_date': True})
                         stock_obj.action_done(cr, uid,

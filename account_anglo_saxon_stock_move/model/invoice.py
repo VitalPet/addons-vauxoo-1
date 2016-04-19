@@ -1,3 +1,4 @@
+# coding: utf-8
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
@@ -75,7 +76,7 @@ class AccountInvoice(models.Model):
                     aml_brw1.reconcile_partial_id.id
                     for aml_brw1 in ail_brw.move_id.aml_ids
                     if aml_brw1.reconcile_id or aml_brw1.reconcile_partial_id
-                    ]
+                ]
 
                 if amr_ids:
                     amr_ids = list(set(amr_ids))
@@ -88,7 +89,7 @@ class AccountInvoice(models.Model):
                     if aml_brw.product_id and
                     aml_brw.account_id.reconcile and
                     aml_brw.product_id == ail_brw.product_id
-                    ]
+                ]
 
                 for brw in aml_brws:
                     if res.get(brw.account_id.id, False):
@@ -171,4 +172,3 @@ class AccountInvoiceLine(osv.osv):
             res = self._anglo_saxon_stock_move_lines(
                 cr, uid, res, ttype='supplier', context=context)
         return res
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

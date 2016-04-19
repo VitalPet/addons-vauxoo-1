@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
@@ -21,7 +21,7 @@
 ##############################################################################
 {
     "name": "Fixes and Imrpovements to Bank Statement management",
-    "version": "0.6",
+    "version": "8.0.0.0.6",
     "author": "Vauxoo",
     "category": "Accounting & Finance",
     "website": "http://vauxoo.com",
@@ -44,7 +44,6 @@
     "qweb": [],
     "installable": True,
     "auto_install": False,
-    "active": False,
     "external_dependencies": {
         "python": ["xlrd"],
     },

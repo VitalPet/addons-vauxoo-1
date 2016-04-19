@@ -1,7 +1,8 @@
+# coding: utf-8
 # -*- enconding: utf-8 -*-
 {
     "name": "Sprint Kanban",
-    "version": "1.6",
+    "version": "8.0.0.1.6",
     "author": "Vauxoo",
     "category": "Project",
     "website": "http://vauxoo.com",
@@ -30,5 +31,4 @@
     "qweb": [],
     "installable": True,
     "auto_install": False,
-    "active": False
 }

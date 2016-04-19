@@ -1,10 +1,11 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 {
     "name": "Website Comments With Purchase",
-    "version": "1.6",
+    "version": "8.0.0.1.6",
     "author": "Vauxoo",
     "category": "Website",
     "website": "http://www.vauxoo.com/",
+    "license": "AGPL-3",
     "depends": [
         "website_sale"
     ],
@@ -12,6 +13,7 @@
     "data": [
         "views/layout.xml",
         "views/website_comment_purchased.xml",
+        "data/website_settings.yml",
     ],
     "test": [],
     "js": [],
@@ -20,5 +22,4 @@
     ],
     "installable": True,
     "auto_install": False,
-    "active": False
 }

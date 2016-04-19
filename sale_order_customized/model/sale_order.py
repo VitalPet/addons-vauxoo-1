@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 #
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -107,7 +107,7 @@ class SaleOrder(osv.osv):
 
             for o_line in dat:
                 o_line_obj.write(cr, uid, o_line['id'],
-                                 {'sequence': o_sequence+1})
+                                 {'sequence': o_sequence + 1})
                 o_sequence += 1
 
         return True

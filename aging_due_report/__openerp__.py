@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://openerp.com.ve>).
@@ -23,7 +23,7 @@
 ###############################################################################
 {
     "name": "Customer's Due Report",
-    "version": "0.6",
+    "version": "8.0.0.0.6",
     "author": "Vauxoo",
     "category": "Generic Modules/Others",
     "website": "http://www.vauxoo.com/",
@@ -36,12 +36,13 @@
     "data": [
         "data/aging_due_report_paper_format.xml",
         "data/aging_due_report_style.xml",
+        "report/aging_due_report_qweb.xml",
+        "report/aging_detail_due_report_qweb.xml",
+        "report/detail_due_report_qweb.xml",
+        "report/customer_formal_due_report_qweb.xml",
+        "report/supplier_formal_due_report_qweb.xml",
         "views/wizard.xml",
-        "views/customer_aging_due_report_qweb.xml",
-        "views/customer_formal_due_report_qweb.xml",
-        "views/customer_detail_due_report_qweb.xml",
-        "views/supplier_formal_due_report_qweb.xml",
-        "views/aging_due_report.xml"
+        "views/report.xml"
     ],
     "test": [],
     "js": [],
@@ -49,7 +50,6 @@
     "qweb": [],
     "installable": True,
     "auto_install": False,
-    "active": False,
     "external_dependencies": {
         "python": [
             'pandas',

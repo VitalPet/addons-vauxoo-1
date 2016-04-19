@@ -1,5 +1,4 @@
-#!/usr/bin/python
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://www.vauxoo.com>).
@@ -25,20 +24,22 @@
 
 {
     'name': 'Account Refund Early Payment',
-    'version': '1.6',
+    'version': '8.0.0.1.6',
     'author': 'Vauxoo',
     'website': 'http://www.vauxoo.com/',
+    'license': 'AGPL-3',
     'category': '',
     'depends': ['account_accountant'],
     'data': [
         'data/data.xml',
         'view/refund_early_payment.xml',
-        ],
-    'demo': [],
+    ],
+    'demo': [
+        'demo/account_invoice_demo.xml',
+    ],
     'test': [],
     'qweb': [],
     'js': [],
     'css': [],
-    'active': False,
     'installable': True,
 }

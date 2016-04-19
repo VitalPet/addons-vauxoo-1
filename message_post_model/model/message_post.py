@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 # ##########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://openerp.com.ve>).
@@ -229,5 +229,5 @@ class MessagePostShowAll(osv.Model):
             if body and message:
                 self.message_post(cr, uid, [idx], body, _('Changes in Fields'))
         res = super(MessagePostShowAll, self).write(cr, uid, ids, vals,
-                                                       context=context)
+                                                    context=context)
         return res

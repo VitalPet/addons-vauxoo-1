@@ -1,4 +1,4 @@
-# -*- coding:utf-8 -*-
+# coding: utf-8
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
@@ -34,8 +34,8 @@ class MailMessage(osv.Model):
     def _message_read_dict(self, cr, uid, message, parent_id=False,
                            context=None):
         ret = super(MailMessage, self)._message_read_dict(cr, uid,
-                                                           message,
-                                                           parent_id=parent_id,
-                                                           context=context)
+                                                          message,
+                                                          parent_id=parent_id,
+                                                          context=context)
         ret['website_published'] = message.website_published
         return ret

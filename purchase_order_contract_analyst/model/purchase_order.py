@@ -1,5 +1,4 @@
-#!/usr/bin/python
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://www.vauxoo.com>).
@@ -39,7 +38,8 @@ class PurchaseOrder(osv.Model):
     }
     _defaults = {
         'purchaser_id': lambda s, c, u, ctx: u,
-            }
+    }
+
 
 class PurchaseRequisition(osv.Model):
 
@@ -49,11 +49,14 @@ class PurchaseRequisition(osv.Model):
                             context=None):
         if context is None:
             context = {}
-        res = super(PurchaseRequisition, self).make_purchase_order(cr, uid, ids, partner_id, context=context)
+        res = super(PurchaseRequisition, self).make_purchase_order(
+            cr, uid, ids, partner_id, context=context)
 
         po_obj = self.pool.get('purchase.order')
         for requisition in self.browse(cr, uid, ids, context=context):
-            po_req = po_obj.search(cr, uid, [('requisition_id', '=', requisition.id)], context=context)
+            po_req = po_obj.search(
+                cr, uid, [('requisition_id', '=', requisition.id)], context=context)
             for po_id in po_req:
-                po_obj.write(cr, uid, [po_id], {'purchaser_id': requisition.purchaser_id.id}, context=context)
+                po_obj.write(cr, uid, [po_id], {
+                             'purchaser_id': requisition.purchaser_id.id}, context=context)
         return res

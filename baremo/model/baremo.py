@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
@@ -130,5 +130,5 @@ class ResCompany(osv.Model):
             relation='baremo.book',
             string="Baremo",
             multi='baremo',
-            ),
+        ),
     }

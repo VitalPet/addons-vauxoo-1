@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -26,9 +26,10 @@
 {
     "name": "Product Properties by Category",
     "summary": "Set Product Default Properties from the Product Category",
-    "version": "1.6",
+    "version": "8.0.0.1.6",
     "author": "Vauxoo",
     "website": "http://www.vauxoo.com/",
+    "license": "AGPL-3",
     "category": "Product",
     "depends": [
         "purchase_requisition",

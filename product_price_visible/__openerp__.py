@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -27,13 +27,13 @@
 #~ "security/ir.model.access.csv",
 {
     "name": "Product Price Visible",
-    "version": "1.6",
+    "version": "8.0.0.1.6",
     "author": "Vauxoo",
     "category": "Product",
     "website": "www.vauxoo.com",
     "license": "AGPL-3",
     "depends": [
-        "stock"
+        "stock_account",
     ],
     "demo": [],
     "data": [
@@ -46,5 +46,4 @@
     "qweb": [],
     "installable": True,
     "auto_install": False,
-    "active": False
 }

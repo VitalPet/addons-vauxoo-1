@@ -1,7 +1,7 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 {
     "name": "Timesheet reports used internally",
-    "version": "1.6",
+    "version": "8.0.0.1.6",
     "author": "Vauxoo",
     "category": "Tools",
     "summary": "A great way to report timesheet's consumption of time",
@@ -23,5 +23,4 @@
         "wizard/set_invoice_view.xml",
     ],
     "installable": True,
-    "active": False,
 }

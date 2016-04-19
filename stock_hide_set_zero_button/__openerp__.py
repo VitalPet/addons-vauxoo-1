@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -26,7 +26,7 @@
 
 {
     "name": "Stock hide set zero button",
-    "version": "1.6",
+    "version": "8.0.0.1.6",
     "author": "Vauxoo",
     "category": "",
     "website": "http://www.vauxoo.com/",
@@ -34,12 +34,11 @@
     "depends": [
         "base",
         "stock",
-        ],
+    ],
     "demo": [],
     "data": [
         "views/stock_view.xml",
         "security/stock_hide_set_zero_button.xml",
     ],
     "installable": True,
-    "active": False,
 }

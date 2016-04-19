@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) Vauxoo (<http://vauxoo.com>).
@@ -48,7 +48,7 @@ class WarrantyOerp(osv.Model):
         obj_warranty = self.browse(cr, uid, ids[0], context=context)
         pids = self.search(cr, uid,
                            [('enterprise_key', '=', obj_warranty.enterprise_key),
-                          ('id', '<>', obj_warranty.id)])
+                            ('id', '<>', obj_warranty.id)])
         if len(pids) > 0:
             return False
         return True

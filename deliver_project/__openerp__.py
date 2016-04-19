@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ##############################################################################
 # Copyright (c) 2011 Vauxoo (http://vauxoo.com)
 # All Rights Reserved.
@@ -28,7 +28,7 @@
 ###############################################################################
 {
     "name": "Deliver Project Report",
-    "version": "0.6",
+    "version": "8.0.0.0.6",
     "author": "Vauxoo",
     "category": "Generic Modules/Projects & Services",
     "website": "http://vauxoo.com",
@@ -48,5 +48,4 @@
     "qweb": [],
     "installable": True,
     "auto_install": False,
-    "active": False
 }

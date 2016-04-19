@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
@@ -22,8 +22,9 @@
 
 {
     'name': 'Supplier invoice - Quantity attachments',
-    'version': '1.6',
+    'version': '8.0.0.1.6',
     'author': 'Vauxoo',
+    'license': 'AGPL-3',
     'category': '',
     'depends': [
         'account',
@@ -38,5 +39,3 @@
     'auto_install': False,
     'images': [],
 }
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -1,5 +1,4 @@
-#!/usr/bin/python
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) Vauxoo (<http://vauxoo.com>).
@@ -365,19 +364,20 @@ class AccountAgingPartnerWizard(osv.osv_memory):
             # ('html', 'HTML'),
             ('xls', 'Spreadsheet')],
             'Report Format',
-            required=True),
+            required=True, default='pdf'),
         'result_selection': fields.selection(
             [
                 ('supplier', 'Payable'),
                 ('customer', 'Receivable')],
             "Target",
-            required=True),
+            required=True, default='customer'),
         'type': fields.selection(
             [('aging', 'Aging Report'),
-             ('detail', 'Detailed Report'), ],
+             ('detail', 'Detailed Report'),
+             ('aging_detail', 'Aging Detailed Report'), ],
             # ('formal', 'Formal Report')],
             "Type",
-            required=True),
+            required=True, default='aging'),
         'currency_ids': fields.one2many(
             'account.aging.wizard.currency',
             'aaw_id', 'Balance by Currency',
@@ -391,27 +391,18 @@ class AccountAgingPartnerWizard(osv.osv_memory):
             'aaw_id', 'Partners',
             help='Partners'),
         'company_id': fields.many2one(
-            'res.company', 'Company', required=True),
+            'res.company', 'Company', required=True,
+            default=lambda s: s._get_default_company()),
         'period_length': fields.integer(
-            'Period Length (days)', required=True),
-        'user_id': fields.many2one('res.users', 'User'),
+            'Period Length (days)', required=True, default='30'),
+        'user_id': fields.many2one('res.users', 'User',
+                                   default=lambda s: s._uid),
         'direction': fields.selection(
             [
                 ('future', 'Future'),
                 ('past', 'Past')],
             "Direction",
-            required=True),
-    }
-
-    _defaults = {
-        'report_format': lambda *args: 'pdf',
-        'result_selection': lambda *args: 'customer',
-        'type': lambda *args: 'aging',
-        'company_id': _get_default_company,
-        'period_length': 30,
-        'user_id': lambda s, c, u, cx: s.pool.get('res.users').browse(c, u, u,
-                                                                      cx).id,
-        'direction': lambda *args: 'past',
+            required=True, default='past'),
     }
 
     def _get_lines_by_partner_without_invoice(
@@ -459,7 +450,7 @@ class AccountAgingPartnerWizard(osv.osv_memory):
             load=None, context=context)
         aml_data = DataFrame(aml_rd).set_index('id')
         aml_data_grouped = aml_data.groupby(['partner_id',
-                                            'reconcile_partial_id'])
+                                             'reconcile_partial_id'])
 
         aml_data_groups = aml_data_grouped.groups
 
@@ -511,6 +502,7 @@ class AccountAgingPartnerWizard(osv.osv_memory):
                     'residual': 0.0,
                     'currency_id': False,
                     'total': 0.0,
+                    'base': 0.0,
                     'date_emission': date_emission,
                     'date_due': date_due}
             for aml_brw in aml_obj.browse(cr, uid, val, context=context):
@@ -551,6 +543,7 @@ class AccountAgingPartnerWizard(osv.osv_memory):
                         'residual': (total - payment),
                         'currency_id': currency_id,
                         'total': total,
+                        'base': total,
                         'date_emission': aml_brw.date,
                         'date_due': date_due})
                 else:
@@ -561,6 +554,7 @@ class AccountAgingPartnerWizard(osv.osv_memory):
                     doc['currency_id'] = currency_id
                     doc['payment'] -= payment
                     doc['total'] += total
+                    doc['base'] += total
                     doc['residual'] += (total - payment)
             if reconcile_id:
                 res.append(doc)
@@ -635,6 +629,8 @@ class AccountAgingPartnerWizard(osv.osv_memory):
                 'payment': payment,
                 'residual': residual,
                 'total': inv_brw.amount_total,
+                'tax': inv_brw.amount_tax,
+                'base': inv_brw.amount_untaxed,
                 'date_due': date_due,
                 'date_emission': inv_brw.date_invoice,
             })
@@ -669,9 +665,8 @@ class AccountAgingPartnerWizard(osv.osv_memory):
         aawp_ids = {}
         aawc_ids = {}
 
-        for each in self._get_invoice_by_partner(cr, uid, partner_ids,
-                                                 inv_type=inv_type,
-                                                 context=context):
+        for each in self._get_invoice_by_partner(
+                cr, uid, partner_ids, inv_type=inv_type, context=context):
             partner_id = each['partner_id']
             currency_id = each['currency_id']
             key_pair = (partner_id, currency_id)
@@ -738,6 +733,8 @@ class AccountAgingPartnerWizard(osv.osv_memory):
         name = 'aging_due_report.aging_due_report_qweb'
         if wzd_brw.type == 'aging':
             name = 'aging_due_report.aging_due_report_qweb'
+        if wzd_brw.type == 'aging_detail':
+            name = 'aging_due_report.aging_detail_due_report_qweb'
         if wzd_brw.type == 'detail':
             name = 'aging_due_report.detail_due_report_qweb'
         if wzd_brw.result_selection == 'customer':
@@ -749,5 +746,3 @@ class AccountAgingPartnerWizard(osv.osv_memory):
 
         return self.pool['report'].get_action(cr, uid, [], name, data=datas,
                                               context=context)
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

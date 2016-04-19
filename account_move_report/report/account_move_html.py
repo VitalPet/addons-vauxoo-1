@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) Vauxoo (<http://vauxoo.com>).
@@ -28,7 +28,7 @@ class AccountMoveReportHtml(report_sxw.rml_parse):
 
     def __init__(self, cr, uid, name, context):
         super(AccountMoveReportHtml, self).__init__(cr, uid, name,
-                                context=context)
+                                                    context=context)
         self.localcontext.update({
             'time': time,
             'get_total_debit_credit': self.get_total_debit_credit,
@@ -48,5 +48,3 @@ HeaderFooterTextWebKitParser(
     'account.move',
     'addons/report_account_move/report/account_move_report_html.mako',
     parser=AccountMoveReportHtml)
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

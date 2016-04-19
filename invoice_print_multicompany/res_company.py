@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution             #
 #    Copyright (C) OpenERP Venezuela (<http://openerp.com.ve>).            #
@@ -35,6 +35,6 @@ class InvoiceMulticompanyReport(osv.Model):
     _inherit = 'res.company'
     _columns = {
         'invoice_report_id': fields.many2one('ir.actions.report.xml',
-            'Invoice Report', required=False,
-            domain="[('model','=','account.invoice')]"),
+                                             'Invoice Report', required=False,
+                                             domain="[('model','=','account.invoice')]"),
     }

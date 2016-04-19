@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://www.vauxoo.com>).
@@ -22,6 +22,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ###############################################################################
 
+from openerp import api
 from openerp.osv import osv, fields
 from openerp.tools.translate import _
 import time
@@ -51,19 +52,18 @@ class StockPicking(osv.Model):
                 cur, uid, [sp_brw.id], context=context)
         else:
             raise osv.except_osv(_('Invalid Procedure'),
-                _('The Contract Due Date already pass. You cannot'
-                  ' process the stock picking.'))
+                                 _('The Contract Due Date already pass. You cannot'
+                                   ' process the stock picking.'))
         return res
 
-    def copy(self, cur, uid, ids, default=None, context=None):
+    @api.one
+    def copy(self, default=None):
         """
         Ovwerwrite the copy method to also copy the date_contract_expiry value.
         """
         default = default or {}
-        context = context or {}
         default['date_contract_expiry'] = False
-        res = super(StockPicking, self).copy(
-            cur, uid, ids, default=default, context=context)
+        res = super(StockPicking, self).copy(default=default)
         return res
 
 
@@ -91,19 +91,18 @@ class StockPickingIn(osv.Model):
                 cur, uid, [sp_brw.id], context=context)
         else:
             raise osv.except_osv(_('Invalid Procedure'),
-                _('The Contract Due Date already pass. You cannot'
-                  ' process the stock picking in.'))
+                                 _('The Contract Due Date already pass. You cannot'
+                                   ' process the stock picking in.'))
         return res
 
-    def copy(self, cur, uid, ids, default=None, context=None):
+    @api.one
+    def copy(self, default=None):
         """
         Ovwerwrite the copy method to also copy the date_contract_expiry value.
         """
         default = default or {}
-        context = context or {}
         default['date_contract_expiry'] = False
-        res = super(StockPickingIn, self).copy(
-            cur, uid, ids, default=default, context=context)
+        res = super(StockPickingIn, self).copy(default=default)
         return res
 
 
@@ -131,17 +130,16 @@ class StockPickingOut(osv.Model):
                 cur, uid, [sp_brw.id], context=context)
         else:
             raise osv.except_osv(_('Invalid Procedure'),
-                _('The Contract Due Date already pass. You cannot'
-                  ' process the stock picking out.'))
+                                 _('The Contract Due Date already pass. You cannot'
+                                   ' process the stock picking out.'))
         return res
 
-    def copy(self, cur, uid, ids, default=None, context=None):
+    @api.one
+    def copy(self, default=None):
         """
         Ovwerwrite the copy method to also copy the date_contract_expiry value.
         """
         default = default or {}
-        context = context or {}
         default['date_contract_expiry'] = False
-        res = super(StockPickingOut, self).copy(
-            cur, uid, ids, default=default, context=context)
+        res = super(StockPickingOut, self).copy(default=default)
         return res

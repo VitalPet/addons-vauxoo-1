@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://www.vauxoo.com>).
@@ -23,3 +23,4 @@
 ###############################################################################
 
 from . import test_partner_foreign
+from . import test_partner_foreign_multicompany

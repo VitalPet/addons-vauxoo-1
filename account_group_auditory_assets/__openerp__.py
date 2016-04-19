@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -27,7 +27,7 @@
 {
     "name": "Grand read permissions to Auditor (Read-Only) group"
             " over account_assets",
-    "version": "0.6",
+    "version": "8.0.0.0.6",
     "author": "Vauxoo",
     "category": "Generic Modules",
     "website": "http://www.vauxoo.com",
@@ -46,5 +46,4 @@
     "qweb": [],
     "installable": True,
     "auto_install": False,
-    "active": False
 }

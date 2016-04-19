@@ -1,11 +1,11 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 {
     "name": "Crm Profiling Report",
-    "version": "0.6",
-    "author": "",
+    "version": "8.0.0.0.6",
+    "author": "Vauxoo",
     "category": "Generic Modules/Accounting",
     "website": "http://vauxoo.com",
-    "license": "",
+    "license": "AGPL-3",
     "depends": [
         "base",
         "crm_profiling",
@@ -22,5 +22,4 @@
     "qweb": [],
     "installable": True,
     "auto_install": False,
-    "active": False
 }

@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -23,6 +23,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+from openerp import api
 from openerp.osv import osv, fields
 from openerp.tools.translate import _
 
@@ -32,17 +33,18 @@ from openerp.addons.decimal_precision import decimal_precision as dp
 class MrpProduction(osv.Model):
     _inherit = 'mrp.production'
 
-    def copy(self, cr, uid, id, default=None, context=None):
+    @api.one
+    def copy(self, default=None):
         if default is None:
             default = {}
         default.update({
             'pt_planified_ids': [],
         })
-        return super(MrpProduction, self).copy(cr, uid, id, default, context)
+        return super(MrpProduction, self).copy(default)
 
     _columns = {
         'pt_planified_ids': fields.one2many('mrp.pt.planified',
-            'production_id', 'Products Finished Good Planified'),
+                                            'production_id', 'Products Finished Good Planified'),
     }
 
     def action_compute(self, cr, uid, ids, properties=[], context=None):
@@ -84,9 +86,9 @@ class MrpPtPlanified(osv.Model):
 
     _columns = {
         'product_id': fields.many2one('product.product', 'Product',
-            required=True),
+                                      required=True),
         'quantity': fields.float('quantity',
-            digits_compute=dp.get_precision('Product UoM'), required=True),
+                                 digits_compute=dp.get_precision('Product UoM'), required=True),
         'production_id': fields.many2one('mrp.production', 'production'),
         'product_uom': fields.many2one('product.uom', 'UoM', required=True)
     }

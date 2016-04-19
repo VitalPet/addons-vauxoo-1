@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://www.vauxoo.com>).
@@ -24,7 +24,7 @@
 ###############################################################################
 {
     "name": "Purchase Requisition Supplier List",
-    "version": "1.6",
+    "version": "8.0.0.1.6",
     "author": "Vauxoo",
     "category": "purchase",
     "website": "http://www.vauxoo.com/",
@@ -42,5 +42,4 @@
     "qweb": [],
     "installable": True,
     "auto_install": False,
-    "active": False
 }

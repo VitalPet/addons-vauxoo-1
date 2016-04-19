@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://openerp.com.ve>).
@@ -21,6 +21,7 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ###############################################################################
+from openerp import api
 from openerp.osv import fields, osv
 
 
@@ -57,12 +58,13 @@ class AccountInvoice(osv.Model):
             exp_obj.write(cr, uid, exp_id, {'line_ids': data}, context=context)
         return True
 
-    def copy(self, cr, uid, ids, default=None, context=None):
+    @api.one
+    def copy(self, default=None):
         if default is None:
             default = {}
         default = default.copy()
         default.update({'expense_id': False})
-        return super(AccountInvoice, self).copy(cr, uid, ids, default, context=context)
+        return super(AccountInvoice, self).copy(default)
 
 
 class AccountInvoiceLine(osv.Model):
@@ -80,8 +82,9 @@ class AccountInvoiceLine(osv.Model):
         hr_expense_obj = self.pool.get('hr.expense.expense')
         context = context or {}
         analytic_id = context.get('analytic_exp') and hr_expense_obj.browse(cr, uid,
-                            context.get('analytic_exp'),
-            context=context).account_analytic_id.id or False
+                                                                            context.get(
+                                                                                'analytic_exp'),
+                                                                            context=context).account_analytic_id.id or False
         return analytic_id
 
     _defaults = {

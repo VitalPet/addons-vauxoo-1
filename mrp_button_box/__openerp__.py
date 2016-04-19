@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://openerp.com.ve>).
@@ -23,11 +23,11 @@
 ###############################################################################
 {
     "name": "MRP Button Box",
-    "version": "1.6",
-    "author": "Vauxoo C.A.",
+    "version": "8.0.0.1.6",
+    "author": "Vauxoo",
     "category": "",
     "website": "http://www.openerp.com.ve",
-    "license": "",
+    "license": "AGPL-3",
     "depends": [
         "base",
         "mail",
@@ -43,5 +43,4 @@
     "qweb": [],
     "installable": True,
     "auto_install": False,
-    "active": False
 }

@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://www.vauxoo.com>).
@@ -44,7 +44,7 @@ class HrJob(osv.Model):
 
     _columns = {
         'name': fields.char('Job Name', size=128, required=True, select=True,
-            translate=True),
+                            translate=True),
         'level': fields.selection(LEVEL_JOB,
                                   'Level',
                                   help="level of job position."),

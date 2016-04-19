@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) Vauxoo (<http://vauxoo.com>).
@@ -24,10 +24,11 @@
 ###########################################################################
 {
     "name": "Issue Management enhancement.",
-    "version": "0.6",
+    "version": "8.0.0.0.6",
     "author": "Vauxoo",
     "category": "Generic Modules",
     "website": "http://vauxoo.com",
+    "license": "AGPL-3",
     "depends": [
         "project",
         "project_issue",
@@ -45,5 +46,4 @@
     "qweb": [],
     "installable": True,
     "auto_install": False,
-    "active": False
 }

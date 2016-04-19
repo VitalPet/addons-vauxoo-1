@@ -1,3 +1,4 @@
+# coding: utf-8
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
@@ -22,6 +23,7 @@
 #
 ##############################################################################
 
+from openerp import api
 from openerp.osv import fields, osv
 from openerp.tools.translate import _
 
@@ -37,12 +39,13 @@ class AccountInvoice(osv.osv):
         'to_pay': False,
     }
 
-    def copy(self, cr, uid, id, default=None, context=None):
+    @api.one
+    def copy(self, default=None):
         default = default or {}
         default.update({
             'to_pay': False,
         })
-        return super(AccountInvoice, self).copy(cr, uid, id, default, context)
+        return super(AccountInvoice, self).copy(default)
 
     def payment_approve(self, cr, uid, ids, context=None):
         '''

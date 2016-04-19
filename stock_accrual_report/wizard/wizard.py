@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://www.vauxoo.com>).
@@ -165,7 +165,7 @@ class StockAccrualWizard(osv.osv_memory):
         return company_id
 
     def _get_debit_credit(self, cr, uid, ids, field_names=None, arg=False,
-                           context=None):
+                          context=None):
         """ Finds Grand total on debits and credits on wizard.
         @return: Dictionary of values
         """

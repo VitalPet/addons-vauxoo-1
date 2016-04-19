@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (http://www.vauxoo.com).
@@ -34,7 +34,7 @@ class PosConfig(osv.Model):
     _description = ('')
     _columns = {
         'deli_rest': fields.selection([('delivery', 'Delivery'), ('restaurant', 'Restaurant'), ('all', 'All')],
-            'Product Type', required=True, help='Is a delivery or restaurant?'),
+                                      'Product Type', required=True, help='Is a delivery or restaurant?'),
     }
 
     _defaults = {

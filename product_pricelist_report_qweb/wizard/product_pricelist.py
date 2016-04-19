@@ -1,5 +1,4 @@
-#!/usr/bin/python
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) Vauxoo (<http://vauxoo.com>).
@@ -33,13 +32,14 @@ class ProductPriceList(osv.osv_memory):
             ('pdf', 'PDF'),
             # TODO: enable print on controller to HTML
             # ('html', 'HTML'),
-            ('xls', 'Spreadsheet')], 'Report Format'),
+            ('xls', 'Spreadsheet')], 'Report Format', default='xls'),
         'cost': fields.boolean('Cost'),
         'margin_cost': fields.boolean('Exp. Marg. Cost (%)'),
         'margin_sale': fields.boolean('Exp. Marg. Sale (%)'),
-    }
-    _defaults = {
-        'report_format': lambda *args: 'xls',
+        'only_prod_pricelist': fields.boolean(
+            'Only products in  pricelist', help='If you active this field the '
+            'products that are not in pricelist will have in the report the '
+            'price in zero', default=True),
     }
 
     def print_report(self, cr, uid, ids, context=None):
@@ -47,13 +47,13 @@ class ProductPriceList(osv.osv_memory):
         To get the date and print the report
         @return : return report
         """
-        context = context or {}
+        context = context and dict(context) or {}
         ids = isinstance(ids, (int, long)) and [ids] or ids
         datas = {'ids': context.get('active_ids', [])}
 
         field_list = ['price_list', 'qty1',
                       'qty2', 'qty3', 'qty4', 'qty5', 'report_format',
-                      'margin_cost', 'margin_sale']
+                      'margin_cost', 'margin_sale', 'only_prod_pricelist']
 
         res = self.read(cr, uid, ids, field_list, load=None,
                         context=context)
@@ -65,11 +65,11 @@ class ProductPriceList(osv.osv_memory):
                 res['qty%d' % idx] = 0.0
 
         context['xls_report'] = res.get('report_format') == 'xls'
+        context.update({'only_prod_pricelist': res.get(
+            'only_prod_pricelist', False)})
 
         datas['form'] = res
 
         return self.pool['report'].get_action(
             cr, uid, [], 'product.report_pricelist', data=datas,
             context=context)
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -1,3 +1,4 @@
+# coding: utf-8
 #########################################################################
 # Copyright (C) 2009  Sharoon Thomas, Open Labs Business solutions      #
 #                                                                       #
@@ -14,14 +15,13 @@
 #You should have received a copy of the GNU General Public License      #
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.  #
 #########################################################################
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
 {
     "name": "Product Image Gallery",
-    "version": "0.6",
-    "author": "Sharoon Thomas, Open Labs Business Solutions",
+    "version": "8.0.0.0.6",
+    "author": "Sharoon Thomas, Open Labs Business Solutions",  # pylint: disable=C8101
     "category": "Added functionality - Product Extension",
     "website": "http://openlabs.co.in/",
-    "license": "",
+    "license": "GPL-3",  # pylint: disable=C8102
     "depends": [
         "base",
         "product"
@@ -37,5 +37,4 @@
     "qweb": [],
     "installable": True,
     "auto_install": False,
-    "active": False
 }

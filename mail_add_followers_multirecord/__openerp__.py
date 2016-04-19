@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -25,7 +25,7 @@
 ##############################################################################
 {
     "name": "Add many followers in many task or project",
-    "version": "1.7",
+    "version": "8.0.0.1.7",
     "author": "Vauxoo",
     "category": "Task and Project",
     "website": "http://www.vauxoo.com/",
@@ -45,6 +45,5 @@
     "qweb": [],
     "installable": True,
     "auto_install": False,
-    "active": False,
     'images': ['images/main_screenshot.png'],
 }

@@ -1,5 +1,4 @@
-#!/usr/bin/python
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 
 import time
 
@@ -22,7 +21,7 @@ class CommParser(report_sxw.rml_parse):
         # odoo/addons/account/report/account_balance.py
         new_ids = ids
         return super(CommParser, self).set_context(objects, data, new_ids,
-                                                    report_type=report_type)
+                                                   report_type=report_type)
 
 
 class IfrsPortraitPdfReport(osv.AbstractModel):
@@ -35,5 +34,3 @@ class IfrsPortraitPdfReport(osv.AbstractModel):
     _inherit = 'report.abstract_report'
     _template = 'commission_payment.comm_salespeople_template'
     _wrapped_report_class = CommParser
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

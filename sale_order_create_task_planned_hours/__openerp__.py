@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ############################################################################
 #    Module Writen For Odoo, Open Source Management Solution
 #
@@ -12,9 +12,10 @@
 {
     "name": "Sale Order Create Task with Planned Hours",
     "summary": "Create the task with planned hours calculated in the SO",
-    "version": "1.6",
+    "version": "8.0.0.1.6",
     "author": "Vauxoo",
     "website": "http://www.vauxoo.com/",
+    "license": "AGPL-3",
     "category": "sale",
     "depends": [
         "sale_service",

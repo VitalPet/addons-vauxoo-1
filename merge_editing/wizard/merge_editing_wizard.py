@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
@@ -24,7 +24,6 @@ from openerp.osv import osv, fields
 from lxml import etree
 from openerp import tools
 from openerp.tools.translate import _
-
 
 
 class MergeFuseWizard(osv.TransientModel):
@@ -160,7 +159,8 @@ class MergeEditingWizard(osv.TransientModel):
                     all_fields[field.name] = field_info[field.name]
                     all_fields["selection_" + field.name] = {'type': 'selection',
                                                              'string':
-                                                             field_info[field.name]['string'],
+                                                             field_info[field.name][
+                                                                 'string'],
                                                              'selection': [('set', 'Set'),
                                                                            ('remove_m2m',
                                                                             'Remove'),
@@ -312,6 +312,3 @@ class MergeEditingWizard(osv.TransientModel):
 
     def action_apply(self, cr, uid, ids, context=None):
         return {'type': 'ir.actions.act_window_close'}
-
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

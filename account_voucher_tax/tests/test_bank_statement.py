@@ -1,3 +1,4 @@
+# coding: utf-8
 from openerp.addons.account_voucher_tax.tests.common import TestTaxCommon
 import time
 
@@ -25,9 +26,9 @@ class TestPaymentTax(TestTaxCommon):
             'name': 'invoice to supplier',
             'account_id': self.account_payable_id,
             'type': 'in_invoice',
-            'date_invoice': time.strftime('%Y')+'-07-01',
+            'date_invoice': time.strftime('%Y') + '-07-01',
             'check_total': 116
-            })
+        })
         self.account_invoice_line_model.create(cr, uid, {
             'product_id': self.product_id,
             'quantity': 1,
@@ -99,9 +100,9 @@ class TestPaymentTax(TestTaxCommon):
             'name': 'invoice to supplier',
             'account_id': self.account_payable_id,
             'type': 'in_invoice',
-            'date_invoice': time.strftime('%Y')+'-07-01',
+            'date_invoice': time.strftime('%Y') + '-07-01',
             'check_total': 105.33
-            })
+        })
         self.account_invoice_line_model.create(cr, uid, {
             'product_id': self.product_id,
             'quantity': 1,
@@ -183,10 +184,10 @@ class TestPaymentTax(TestTaxCommon):
             'name': 'invoice to supplier',
             'account_id': self.account_payable_id,
             'type': 'in_invoice',
-            'date_invoice': time.strftime('%Y')+'-06-01',
+            'date_invoice': time.strftime('%Y') + '-06-01',
             'currency_id': self.currency_usd_id,
             'check_total': 116
-            })
+        })
         self.account_invoice_line_model.create(cr, uid, {
             'product_id': self.product_id,
             'quantity': 1,
@@ -211,7 +212,7 @@ class TestPaymentTax(TestTaxCommon):
 
         move_line_ids_complete = self.create_statement(
             cr, uid, line_id, self.partner_agrolait_id, -60,
-            self.bank_journal_usd_id, time.strftime('%Y')+'-06-01')
+            self.bank_journal_usd_id, time.strftime('%Y') + '-06-01')
         for move_line in move_line_ids_complete:
             if move_line.account_id.id == self.acc_tax16 and\
                     move_line.amount_currency:
@@ -232,7 +233,7 @@ class TestPaymentTax(TestTaxCommon):
 
         move_line_ids_complete = self.create_statement(
             cr, uid, line_id, self.partner_agrolait_id, -56,
-            self.bank_journal_usd_id, time.strftime('%Y')+'-06-30')
+            self.bank_journal_usd_id, time.strftime('%Y') + '-06-30')
 
         checked_line = 0
         for move_line_complete in move_line_ids_complete:
@@ -284,10 +285,10 @@ class TestPaymentTax(TestTaxCommon):
             'name': 'invoice to supplier',
             'account_id': self.account_payable_id,
             'type': 'in_invoice',
-            'date_invoice': time.strftime('%Y')+'-06-30',
+            'date_invoice': time.strftime('%Y') + '-06-30',
             'currency_id': self.currency_usd_id,
             'check_total': 116
-            })
+        })
         self.account_invoice_line_model.create(cr, uid, {
             'product_id': self.product_id,
             'quantity': 1,
@@ -312,7 +313,7 @@ class TestPaymentTax(TestTaxCommon):
 
         move_line_ids_complete = self.create_statement(
             cr, uid, line_id, self.partner_agrolait_id, -115,
-            self.bank_journal_usd_id, time.strftime('%Y')+'-06-01')
+            self.bank_journal_usd_id, time.strftime('%Y') + '-06-01')
         for move_line in move_line_ids_complete:
             if move_line.account_id.id == self.acc_tax16 and\
                     move_line.amount_currency:
@@ -333,7 +334,7 @@ class TestPaymentTax(TestTaxCommon):
 
         move_line_ids_complete = self.create_statement(
             cr, uid, line_id, self.partner_agrolait_id, -1,
-            self.bank_journal_usd_id, time.strftime('%Y')+'-06-30')
+            self.bank_journal_usd_id, time.strftime('%Y') + '-06-30')
 
         checked_line = 0
         for move_line_complete in move_line_ids_complete:
@@ -384,10 +385,10 @@ class TestPaymentTax(TestTaxCommon):
             'name': 'invoice to supplier',
             'account_id': self.account_payable_id,
             'type': 'in_invoice',
-            'date_invoice': time.strftime('%Y')+'-06-01',
+            'date_invoice': time.strftime('%Y') + '-06-01',
             'currency_id': self.currency_usd_id,
             'check_total': 116
-            })
+        })
         self.account_invoice_line_model.create(cr, uid, {
             'product_id': self.product_id,
             'quantity': 1,
@@ -412,7 +413,7 @@ class TestPaymentTax(TestTaxCommon):
 
         move_line_ids_complete = self.create_statement(
             cr, uid, line_id, self.partner_agrolait_id, -100,
-            self.bank_journal_id, time.strftime('%Y')+'-06-30',
+            self.bank_journal_id, time.strftime('%Y') + '-06-30',
             currency=self.currency_usd_id, amount_currency=-116)
 
         checked_line = 0
@@ -464,9 +465,9 @@ class TestPaymentTax(TestTaxCommon):
             'name': 'invoice to supplier',
             'account_id': self.account_payable_id,
             'type': 'in_invoice',
-            'date_invoice': time.strftime('%Y')+'-06-01',
+            'date_invoice': time.strftime('%Y') + '-06-01',
             'check_total': 116
-            })
+        })
         self.account_invoice_line_model.create(cr, uid, {
             'product_id': self.product_id,
             'quantity': 1,
@@ -491,7 +492,7 @@ class TestPaymentTax(TestTaxCommon):
 
         move_line_ids_complete = self.create_statement(
             cr, uid, line_id, self.partner_agrolait_id, -150,
-            self.bank_journal_usd_id, time.strftime('%Y')+'-06-30',
+            self.bank_journal_usd_id, time.strftime('%Y') + '-06-30',
             currency=self.currency_eur_id, amount_currency=-116)
 
         checked_line = 0

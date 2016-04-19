@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
@@ -25,7 +25,7 @@
 ##############################################################################
 {
     "name": "User Story",
-    "version": "2.6",
+    "version": "8.0.0.2.6",
     "author": "Vauxoo",
     "category": "Generic Modules",
     "website": "http://vauxoo.com",
@@ -43,8 +43,8 @@
         "demo/demo.xml"
     ],
     "data": [
-        #"data/data_us_report.xml",
-        #"report/user_story_report_view.xml",
+        # "data/data_us_report.xml",
+        # "report/user_story_report_view.xml",
         "security/userstory_security.xml",
         "security/ir.model.access.csv",
         "view/userstory_view.xml",
@@ -65,5 +65,4 @@
     "qweb": [],
     "installable": True,
     "auto_install": False,
-    "active": False
 }
