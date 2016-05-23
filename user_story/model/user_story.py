@@ -472,6 +472,7 @@ class UserStoryDifficulty(osv.Model):
 class AcceptabilityCriteria(osv.Model):
     _name = 'acceptability.criteria'
     _description = 'Acceptability Criteria'
+    _order="sequence"
 
     def _get_ac_ids_by_us_ids(self, cr, uid, us_ids, context=None):
         """This method is as the method of the sensitive store tuple for the
@@ -631,9 +632,31 @@ class AcceptabilityCriteria(osv.Model):
                 ac_number = ac_number[0]
             else:
                 ac_number = ac.name[0:3]
+            if ac.sequence_ac:
+                ac_number = str(ac.sequence_ac)
             res[ac.id] = \
                 'HU#' + str(ac.accep_crit_id.id) + ' CA#' + ac_number
         return res
+
+    def _get_default_sequence(self, cr, uid, context=None):
+        """ Method to place the sequence of acceptability criteria """
+        ac_ids = context.get('accep_crit_ids', [])
+        in_memory = [x for x in ac_ids if not x[1]]
+        seq = len(ac_ids) + 1
+        if in_memory:
+            order = sorted(in_memory, key=lambda x: x[2]['sequence_ac'])
+            if order[-1][2]['sequence_ac'] > len(ac_ids):
+                order[-1][2]['sequence_ac'] += 1
+                seq = order[-1][2]['sequence_ac']
+        elif len(ac_ids):
+            order = [x[1] for x in ac_ids]
+            read_ac = self.read(cr, uid, order,
+                                ['sequence_ac'], context=context)
+            maxi = max(read_ac, key=lambda x: x['sequence_ac'])
+            if maxi['sequence_ac'] > len(ac_ids):
+                maxi['sequence_ac'] += 1
+                seq = maxi['sequence_ac']
+        return seq
 
     _columns = {
         'name': fields.char('Title', size=255, required=True, readonly=False,
@@ -641,8 +664,7 @@ class AcceptabilityCriteria(osv.Model):
         'scenario': fields.text('Scenario', required=True, translate=True),
         'accep_crit_id': fields.many2one('user.story',
                                          'User Story',
-                                         ondelete='cascade',
-                                         ),
+                                         ondelete='cascade',),
         'accep_crit_state': fields.function(
             _get_user_story_state,
             type='selection',
@@ -655,8 +677,10 @@ class AcceptabilityCriteria(osv.Model):
             type='char',
             string='US AC #',
             help='User Story and Acceptability Criteria Numbers',
-            store={'acceptability.criteria': (lambda s, c, u, i, ctx: i,
-                                             ['accep_crit_id', 'name'], 16)}
+            store={
+                'acceptability.criteria': (lambda s, c, u, i, ctx: i,
+                                           ['accep_crit_id', 'name',
+                                            'sequence_ac'], 16)}
         ),
         'accepted': fields.boolean('Accepted',
                                    help='Check if this criterion apply'),
@@ -730,10 +754,19 @@ class AcceptabilityCriteria(osv.Model):
                                            ['accep_crit_id'], 16),
                 'user.story': (_get_ac_ids_by_us_ids, ['user_execute_id'], 20),
             }),
+        'sequence_ac': fields.integer("Sequence"),
+        'sequence': fields.integer("sequence"),
     }
     _defaults = {
         'name': lambda *a: None,
         'difficulty': 'na',
+        'sequence_ac': _get_default_sequence,
+        'sequence': 10,
+    }
+
+    _sql_constraints = {
+        ('unique_sequence_ac', 'unique(accep_crit_id, sequence_ac)',
+         'Sequence must be unique'),
     }
 
 
