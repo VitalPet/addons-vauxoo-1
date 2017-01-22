@@ -19,10 +19,13 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+from __future__ import division
+
+import logging
+from psycopg2 import OperationalError
 from openerp import api, models
 from openerp.addons.product import _common
 from openerp.tools import float_is_zero
-import logging
 _logger = logging.getLogger(__name__)
 SEGMENTATION_COST = [
     'landed_cost',
@@ -58,12 +61,9 @@ class ProductProduct(models.Model):
             _logger.info(msglog, str(tmpl_id), str(total), str(counter))
             cr.execute('''
                 UPDATE product_template
-                SET material_cost = {material_cost}
-                WHERE id = {id}
-                    '''.format(
-                material_cost=std_price,
-                id=tmpl_id,
-            ))
+                SET material_cost = %(material_cost)s
+                WHERE id = %(id)s
+                       ''', {'material_cost': std_price, 'id': tmpl_id, })
         return True
 
     def _update_material_cost_on_zero_segmentation(
@@ -86,7 +86,6 @@ class ProductTemplate(models.Model):
         context = dict(context or {})
         price = 0
         uom_obj = self.pool.get("product.uom")
-        tmpl_obj = self.pool.get('product.template')
         wizard_obj = self.pool.get("stock.change.standard.price")
         bom_obj = self.pool.get('mrp.bom')
         prod_obj = self.pool.get('product.product')
@@ -157,8 +156,7 @@ class ProductTemplate(models.Model):
                 if not prod_costs_dict[fieldname]:
                     continue
                 price_sgmnt = uom_obj._compute_price(
-                    cr, uid, product_id.uom_id.id,
-                    prod_costs_dict[fieldname],
+                    cr, uid, product_id.uom_id.id, prod_costs_dict[fieldname],
                     sbom.product_uom.id) * my_qty
                 price += price_sgmnt
                 sgmnt_dict[fieldname] += price_sgmnt
@@ -169,11 +167,9 @@ class ProductTemplate(models.Model):
                 cycle = wline.cycle_nbr
                 dd, mm = divmod(factor, wc.capacity_per_cycle)
                 mult = (dd + (mm and 1.0 or 0.0))
-                hour = float(
-                    wline.hour_nbr * mult + (
-                        (wc.time_start or 0.0) + (wc.time_stop or 0.0) +
-                        cycle * (wc.time_cycle or 0.0)) * (
-                            wc.time_efficiency or 1.0))
+                hour = float(wline.hour_nbr * mult + (
+                    (wc.time_start or 0.0) + (wc.time_stop or 0.0) + cycle * (
+                        wc.time_cycle or 0.0)) * (wc.time_efficiency or 1.0))
                 routing_price = wc.costs_cycle * cycle + wc.costs_hour * hour
                 routing_price = uom_obj._compute_price(
                     cr, uid, bom.product_uom.id, routing_price,
@@ -194,7 +190,7 @@ class ProductTemplate(models.Model):
             return price
 
         # NOTE: Instanciating BOM related product
-        product_tmpl_id = tmpl_obj.browse(
+        product_tmpl_id = self.browse(
             cr, uid, bom.product_tmpl_id.id, context=context)
 
         bottom_th = product_tmpl_id.get_bottom_price_threshold()
@@ -235,9 +231,8 @@ class ProductTemplate(models.Model):
                 cr, uid, {'new_price': price}, context=ctx)
             wizard_obj.change_price(cr, uid, [wizard_id], context=ctx)
         else:
-            tmpl_obj.write(
-                cr, uid, [product_tmpl_id.id], {'standard_price': price},
-                context=context)
+            self.write(cr, uid, [product_tmpl_id.id],
+                       {'standard_price': price}, context=context)
         return self.ensure_change_price_log_messages(cr, uid, vals, ctx)
 
     @api.multi
@@ -279,6 +274,11 @@ class ProductTemplate(models.Model):
             product_id = product_id.product_variant_ids
         if not product_id:
             return False
+        if product_id.cost_method != 'standard':
+            subject = 'I cowardly did not update cost.'
+            body = 'Ignored Because product is not set as Standard'
+            product_id.message_post(body=body, subject=subject)
+            return False
 
         # Just writting segments to be consistent with segmentation
         # feature. TODO: A report should show differences.
@@ -289,7 +289,7 @@ class ProductTemplate(models.Model):
                 product_id.write(sgmnts_dict)
             subject = "Segments updated. "
             body = 'Segments were written CHECK AFTERWARDS.'\
-                '{0}'.format(str(sgmnts_dict))
+                '%s' % str(sgmnts_dict)
 
         if not vals.get('threshold_reached', False):
             if not log_only:
@@ -298,13 +298,13 @@ class ProductTemplate(models.Model):
             body += ""
         else:
             subject += 'I cowardly did not update cost, Standard new\n'
-            body += "Price is {comp_th:.2f}% less than old price\n"\
-                "new {new} old {old} \n"\
-                "(current max allowed is {max_th})\n"\
-                .format(old=vals['current_price'],
-                        new=new_price['standard_price'],
-                        comp_th=vals['computed_th'],
-                        max_th=vals['current_bottom_th'])
+            body += "Price is %(comp_th).2f%% less than old price\n"\
+                "new %(new)s old %(old)s \n"\
+                "(current max allowed is %(max_th)s)\n" % dict(
+                    old=vals['current_price'],
+                    new=new_price['standard_price'],
+                    comp_th=vals['computed_th'],
+                    max_th=vals['current_bottom_th'])
         product_id.message_post(body=body, subject=subject)
         return new_price['standard_price']
 
@@ -394,3 +394,49 @@ class ProductTemplate(models.Model):
         res = super(ProductTemplate, self).do_change_standard_price(
             new_price)
         return res
+
+
+class StockCardProduct(models.TransientModel):
+    _inherit = 'stock.card.product'
+
+    def _update_product_segmentation_from_stock_card(self):
+        _logger.info('Update Segmentation on Average Product from Stock Card')
+        msglog = 'Computing segmentation fields for product: [%s]. %s/%s'
+
+        product_obj = self.env['product.product']
+        count = 0
+
+        product_brws = product_obj.search([('cost_method', '=', 'average')])
+        total = len(product_brws)
+        _logger.info('Cron Job will compute %s products', total)
+
+        for product_brw in product_brws:
+
+            count += 1
+            _logger.info(msglog, str(product_brw.id), str(total), str(count))
+
+            vals = self._stock_card_move_get(product_brw.id)
+            avg_fn = self.get_average(vals)
+            vals.clear()
+
+            if not any(avg_fn):
+                continue
+
+            vals2wrt = {}
+            for key, val in avg_fn.iteritems():
+                if key == 'average':
+                    continue
+                vals2wrt['%s_cost' % key] = val
+            avg_fn.clear()
+
+            product_brw.write(vals2wrt)
+            vals2wrt.clear()
+
+            try:
+                product_brw._cr.commit()
+            except OperationalError:
+                # /!\ NOTE: logging the product with the error
+                product_brw._cr.rollback()
+                _logger.info(
+                    'Update failed at Product: [%s]', str(product_brw.id))
+        return True

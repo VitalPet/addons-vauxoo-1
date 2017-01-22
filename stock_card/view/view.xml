@@ -8,6 +8,12 @@
                 <form string="Stock Card Product">
                     <sheet string="Stock Card Product">
                         <h1>
+                            <label for="warehouse_id"/>
+                        </h1>
+                        <h1>
+                            <field name="warehouse_id"/>
+                        </h1>
+                        <h1>
                             <label for="product_id"/>
                         </h1>
                         <h1>
@@ -39,7 +45,7 @@
             <field name="name">stock.card.move.tree</field>
             <field name="model">stock.card.move</field>
             <field name="arch" type="xml">
-                <tree string="Stock Card Move">
+                <tree string="Stock Card Move" colors="blue:qty&gt;0">
                     <field name="date"/>
                     <field name="move_id"/>
                     <field name="cost_unit"/>
@@ -87,6 +93,11 @@
                         icon="fa-history">
                         <div>Stock Card</div>
                     </button>
+                </xpath>
+                <xpath expr="//group[@name='inventory']" position="after">
+                    <group name='stock_card' groups="stock.group_stock_manager" string="Stock Card Info" attrs="{'invisible':['|', ('type','=','service'), ('cost_method','!=','average')]}">
+                        <field name="date_stock_card_border"/>
+                    </group>
                 </xpath>
             </field>
         </record>

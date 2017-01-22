@@ -21,7 +21,9 @@
     "data": [
         'view/view.xml',
         'data/data.xml',
+        'security/ir.model.access.csv',
     ],
     "installable": True,
     "auto_install": False,
+    "post_init_hook": "post_init_hook",
 }

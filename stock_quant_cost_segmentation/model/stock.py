@@ -1,12 +1,14 @@
 # coding: utf-8
 
+from __future__ import division
+from datetime import datetime
+import logging
+
 from openerp import models, fields, api
 from openerp import SUPERUSER_ID
 from openerp.tools.float_utils import float_compare, float_round, float_is_zero
 from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
-from datetime import datetime
 import openerp.addons.decimal_precision as dp
-import logging
 
 _logger = logging.getLogger(__name__)
 
@@ -29,6 +31,11 @@ class StockMove(models.Model):
         self.product_segmentation_update_after_done(
             cr, uid, ids, sgmnt, context=context)
         return res
+
+    @api.v8  # pylint: disable=W0404
+    def action_done(self):  # pylint: disable=E0102
+        return StockMove.action_done(self._model, self._cr, self._uid,
+                                     self._ids, context=self._context)
 
     @api.v7
     def product_segmentation_fetch_before_done(
@@ -103,13 +110,52 @@ class StockMove(models.Model):
 
 class StockQuant(models.Model):
     _inherit = "stock.quant"
+    _sql_query_quants_not_fix = '''
+        SELECT
+        COUNT(sq.id)
+        FROM stock_quant AS sq
+        INNER JOIN product_product AS pp ON sq.product_id = pp.id
+        INNER JOIN product_template AS pt ON pt.id = pp.product_tmpl_id
+        INNER JOIN ir_property AS ip1 ON (
+        ip1.res_id = 'product.template,' || pt.id::text
+        AND ip1.name = 'cost_method')
+        LEFT JOIN ir_property AS ip2 ON (
+        ip2.res_id = 'product.template,' || pt.id::text
+        AND ip2.name = 'standard_price')
+        WHERE
+        sq.material_cost = 0
+        AND sq.landed_cost = 0
+        AND sq.production_cost = 0
+        AND sq.subcontracting_cost = 0
+        -- AND ip1.value_text = 'standard'  -- APPLY ONLY ON STANDARD
+        ;'''
 
-    @api.depends('material_cost', 'production_cost', 'landed_cost',
-                 'subcontracting_cost')
-    def _compute_segmentation(self):
-        for record in self:
-            record.segmentation_cost = sum([
-                getattr(record, fn) for fn in SEGMENTATION_COST])
+    @api.model
+    def create(self, vals):
+        vals.update(
+            {'segmentation_cost': sum(
+                [vals.get(field_name) or 0
+                 for field_name in SEGMENTATION_COST])})
+        return super(StockQuant, self).create(vals)
+
+    @api.multi
+    def write(self, vals):
+        res = super(StockQuant, self).write(vals)
+        bool_eval = not (set(vals) & set(SEGMENTATION_COST) or
+                         self.env.context.get('force_segmentation_cost'))
+        if bool_eval or not self.ids:
+            return res
+        # TODO: Validate sql injection from SEGMENTATION_COST variable
+        # Because other module could add a monkey patch with sql injection
+        sum_query = ' + '.join(["COALESCE(%s, 0)" % field_name
+                                for field_name in SEGMENTATION_COST])
+        # NOTE: Cache is too slow to manage many records from computed field
+        query = "UPDATE stock_quant SET segmentation_cost = (" + sum_query + \
+            ") WHERE id IN %s"
+        self.env.cr.execute(query, (tuple(self.ids),))
+        # Force reset value of cache variable record.segmentation_cost
+        self.invalidate_cache(['segmentation_cost'])
+        return res
 
     material_cost = fields.Float(
         string='Material Cost',
@@ -124,8 +170,7 @@ class StockQuant(models.Model):
         string='Landed Cost',
         digits=dp.get_precision('Account'))
     segmentation_cost = fields.Float(
-        string='Actual Cost', store=True, readonly=True,
-        compute='_compute_segmentation',
+        string='Actual Cost', readonly=True,
         digits=dp.get_precision('Account'),
         help=("Provides the actual cost for this transaction. "
               "It is computed from the sum of the segmentation costs: "
@@ -194,6 +239,20 @@ class StockQuant(models.Model):
             ;''')
         _logger.info('Material Cost equal to Cost on Quant has been set')
 
+        _logger.info('Setting Material Cost = to Cost - Segmentation on Quant')
+        self._cr.execute('''
+            UPDATE stock_quant
+            SET material_cost = cost - (
+                landed_cost + production_cost + subcontracting_cost)
+            WHERE
+                cost != 0
+                AND material_cost = 0
+                AND (landed_cost + production_cost + subcontracting_cost) != 0
+                AND cost > (
+                    landed_cost + production_cost + subcontracting_cost)
+            ;''')
+        _logger.info('Material = Cost - Segmentation on Quant has been set')
+
         _logger.info('Updating Segmentation Cost with sum of Segmentation')
         self._cr.execute('''
             UPDATE stock_quant
@@ -208,25 +267,7 @@ class StockQuant(models.Model):
             ;''')
         _logger.info('Segmentation Cost has been updated')
 
-        self._cr.execute('''
-            SELECT
-            COUNT(sq.id)
-            FROM stock_quant AS sq
-            INNER JOIN product_product AS pp ON sq.product_id = pp.id
-            INNER JOIN product_template AS pt ON pt.id = pp.product_tmpl_id
-            INNER JOIN ir_property AS ip1 ON (
-            ip1.res_id = 'product.template,' || pt.id::text
-            AND ip1.name = 'cost_method')
-            LEFT JOIN ir_property AS ip2 ON (
-            ip2.res_id = 'product.template,' || pt.id::text
-            AND ip2.name = 'standard_price')
-            WHERE
-            sq.material_cost = 0
-            AND sq.landed_cost = 0
-            AND sq.production_cost = 0
-            AND sq.subcontracting_cost = 0
-            -- AND ip1.value_text = 'standard'  -- APPLY ONLY ON STANDARD
-            ;''')
+        self._cr.execute(self._sql_query_quants_not_fix)
         res = self._cr.fetchone()
         _logger.info('%s quants not fixed', str(int(res[0])))
 
@@ -349,21 +390,21 @@ class StockQuant(models.Model):
                 SELECT sq.id AS id, sq.propagated_from_id AS from_id
                 FROM stock_quant AS sq
                 WHERE
-                    product_id = {product_id}
+                    product_id = %(product_id)s
                     AND sq.propagated_from_id IS NOT NULL
-            """.format(product_id=move.product_id.id)
-            cr.execute(query1)
+            """
+            cr.execute(query1, {'product_id': move.product_id.id})
             for val in cr.fetchall():
                 exclude_ids += list(val)
 
             if exclude_ids:
                 exclude_ids = ', '.join(str(ex_ids) for ex_ids in exclude_ids)
-                exclude_ids = ' AND sq.id NOT IN ({exclude_ids})'.format(
+                exclude_ids = ' AND sq.id NOT IN (%(exclude_ids)s)' % dict(
                     exclude_ids=exclude_ids)
             else:
                 exclude_ids = ''
 
-            query2 = """
+            query2 = ("""
                 SELECT
                     sq.id,
                     sq.material_cost,
@@ -372,14 +413,13 @@ class StockQuant(models.Model):
                     sq.subcontracting_cost
                 FROM stock_quant AS sq
                 WHERE
-                    product_id = {product_id}
+                    product_id = %(product_id)s
                     AND qty > 0.0
-                    {exclude_ids}
+                    %(exclude_ids)s
                 ORDER BY sq.in_date DESC
                 LIMIT 1
-            """.format(
-                product_id=move.product_id.id,
-                exclude_ids=exclude_ids)
+            """) % dict(product_id=move.product_id.id,
+                        exclude_ids=exclude_ids)
             cr.execute(query2)
 
             res = cr.dictfetchone()
