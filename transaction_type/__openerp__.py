@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) Vauxoo (<http://vauxoo.com>).
@@ -20,32 +20,28 @@
 #
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-################################################################################
+##########################################################################
 {
-    "name": "Transaction Type", 
-    "version": "0.1", 
-    "author": "Vauxoo", 
-    "category": "Generic Modules", 
-    "description": """
-    Manages bank transactions regarding credit cards, debit cards, petty cash, and Carton
-    """, 
-    "website": "http://vauxoo.com", 
-    "license": "", 
+    "name": "Transaction Type",
+    "version": "8.0.0.0.6",
+    "author": "Vauxoo",
+    "category": "Generic Modules",
+    "website": "http://vauxoo.com",
+    "license": "",
     "depends": [
         "account"
-    ], 
-    "demo": [], 
+    ],
+    "demo": [],
     "data": [
-        "security/transaction_type.xml", 
-        "security/ir.model.access.csv", 
-        "view/transaction_type_view.xml", 
+        "security/transaction_type.xml",
+        "security/ir.model.access.csv",
+        "view/transaction_type_view.xml",
         "view/account_view.xml"
-    ], 
-    "test": [], 
-    "js": [], 
-    "css": [], 
-    "qweb": [], 
-    "installable": True, 
-    "auto_install": False, 
-    "active": False
+    ],
+    "test": [],
+    "js": [],
+    "css": [],
+    "qweb": [],
+    "installable": False,
+    "auto_install": False,
 }

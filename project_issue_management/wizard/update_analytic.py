@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://openerp.com.ve>).
@@ -25,17 +25,16 @@
 from openerp.osv import osv, fields
 
 
-class update_analytic(osv.TransientModel):
+class UpdateAnalytic(osv.TransientModel):
 
     _name = 'update.analytic'
-
 
     def default_get(self, cr, uid, l_fields, context=None):
         context = context or {}
         issue_obj = self.pool.get('project.issue')
         analytic_ids = set()
-        res = super(update_analytic, self).default_get(cr, uid, l_fields,
-                                                       context=context)
+        res = super(UpdateAnalytic, self).default_get(cr, uid, l_fields,
+                                                      context=context)
         if context.get('active_ids'):
             for issue in issue_obj.browse(cr, uid, context.get('active_ids')):
                 if issue.analytic_account_id:
@@ -68,7 +67,7 @@ class update_analytic(osv.TransientModel):
                 if context.get('active_ids'):
                     issue_obj.write(cr, uid,
                                     context.get('active_ids'),
-                                    {'analytic_account_id': \
+                                    {'analytic_account_id':
                                      wzr_brw.analytic_account_id.id})
                     issue_obj.update_project(cr, uid,
                                              context.get('active_ids'))

@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://openerp.com.ve>).
@@ -28,11 +28,11 @@
 from openerp.osv import osv, fields
 
 
-class project_task(osv.Model):
+class ProjectTask(osv.Model):
     _inherit = 'project.task'
 
     def _hours_get(self, cr, uid, ids, field_names, args, context=None):
-        data = super(project_task, self)._hours_get(
+        data = super(ProjectTask, self)._hours_get(
             cr, uid, ids, field_names, args, context=context)
         empl_obj = self.pool.get('hr.employee')
         for l in self.browse(cr, uid, ids, context=context):
@@ -50,47 +50,47 @@ class project_task(osv.Model):
         return data
 
     def _get_task(self, cr, uid, ids, context=None):
-        return super(project_task, self)._get_task(cr, uid, ids,
-                                                   context=context)
+        return super(ProjectTask, self)._get_task(cr, uid, ids,
+                                                  context=context)
 
     _columns = {
         'effective_hours': fields.function(_hours_get, method=True,
-                string='Hours Spent', multi='hours',
-                help="Computed using the sum of the task work done.",
-                store={
-                    'project.task': (lambda self, cr, uid, ids, c={}: ids,
-                        ['work_ids', 'remaining_hours', 'planned_hours'], 10),
-                    'project.task.work': (_get_task, ['hours'], 10),
-                }),
+                                           string='Hours Spent', multi='hours',
+                                           help="Computed using the sum of the task work done.",
+                                           store={
+                                               'project.task': (lambda self, cr, uid, ids, c={}: ids,
+                                                                ['work_ids', 'remaining_hours', 'planned_hours'], 10),
+                                               'project.task.work': (_get_task, ['hours'], 10),
+                                           }),
         'total_hours': fields.function(_hours_get, method=True,
-                string='Total Hours', multi='hours',
-                help="Computed as: Time Spent + Remaining Time.",
-                store={
-                    'project.task': (lambda self, cr, uid, ids, c={}: ids,
-                        ['work_ids', 'remaining_hours', 'planned_hours'], 10),
-                    'project.task.work': (_get_task, ['hours'], 10),
-                }),
+                                       string='Total Hours', multi='hours',
+                                       help="Computed as: Time Spent + Remaining Time.",
+                                       store={
+                                           'project.task': (lambda self, cr, uid, ids, c={}: ids,
+                                                            ['work_ids', 'remaining_hours', 'planned_hours'], 10),
+                                           'project.task.work': (_get_task, ['hours'], 10),
+                                       }),
         'progress': fields.function(_hours_get, method=True,
-                string='Progress (%)',
-                multi='hours',
-                group_operator="avg",
-                help="Computed as: Time Spent / Total Time.",
-                store={
-                    'project.task': (lambda self, cr, uid, ids, c={}: ids,
-                        ['work_ids', 'remaining_hours', 'planned_hours',
-                         'state'], 10),
-                    'project.task.work': (_get_task, ['hours'], 10),
-                }),
+                                    string='Progress (%)',
+                                    multi='hours',
+                                    group_operator="avg",
+                                    help="Computed as: Time Spent / Total Time.",
+                                    store={
+                                        'project.task': (lambda self, cr, uid, ids, c={}: ids,
+                                                         ['work_ids', 'remaining_hours', 'planned_hours',
+                                                          'state'], 10),
+                                        'project.task.work': (_get_task, ['hours'], 10),
+                                    }),
         'delay_hours': fields.function(_hours_get, method=True,
-                string='Delay Hours', multi='hours',
-                help="Computed as difference of the time estimated by the\
+                                       string='Delay Hours', multi='hours',
+                                       help="Computed as difference of the time estimated by the\
                         project manager and the real time to close the task.",
-                store={
-                    'project.task': (lambda self, cr, uid, ids, c={}: ids,
-                        ['work_ids', 'remaining_hours', 'planned_hours'], 10),
-                    'project.task.work': (_get_task, ['hours'], 10),
-                }),
+                                       store={
+                                           'project.task': (lambda self, cr, uid, ids, c={}: ids,
+                                                            ['work_ids', 'remaining_hours', 'planned_hours'], 10),
+                                           'project.task.work': (_get_task, ['hours'], 10),
+                                       }),
         'cost_per_task': fields.float('Cost', readonly=True,
-                help="Computed as: Hour Cost multiplied by Job Hours"),
+                                      help="Computed as: Hour Cost multiplied by Job Hours"),
 
     }

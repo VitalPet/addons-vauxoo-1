@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -28,22 +28,22 @@
 from openerp.osv import osv, fields
 
 
-class procurement_order(osv.Model):
+class ProcurementOrder(osv.Model):
     _inherit = "procurement.order"
 
     _columns = {
         'production_ids': fields.many2many('mrp.production',
-            'mrp_production_procurement_order_rel', 'procurement_id',
-            'production_id', 'Production orders'),
+                                           'mrp_production_procurement_order_rel', 'procurement_id',
+                                           'production_id', 'Production orders'),
         'production_created': fields.many2one('mrp.production',
-            'Production order'),
+                                              'Production order'),
     }
 
     def make_mo(self, cr, uid, ids, context=None):
         """ writes the production created to the procurement
         @return: same res than original make_mo
         """
-        res = super(procurement_order, self).make_mo(
+        res = super(ProcurementOrder, self).make_mo(
             cr, uid, ids, context=context)
         for line in res:
             self.write(cr, uid, [line], {'production_created': res.get(line)})

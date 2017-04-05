@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -26,13 +26,13 @@
 from openerp.osv import osv, fields
 
 
-class res_company(osv.Model):
+class ResCompany(osv.Model):
     _inherit = 'res.company'
     _columns = {
         'description_invoice': fields.text('Description Invoice',
-            translate=True),
+                                           translate=True),
         'description_sale': fields.text('Description Sale',
-            translate=True),
+                                        translate=True),
         'description_purchase': fields.text('Description Purchase',
-            translate=True),
+                                            translate=True),
     }

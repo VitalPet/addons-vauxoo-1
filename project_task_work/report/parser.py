@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://openerp.com.ve>).
@@ -27,10 +27,10 @@ import time
 from openerp.report import report_sxw
 
 
-class project_task_work_report(report_sxw.rml_parse):
+class ProjectTaskWorkReport(report_sxw.rml_parse):
 
     def __init__(self, cr, uid, name, context):
-        super(project_task_work_report, self).__init__(
+        super(ProjectTaskWorkReport, self).__init__(
             cr, uid, name, context=context)
         self.localcontext.update({
             'time': time,
@@ -40,12 +40,11 @@ class project_task_work_report(report_sxw.rml_parse):
         })
 
     def _get_hour(self, float_hour, format='hh:mm:ss'):
-        '''
-        This method takes a floating
+        """This method takes a floating
         and returns it in  time format 'hh:mm:ss' or 'hh:mm'
         This Method was taken from
         http://stackoverflow.com/questions/775049/python-time-seconds-to-hms
-        '''
+        """
         seconds = int(float_hour * 3600)
         hours = seconds / 3600
         seconds -= 3600 * hours
@@ -54,10 +53,9 @@ class project_task_work_report(report_sxw.rml_parse):
         return format == 'hh:mm:ss' and "%02d:%02d:%02d" % (hours, minutes, seconds) or "%02d:%02d" % (hours, minutes + round(seconds / 60.0))
 
     def _get_time(self, strtime=time.strftime('%Y-%m-%d %H:%M:%S')):
-        '''
-        This method take strtime in the format '%Y-%m-%d %H:%M:%S'
+        """This method take strtime in the format '%Y-%m-%d %H:%M:%S'
         and returns it in the format '%Y-%m-%d'
-        '''
+        """
         t = time.strptime(strtime, '%Y-%m-%d %H:%M:%S')
         t = time.mktime(t)
 
@@ -94,7 +92,6 @@ report_sxw.report_sxw(
     'report.project_task_work',
     'project.task.work',
     'addons/project_task_work/report/project_task_work.rml',
-    parser=project_task_work_report,
+    parser=ProjectTaskWorkReport,
     header=False
 )
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

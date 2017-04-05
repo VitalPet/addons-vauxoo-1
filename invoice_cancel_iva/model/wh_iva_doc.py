@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://openerp.com.ve>).
@@ -9,8 +9,8 @@
 #    Audited by: Vauxoo C.A.
 #############################################################################
 #    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
+#    it under the terms of the GNU Affero General Public License as published
+#    by the Free Software Foundation, either version 3 of the License, or
 #    (at your option) any later version.
 #
 #    This program is distributed in the hope that it will be useful,
@@ -25,7 +25,7 @@
 from openerp.osv import osv, fields
 
 
-class wh_iva_doc(osv.Model):
+class WhIvaDoc(osv.Model):
     _inherit = 'account.wh.iva'
 
     _columns = {
@@ -37,13 +37,12 @@ class wh_iva_doc(osv.Model):
     }
 
     def check_state_cancel(self, cr, uid, ids, context=None):
-        '''
-        Check invoice state to not move in state
-        '''
-        iva_brw = self.browse(cr, uid, ids, context=context)[0]
+        """Check invoice state to not move in state
+        """
+        # iva_brw = self.browse(cr, uid, ids, context=context)[0]
 
         for i in self.browse(cr, uid, ids, context=context)[0].wh_lines:
-            print "i.invoice_id.state", i.invoice_id.state
+            # print "i.invoice_id.state", i.invoice_id.state
             if i.invoice_id.state == 'cancel':
                 return False
 

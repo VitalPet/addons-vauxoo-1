@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
@@ -24,7 +24,7 @@ from openerp import tools
 from openerp.osv import fields, osv
 
 
-class project_project(osv.Model):
+class ProjectProject(osv.Model):
 
     _inherit = 'project.project'
 
@@ -63,12 +63,12 @@ class project_project(osv.Model):
         return ids
 
     def _complete_name(self, cr, uid, ids, name, args, context=None):
-        return super(project_project, self)._complete_name(cr, uid, ids, name,
-                                                        args, context=context)
+        return super(ProjectProject, self)._complete_name(cr, uid, ids, name,
+                                                          args, context=context)
     _columns = {
         'complete_name2': fields.function(_complete_name,
-              fnct_search=_project_search, string="Project Name",
-              type='char', size=250),
+                                          fnct_search=_project_search, string="Project Name",
+                                          type='char', size=250),
     }
 
     def name_search(self, cr, user, name='', args=None, operator='ilike',
@@ -84,12 +84,12 @@ class project_project(osv.Model):
                 ids.update(self.search(cr, user, args + [(
                     'complete_name2', operator, name)],
                     limit=limit, context=context))
-                ids.update(map(lambda a: a[0], super(project_project,
-                                                    self).name_search(cr, user,
-                                                        name=name, args=args,
-                                                        operator=operator,
-                                                        context=context,
-                                                        limit=limit)))
+                ids.update(map(lambda a: a[0], super(ProjectProject,
+                                                     self).name_search(cr, user,
+                                                                       name=name, args=args,
+                                                                       operator=operator,
+                                                                       context=context,
+                                                                       limit=limit)))
                 ids = list(ids)
         else:
             ids = self.search(cr, user, args, limit=limit, context=context)
@@ -97,12 +97,12 @@ class project_project(osv.Model):
         return result
 
 
-class project_task(osv.Model):
+class ProjectTask(osv.Model):
     _inherit = 'project.task'
 
     _columns = {
         'project_related_id': fields.related('project_id',
-            'analytic_account_id', type='many2one',
-            relation='account.analytic.account',
-            string='Complete Name Project')
+                                             'analytic_account_id', type='many2one',
+                                             relation='account.analytic.account',
+                                             string='Complete Name Project')
     }

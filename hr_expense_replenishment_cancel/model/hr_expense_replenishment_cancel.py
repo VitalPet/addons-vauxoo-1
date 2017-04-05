@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://openerp.com.ve>).
@@ -24,20 +24,20 @@
 from openerp.osv import osv
 
 
-class hr_expense_expense(osv.Model):
+class HrExpenseExpense(osv.Model):
     _inherit = "hr.expense.expense"
 
     def expense_canceled(self, cr, uid, ids, context=None):
         obj_move_line = self.pool.get('account.move.line')
         obj_move = self.pool.get('account.move')
-        res = super(hr_expense_expense,
+        res = super(HrExpenseExpense,
                     self).expense_canceled(cr, uid, ids, context=context)
         for expense in self.browse(cr, uid, ids, context=context):
             if expense.account_move_id:
                 obj_move_line._remove_move_reconcile(cr, uid,
-                    [move_line.id
-                        for move_line in expense.account_move_id.line_id],
-                    context=context)
+                                                     [move_line.id
+                                                      for move_line in expense.account_move_id.line_id],
+                                                     context=context)
                 obj_move.unlink(cr, uid, [expense.account_move_id.id],
                                 context=context)
         return res

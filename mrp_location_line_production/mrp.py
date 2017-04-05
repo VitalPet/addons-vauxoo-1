@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -26,11 +26,11 @@
 from openerp.osv import osv
 
 
-class mrp_production(osv.Model):
+class MrpProduction(osv.Model):
     _inherit = 'mrp.production'
 
     def _make_production_produce_line(self, cr, uid, production, context=None):
-        res = super(mrp_production, self)._make_production_produce_line(
+        res = super(MrpProduction, self)._make_production_produce_line(
             cr, uid, production, context=context)
         stock_obj = self.pool.get('stock.move')
         product_obj = self.pool.get('product.product')
@@ -42,10 +42,10 @@ class mrp_production(osv.Model):
         return res
 
     def _make_production_consume_line(self, cr, uid, production_line,
-                    parent_move_id, source_location_id=False, context=None):
-        res = super(mrp_production, self)._make_production_consume_line(cr,
-                    uid, production_line, parent_move_id,
-                    source_location_id=source_location_id, context=context)
+                                      parent_move_id, source_location_id=False, context=None):
+        res = super(MrpProduction, self)._make_production_consume_line(cr,
+                                                                       uid, production_line, parent_move_id,
+                                                                       source_location_id=source_location_id, context=context)
         stock_obj = self.pool.get('stock.move')
         product_obj = self.pool.get('product.product')
         product = stock_obj.browse(cr, uid, res).product_id.id

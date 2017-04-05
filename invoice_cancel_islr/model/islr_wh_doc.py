@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://openerp.com.ve>).
@@ -25,26 +25,24 @@
 from openerp.osv import osv, fields
 
 
-class islr_wh_doc(osv.Model):
+class IslrWhDoc(osv.Model):
     _inherit = 'islr.wh.doc'
 
     _columns = {
         'prev_state': fields.char('Previos State', 12,
-            help="Field to keep the previous state of the invoice at\
+                                  help="Field to keep the previous state of the invoice at\
                 the time of canceling")
 
     }
 
     def check_state_draft(self, cr, uid, ids, context=None):
-        '''
-        Modified to witholding vat validate
-        '''
+        """Modified to witholding vat validate
+        """
         return True
 
     def check_state_cancel(self, cr, uid, ids, context=None):
-        '''
-        Modified to witholding vat validate
-        '''
+        """Modified to witholding vat validate
+        """
         islr_brw = self.browse(cr, uid, ids, context=context)[0]
         if islr_brw.invoice_id.state == 'cancel':
             return False

@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://www.vauxoo.com>).
@@ -26,7 +26,7 @@ from openerp.osv import osv, fields
 import openerp.addons.decimal_precision as dp
 
 
-class purchase_order_line(osv.osv):
+class PurchaseOrderLine(osv.osv):
 
     def _get_inv_quantity(self, cr, uid, ids, context=None):
         context = dict(context or {})
@@ -41,6 +41,11 @@ class purchase_order_line(osv.osv):
             ail_uom_id = ail_brw.uos_id
             if ail_brw.invoice_id.state not in ('open', 'done'):
                 continue
+            if all([context.get('date_start'), context.get('date_stop')]):
+                ai_brw = ail_brw.invoice_id
+                if not (ai_brw.date_invoice >= context['date_start'] and
+                        ai_brw.date_invoice <= context['date_stop']):
+                    continue
             res += uom_obj._compute_qty_obj(cr, uid, ail_uom_id,
                                             ail_brw.quantity, pol_uom_id,
                                             context=context)
@@ -63,6 +68,10 @@ class purchase_order_line(osv.osv):
             qty = 0.0
             if sm_brw.state != 'done':
                 continue
+            if all([context.get('date_start'), context.get('date_stop')]):
+                if not (sm_brw.date >= context['date_start'] and
+                        sm_brw.date <= context['date_stop']):
+                    continue
             if src == dst:
                 continue
             elif dst == 'internal':
@@ -76,6 +85,29 @@ class purchase_order_line(osv.osv):
             res += qty
 
         return res
+
+    # def _get_ids_from_stock(self, cr, uid, ids, context=None):
+    #     res = set([])
+    #     sm_obj = self.pool.get('stock.move')
+    #     for sm_brw in sm_obj.browse(cr, uid, ids, context=context):
+    #         if not sm_brw.purchase_line_id:
+    #             continue
+    #         res.add(sm_brw.purchase_line_id.id)
+    #     return list(res)
+
+    # def _get_ids_from_invoice(self, cr, uid, ids, context=None):
+    #     res = set([])
+    #     ai_obj = self.pool.get('account.invoice')
+    #     for ai_brw in ai_obj.browse(cr, uid, ids, context=context):
+    #         if ai_brw.type not in ('in_invoice',):
+    #             continue
+    #         if ai_brw.state not in ('open', 'paid'):
+    #             continue
+    #         for ail_brw in ai_brw.invoice_line:
+    #             if not ail_brw.purchase_line_id:
+    #                 continue
+    #             res.add(ail_brw.purchase_line_id.id)
+    #     return list(res)
 
     def _get_quantity(self, cr, uid, ids, field_names=None, arg=False,
                       context=None):

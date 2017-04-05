@@ -1,3 +1,4 @@
+# coding: utf-8
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
@@ -22,11 +23,12 @@
 #
 ##############################################################################
 
+from openerp import api
 from openerp.osv import fields, osv
 from openerp.tools.translate import _
 
 
-class account_invoice(osv.osv):
+class AccountInvoice(osv.osv):
 
     _inherit = 'account.invoice'
 
@@ -37,19 +39,19 @@ class account_invoice(osv.osv):
         'to_pay': False,
     }
 
-    def copy(self, cr, uid, id, default=None, context=None):
+    @api.one
+    def copy(self, default=None):
         default = default or {}
         default.update({
             'to_pay': False,
         })
-        return super(account_invoice, self).copy(cr, uid, id, default, context)
+        return super(AccountInvoice, self).copy(default)
 
     def payment_approve(self, cr, uid, ids, context=None):
-        '''
-        Mark boolean as True, to approve invoice to be pay.
+        """Mark boolean as True, to approve invoice to be pay.
         Added message to messaging block of supplier invoice,
         when approve invoice.
-        '''
+        """
         context = context or {}
 
         context.update({'default_body': _(u'Invoice Approved to Pay'),
@@ -79,11 +81,10 @@ class account_invoice(osv.osv):
         return self.write(cr, uid, ids, {'to_pay': True})
 
     def payment_disapproves(self, cr, uid, ids, context=None):
-        '''
-        Mark boolean as False, to Disapprove invoice to be pay.
+        """Mark boolean as False, to Disapprove invoice to be pay.
         Added message to messaging block of supplier invoice,
         when disapproved to Pay.
-        '''
+        """
         context = context or {}
 
         context.update({'default_body': _(u'Invoice Disapproved to Pay'),

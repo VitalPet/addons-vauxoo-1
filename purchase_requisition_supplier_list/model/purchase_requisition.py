@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://www.vauxoo.com>).
@@ -26,10 +26,9 @@
 from openerp.osv import osv, fields
 
 
-class purchase_requisition(osv.Model):
+class PurchaseRequisition(osv.Model):
 
-    """
-    This is an extension of the purchase requisition model to add the
+    """This is an extension of the purchase requisition model to add the
     functionality to manage a suggested list of partners.
     """
 
@@ -57,8 +56,7 @@ class purchase_requisition(osv.Model):
     }
 
     def create_orders(self, cr, uid, ids, context=None):
-        """
-        This method create the quotations of the purchase requisition for all
+        """This method create the quotations of the purchase requisition for all
         the partners given in the purchase requisition suggested partner.
         @return True
         """

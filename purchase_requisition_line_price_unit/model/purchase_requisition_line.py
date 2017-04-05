@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ########################################################################
 #
 #    OpenERP, Open Source Management Solution
@@ -24,7 +24,7 @@ from openerp.osv import fields, osv
 import openerp.addons.decimal_precision as dp
 
 
-class purchase_requisition(osv.Model):
+class PurchaseRequisition(osv.Model):
     _inherit = "purchase.requisition"
 
     def _get_requisition(self, cr, uid, ids, context=None):
@@ -50,18 +50,19 @@ class purchase_requisition(osv.Model):
                     val += c.get('amount', 0.0)
             #res[requisition.id]['amount_tax']=cur_obj.round(cr, uid, cur, val)
             amount_untaxed = cur_obj.round(cr, uid, cur, val1)
-            res[requisition.id]['amount_total'] = amount_untaxed  # + res[requisition.id]['amount_tax']
+            # + res[requisition.id]['amount_tax']
+            res[requisition.id]['amount_total'] = amount_untaxed
         return res
 
     _columns = {
         'amount_total': fields.function(_amount_all, digits_compute=dp.get_precision('Account'), string='Total',
-            store={
-                'purchase.requisition.line': (_get_requisition, None, 10),
+                                        store={
+            'purchase.requisition.line': (_get_requisition, None, 10),
         }, multi="sums", help="The total amount"),
     }
 
 
-class purchase_requisition_line(osv.Model):
+class PurchaseRequisitionLine(osv.Model):
     _inherit = "purchase.requisition.line"
 
     def _amount_line(self, cr, uid, ids, prop, arg, context=None):
@@ -69,7 +70,8 @@ class purchase_requisition_line(osv.Model):
         cur_obj = self.pool.get('res.currency')
         tax_obj = self.pool.get('account.tax')
         for line in self.browse(cr, uid, ids, context=context):
-            taxes = tax_obj.compute_all(cr, uid, [], line.price_unit, line.product_qty, line.product_id)
+            taxes = tax_obj.compute_all(
+                cr, uid, [], line.price_unit, line.product_qty, line.product_id)
             #cur = line.requisition_id.pricelist_id.currency_id
             cur = line.requisition_id.currency_id
             res[line.id] = cur_obj.round(cr, uid, cur, taxes['total'])

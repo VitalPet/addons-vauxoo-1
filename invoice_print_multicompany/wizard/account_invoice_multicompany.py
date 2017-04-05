@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ##############################################################################
 # Copyright (c) 2011 OpenERP Venezuela (http://openerp.com.ve)
 # All Rights Reserved.
@@ -30,13 +30,12 @@ from openerp.osv import fields, osv
 from openerp.tools.translate import _
 
 import base64
-import openerp.netsvc as netsvc
+import openerp.workflow as workflow
 
 
-class print_account_invoice_report(osv.TransientModel):
+class PrintAccountInvoiceReport(osv.TransientModel):
 
-    """
-    OpenERP Wizard : print.account.invoice.report
+    """OpenERP Wizard : print.account.invoice.report
     """
     _name = "print.account.invoice.report"
 
@@ -74,8 +73,8 @@ class print_account_invoice_report(osv.TransientModel):
 
     def print_invoice(self, cr, uid, ids, context=None):
         return {'type': 'ir.actions.report.xml',
-            'report_name': self._get_report_name(cr, uid, context),
-            'datas': {'ids': context['active_ids']}}
+                'report_name': self._get_report_name(cr, uid, context),
+                'datas': {'ids': context['active_ids']}}
 
     _columns = {
         'company': fields.char('Company', 64, readonly=True, requied=True),

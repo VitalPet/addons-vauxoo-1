@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -26,7 +26,7 @@
 from openerp.osv import osv, fields
 
 
-class ir_action_report_xml(osv.Model):
+class IrActionReportXml(osv.Model):
 
     _inherit = "ir.actions.report.xml"
 
@@ -42,5 +42,5 @@ class ir_action_report_xml(osv.Model):
         'active': 1,
         'company_id': lambda self, cr, uid, c:
         self.pool.get('res.company')._company_default_get(cr, uid,
-                                            'ir.actions.report.xml', context=c),
+                                                          'ir.actions.report.xml', context=c),
     }

@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -29,7 +29,7 @@ from openerp.osv import osv, fields
 from openerp.addons.decimal_precision import decimal_precision as dp
 
 
-class mrp_subproduct(osv.Model):
+class MrpSubproduct(osv.Model):
     _inherit = 'mrp.subproduct'
 
     def _calc_cost(self, cr, uid, ids, field_name, arg, context):
@@ -39,11 +39,10 @@ class mrp_subproduct(osv.Model):
         return res
 
     def _calc_cost_u(self, cr, uid, ids, field_name, arg, context):
-        '''
-        funcion para el calculo del costo unitario, el cual es: product cost/ product qty
+        """funcion para el calculo del costo unitario, el cual es: product cost/ product qty
         @cost = se almacena el costo unitario final.
         @res = diccionario usado para retornar el id y el costo unitario.
-        '''
+        """
         res = {}
         for i in self.browse(cr, uid, ids):
             cost = 0.00

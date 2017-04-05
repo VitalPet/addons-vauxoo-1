@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 #
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -27,7 +27,7 @@ import re
 from openerp.osv import osv
 
 
-class res_partner(osv.osv):
+class ResPartner(osv.osv):
 
     _inherit = 'res.partner'
 
@@ -43,8 +43,8 @@ class res_partner(osv.osv):
             res_name = ptrn_name.search(name)
             if res_name:
                 name = name.replace('[' + res_name.group(2) + '] ', '')
-            partner_search = super(res_partner, self).name_search(cr, user,
-                                        name, args, operator, context, limit)
+            partner_search = super(ResPartner, self).name_search(cr, user,
+                                                                 name, args, operator, context, limit)
             ids = [partner[0] for partner in partner_search]
             if not ids:
                 ids = self.search(cr, user, [('vat', operator, name)] + args,
@@ -54,11 +54,11 @@ class res_partner(osv.osv):
                 res = ptrn.search(name)
                 if res:
                     ids = self.search(cr, user,
-                        [('vat', operator, res.group(2))] + args, limit=limit,
-                        context=context)
+                                      [('vat', operator, res.group(2))] + args, limit=limit,
+                                      context=context)
         else:
-            return super(res_partner, self).name_search(cr, user,
-                                        name, args, operator, context, limit)
+            return super(ResPartner, self).name_search(cr, user,
+                                                       name, args, operator, context, limit)
 
         return self.name_get(cr, user, ids, context=context)
 
@@ -67,7 +67,7 @@ class res_partner(osv.osv):
             return []
         if isinstance(ids, (long, int)):
             ids = [ids]
-        res_name = super(res_partner, self).name_get(cr, uid, ids, context)
+        res_name = super(ResPartner, self).name_get(cr, uid, ids, context)
         res = []
         for record in res_name:
             partner = self.browse(cr, uid, record[0], context=context)

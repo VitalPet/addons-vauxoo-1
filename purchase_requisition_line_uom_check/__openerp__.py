@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://www.vauxoo.com>).
@@ -23,15 +23,9 @@
 ###############################################################################
 {
     "name": "Purchase Requisition Line UoM Check",
-    "version": "1.0",
+    "version": "8.0.0.1.6",
     "author": "Vauxoo",
     "category": "",
-    "description": """
-Purchase Requisition Line UoM Check
-===================================
-    Checks if the same Unit of Measure set in line is with product's category
-    Unit of Measure
-""",
     "website": "http://www.vauxoo.com/",
     "license": "",
     "depends": [
@@ -45,7 +39,6 @@ Purchase Requisition Line UoM Check
     "js": [],
     "css": [],
     "qweb": [],
-    "installable": True,
+    "installable": False,
     "auto_install": False,
-    "active": False
 }

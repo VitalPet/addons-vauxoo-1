@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
@@ -22,14 +22,13 @@
 from openerp.osv import fields, osv
 
 
-class stock_incoterms(osv.Model):
+class StockIncoterms(osv.Model):
 
-    """
-    stock_incoterm
+    """stock_incoterm
     """
 
     _inherit = 'stock.incoterms'
     _columns = {
         'description': fields.text('Description',
-            help='Formal description for this incoterm.'),
+                                   help='Formal description for this incoterm.'),
     }

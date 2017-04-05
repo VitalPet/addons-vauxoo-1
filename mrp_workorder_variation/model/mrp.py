@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) Vauxoo (<http://www.vauxoo.com>).
@@ -26,7 +26,7 @@ from openerp.osv import osv, fields
 from openerp.tools.translate import _
 
 
-class mrp_production_workcenter_line(osv.Model):
+class MrpProductionWorkcenterLine(osv.Model):
 
     """ This class inherits Work Order to add two fields that are handling products
     entering and products leaving in the work order
@@ -36,14 +36,14 @@ class mrp_production_workcenter_line(osv.Model):
 
     _columns = {
         'mrp_workorder_variation_line_ids': fields.one2many('mrp.workorder.variation.line',
-        'mrp_production_workcenter_line_id', 'Real Products Quantity'),
+                                                            'mrp_production_workcenter_line_id', 'Real Products Quantity'),
 
         'mrp_workorder_variation_output_line_ids': fields.one2many('mrp.workorder.output.variation.line',
-        'mrp_production_workcenter_output_line_id', 'Real Output Products Quantity'),
+                                                                   'mrp_production_workcenter_output_line_id', 'Real Output Products Quantity'),
     }
 
 
-class mrp_workorder_variation_line(osv.Model):
+class MrpWorkorderVariationLine(osv.Model):
 
     """ This class are product lines that are received in a work order
     """
@@ -56,7 +56,7 @@ class mrp_workorder_variation_line(osv.Model):
                                          string='Production Order', relation='mrp.production', type='many2one', store=True,
                                          help='Id Manufacturing Order'),
         'mrp_production_workcenter_line_id': fields.many2one('mrp.production.workcenter.line',
-        'Production Workcenter Line ID', required=True, help='Id Work Order'),
+                                                             'Production Workcenter Line ID', required=True, help='Id Work Order'),
         'product_id': fields.many2one('product.product', _('Product'), required=True,
                                       help=_('Product')),
         'product_qty': fields.float(_('Capacity'), required=True, help=_('Real Quantity')),
@@ -72,7 +72,7 @@ class mrp_workorder_variation_line(osv.Model):
         return {'value': {'product_uom': product.uom_id and product.uom_id.id}}
 
 
-class mrp_workorder_output_variation_line(osv.Model):
+class MrpWorkorderOutputVariationLine(osv.Model):
 
     """ This class are product lines that are produced in a work order
     """
@@ -85,7 +85,7 @@ class mrp_workorder_output_variation_line(osv.Model):
                                          string='Production Order', relation='mrp.production', type='many2one', store=True,
                                          help='Id Manufacturing Order'),
         'mrp_production_workcenter_output_line_id': fields.many2one('mrp.production.workcenter.line',
-        'Production Workcenter Line ID', required=True, help='Id Work Order'),
+                                                                    'Production Workcenter Line ID', required=True, help='Id Work Order'),
         'product_id': fields.many2one('product.product', _('Product'), required=True,
                                       help=_('Product')),
         'product_qty': fields.float(_('Capacity'), required=True, help=_('Real Quantity')),

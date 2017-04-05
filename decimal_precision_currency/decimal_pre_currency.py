@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://openerp.com.ve>).
@@ -27,17 +27,17 @@ import time
 from openerp.addons.decimal_precision import decimal_precision as dp
 
 
-class res_currency_rate(osv.Model):
+class ResCurrencyRate(osv.Model):
 
     _inherit = "res.currency.rate"
     _columns = {
         'rate': fields.float('Rate',
-            digits_compute=dp.get_precision('Currency'), required=True,
-            help='The rate of the currency to the currency of rate 1'),
+                             digits_compute=dp.get_precision('Currency'), required=True,
+                             help='The rate of the currency to the currency of rate 1'),
     }
 
 
-class res_currency(osv.Model):
+class ResCurrency(osv.Model):
 
     def _current_rate(self, cr, uid, ids, name, arg, context=None):
         if context is None:
@@ -65,9 +65,9 @@ class res_currency(osv.Model):
     _inherit = "res.currency"
     _columns = {
         'rate': fields.function(_current_rate, method=True,
-            string='Current Rate', digits_compute=dp.get_precision('Currency'),
-            help='The rate of the currency to the currency of rate 1'),
+                                string='Current Rate', digits_compute=dp.get_precision('Currency'),
+                                help='The rate of the currency to the currency of rate 1'),
         'rounding': fields.float('Rounding factor',
-            digits_compute=dp.get_precision('Currency')),
+                                 digits_compute=dp.get_precision('Currency')),
 
     }

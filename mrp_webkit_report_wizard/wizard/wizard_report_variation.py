@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -30,17 +30,17 @@ from openerp.osv import osv, fields
 from openerp.tools.translate import _
 
 
-class wizard_report_variation(osv.TransientModel):
+class WizardReportVariation(osv.TransientModel):
     _name = 'wizard.report.variation'
 
     _columns = {
         'product_ids': fields.many2many('product.product', 'temp_product_rel',
-            'temp_id', 'product_id', 'Productos', required=True),
+                                        'temp_id', 'product_id', 'Productos', required=True),
         'date_start': fields.datetime('Start Date', required=True),
         'date_finished': fields.datetime('End Date', required=True),
         'type': fields.selection([('single', 'Detail'), ('group', 'Resume')],
-            'Type', required=True,
-            help="Only calculates for productions not in draft or cancelled"),
+                                 'Type', required=True,
+                                 help="Only calculates for productions not in draft or cancelled"),
     }
 
     _defaults = {
@@ -60,7 +60,7 @@ class wizard_report_variation(osv.TransientModel):
         if context is None:
             context = {}
         production_obj = self.pool.get('mrp.production')
-        res = super(wizard_report_variation, self).default_get(
+        res = super(WizardReportVariation, self).default_get(
             cr, uid, fields, context=context)
         production_ids = context.get('active_ids', [])
         if not production_ids:
@@ -78,10 +78,12 @@ class wizard_report_variation(osv.TransientModel):
         data = self.read(cr, uid, ids)[0]
         if data.get('type') == 'single':
             myids = self.pool.get('mrp.production').search(cr, uid,
-                [('product_id', 'in', data.get('product_ids')),
-                ('date_finished', '>', data.get('date_start')),
-                ('date_finished', '<', data.get('date_finished')),
-                ('state', '<>', 'cancel')])
+                                                           [('product_id', 'in', data.get('product_ids')),
+                                                            ('date_finished', '>', data.get(
+                                                                'date_start')),
+                                                               ('date_finished', '<', data.get(
+                                                                   'date_finished')),
+                                                               ('state', '<>', 'cancel')])
             if not myids:
                 raise osv.except_osv(_('Advice'), _(
                     'There is no production orders for the products you\
@@ -142,10 +144,10 @@ class wizard_report_variation(osv.TransientModel):
         mrp_obj = self.pool.get('mrp.production')
         production_ids = mrp_obj.search(
             cr, uid, [('state', 'not in', ('draft', 'cancel')),
-                    ('product_id', 'in', prod_ids),
-                ('date_finished', '>', data.get('date_start')),
-                ('date_finished', '<', data.get('date_finished')),
-                ('company_id', '=', company_id)])
+                      ('product_id', 'in', prod_ids),
+                      ('date_finished', '>', data.get('date_start')),
+                      ('date_finished', '<', data.get('date_finished')),
+                      ('company_id', '=', company_id)])
         if not production_ids:
             raise osv.except_osv(_('Advice'), _(
                 'There is no production orders for the products you selected\
@@ -190,7 +192,7 @@ class wizard_report_variation(osv.TransientModel):
                 finished_data = self.pool.get('product.product').browse(
                     cr, uid, line[0], context=context)
                 finished_variation.append((finished_data.name, line[1],
-                                        finished_data.uom_id.name, line[2]))
+                                           finished_data.uom_id.name, line[2]))
 
         report_datas = {
             'ids': production_ids,

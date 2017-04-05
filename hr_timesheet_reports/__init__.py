@@ -1,3 +1,4 @@
-import model
-import report
-import wizard
+# coding: utf-8
+from . import model
+from . import report
+from . import wizard

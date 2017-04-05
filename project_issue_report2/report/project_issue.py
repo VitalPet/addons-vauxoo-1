@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution             #
 #    Copyright (C) OpenERP Venezuela (<http://openerp.com.ve>).            #
@@ -23,21 +23,19 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>. #
 ############################################################################
 import time
-import pooler
 from openerp.report import report_sxw
 
 
-class project_issue(report_sxw.rml_parse):
+class ProjectIssue(report_sxw.rml_parse):
 
     def __init__(self, cr, uid, name, context=None):
-        """
-        Initlize a report parser, add custome methods to localcontext
+        """Initlize a report parser, add custome methods to localcontext
         @param cr: cursor to database
         @param user: id of current user
         @param name: name of the reports it self
         @param context: context arguments, like lang, time zone
         """
-        super(project_issue, self).__init__(cr, uid, name, context=context)
+        super(ProjectIssue, self).__init__(cr, uid, name, context=context)
         self.localcontext.update({
                                  'time': time,
                                  'get_issue_by_project': self._get_issue_by_project,
@@ -167,5 +165,5 @@ report_sxw.report_sxw(
     'report.project.issuereport',
     'project.issue',
     'addons/project_issue_report2/report/project_issue.rml',
-    parser=project_issue
+    parser=ProjectIssue
 )

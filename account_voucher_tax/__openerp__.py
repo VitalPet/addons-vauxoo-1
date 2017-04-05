@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -18,67 +18,45 @@
 #    but WITHOUT ANY WARRANTY; without even the implied warranty of
 #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #    GNU Affero General Public License for more details.
+#    This program is distributed in the hope that it will be useful,
 #
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
 {
-    "name": "account_voucher_tax", 
-    "version": "1.0", 
-    "author": "Vauxoo", 
-    "category": "Localization/Mexico", 
-    "description": """
-
-The tax actually paid/cashed in the move of payment,
-====================================================
-
-Creditable VAT.
-
-It is the charge to all your payments i.e:
-
-Bought a desktop that charge VAT on this desk is the creditable taxes
-
-Retained VAT is retained by suppliers
-
-- The rule is that only a natural person can hold a moral person.
-
-- The exception to this rule is for freight and rental.
-
-Caused VAT is that actually charged to customers.
-
-- When you make a cash sale that VAT is caused
-
-- When you make a sale on credit is transferred iva but when you pay that sale becomes caused VAT
-
-    """, 
-    "website": "http://www.vauxoo.com/", 
-    "license": "AGPL-3", 
+    "name": "Account Voucher Tax",
+    "version": "8.0.0.1.6",
+    "author": "Vauxoo",
+    "category": "Localization/Mexico",
+    "website": "http://www.vauxoo.com/",
+    "license": "AGPL-3",
     "depends": [
-        "account", 
-        "account_voucher", 
-        "account_invoice_tax", 
-        "analytic", 
-        "account_move_line_base_tax"
-    ], 
+        "account",
+        "account_voucher",
+        "account_invoice_tax",
+        "analytic",
+        "account_move_line_base_tax",
+        "account_cancel",
+        "base_action_rule",
+    ],
     "demo": [
         "demo/account_voucher_tax_demo.xml"
-    ], 
+    ],
     "data": [
-        "account_tax_view.xml", 
-        "account_voucher_tax_view.xml", 
-        "security/ir.model.access.csv"
-    ], 
+        "account_tax_view.xml",
+        "account_voucher_tax_view.xml",
+        "security/ir.model.access.csv",
+        "data/ir_actions_server.xml",
+    ],
     "test": [
-        "test/account_voucher_taxes.yml", 
-        "test/account_voucher_tax_round_off.yml", 
-        "test/account_voucher_tax_write_off.yml", 
+        "test/account_voucher_taxes.yml",
+        "test/account_voucher_tax_write_off.yml",
         "test/account_voucher_tax_currency_diff.yml"
-    ], 
-    "js": [], 
-    "css": [], 
-    "qweb": [], 
-    "installable": True, 
-    "auto_install": False, 
-    "active": False
+    ],
+    "js": [],
+    "css": [],
+    "qweb": [],
+    "installable": False,
+    "auto_install": False,
 }

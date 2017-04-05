@@ -1,16 +1,17 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://openerp.com.ve>).
 #    All Rights Reserved
-# Credits######################################################
+###########################################################################
+#   Credits:
 #    Coded by: Vauxoo C.A.
 #    Planified by: Nhomar Hernandez
 #    Audited by: Vauxoo C.A.
 #############################################################################
 #    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
+#    it under the terms of the GNU Affero General Public License as published
+#    by the Free Software Foundation, either version 3 of the License, or
 #    (at your option) any later version.
 #
 #    This program is distributed in the hope that it will be useful,
@@ -23,12 +24,15 @@
 ##########################################################################
 
 from openerp.osv import osv, fields
+from openerp import models
+from openerp import fields as newfields
 
 
-class message_post_test_line(osv.Model):
+class MessagePostTestLine(osv.Model):
 
     _name = 'message.post.test.line'
 
+    # pylint: disable=W8105
     _columns = {
         'name': fields.char('Name'),
         'number': fields.integer('Number'),
@@ -37,16 +41,49 @@ class message_post_test_line(osv.Model):
     }
 
 
-class message_post_test(osv.Model):
+class MessagePostTest(osv.Model):
 
     _name = 'message.post.test'
     _inherit = ['message.post.show.all']
 
+    # pylint: disable=W8105
     _columns = {
         'name': fields.char('Name'),
         'user_id': fields.many2one('res.users', 'User'),
         'number': fields.integer('Number'),
-        'line_ids': fields.one2many('message.post.test.line', 'test_id', 'Lines'),
-        'user_ids': fields.many2many('res.users', 'test_user_table', 'test_id', 'user_id', 'Users'),
+        'line_ids': fields.one2many('message.post.test.line', 'test_id',
+                                    'Lines'),
+        'user_ids': fields.many2many('res.users', 'test_user_table', 'test_id',
+                                     'user_id', 'Users'),
         'check': fields.boolean('Check'),
+        'select': fields.selection([('1', 'Testing'), ('2', 'Changed')],
+                                   'Selection'),
     }
+
+
+class MessagePostTestNewApi(models.Model):
+
+    _name = 'message.post.test.new.api'
+    _inherit = ['message.post.show.all']
+
+    name = newfields.Char('Name')
+    user_id = newfields.Many2one('res.users', 'User')
+    number = newfields.Integer('Number')
+    line_ids = newfields.One2many('message.post.test.line.new.api', 'test_id',
+                                  'Lines')
+    user_ids = newfields.Many2many('res.users', 'test_user_table_new_api',
+                                   'test_id',
+                                   'user_id', 'Users')
+    select = newfields.Selection([('1', 'Testing'), ('2', 'Changed')],
+                                 'Selection')
+    check = newfields.Boolean('Check')
+
+
+class MessagePostTestLineNewApi(models.Model):
+
+    _name = 'message.post.test.line.new.api'
+
+    name = newfields.Char('Name')
+    number = newfields.Integer('Number')
+    check = newfields.Boolean('Check')
+    test_id = newfields.Many2one('message.post.test.new.api', 'Test')

@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -25,32 +25,24 @@
 #
 ##############################################################################
 {
-    "name": "user_wzd", 
-    "version": "1.0", 
-    "author": "Vauxoo", 
-    "category": "Generic Modules/Human Resources", 
-    "description": """
-Add wizard for create employee from users
-===============================================
-
-Module that adds a wizard in res.users model and generated employee from one or many users, only
-and only if there is no other record of employee assigned to the user in question.
-
-    """, 
-    "website": "http://www.vauxoo.com/", 
-    "license": "AGPL-3", 
+    "name": "Employee from User",
+    "summary": "Create an Employee from the User Form",
+    "version": "8.0.0.1.6",
+    "author": "Vauxoo",
+    "category": "Generic Modules/Human Resources",
+    "website": "http://www.vauxoo.com/",
+    "license": "AGPL-3",
     "depends": [
         "hr"
-    ], 
-    "demo": [], 
+    ],
+    "demo": [],
     "data": [
         "wizard/res_users_view.xml"
-    ], 
-    "test": [], 
-    "js": [], 
-    "css": [], 
-    "qweb": [], 
-    "installable": True, 
-    "auto_install": False, 
-    "active": False
+    ],
+    "test": [],
+    "js": [],
+    "css": [],
+    "qweb": [],
+    "installable": False,
+    "auto_install": False,
 }

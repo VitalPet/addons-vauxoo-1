@@ -1,1 +1,2 @@
-from . import baremo
+# coding: utf-8
+from . import model

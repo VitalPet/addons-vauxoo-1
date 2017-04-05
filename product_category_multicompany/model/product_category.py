@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -28,7 +28,7 @@
 from openerp.osv import osv, fields
 
 
-class product_category(osv.Model):
+class ProductCategory(osv.Model):
     _inherit = "product.category"
     _columns = {
         'company_id': fields.many2one('res.company', 'Company'),
@@ -38,5 +38,5 @@ class product_category(osv.Model):
     _defaults = {
         'company_id': lambda self, cr, uid, c:
         self.pool.get('res.company')._company_default_get(cr, uid,
-                                            'product.category', context=c),
+                                                          'product.category', context=c),
     }

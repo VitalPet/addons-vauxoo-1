@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -29,7 +29,7 @@ from openerp.osv import osv, fields
 from openerp.addons.decimal_precision import decimal_precision as dp
 
 
-class account_move(osv.Model):
+class AccountMove(osv.Model):
     _inherit = "account.move"
 
     """example of query that get these fields ---
@@ -51,13 +51,13 @@ class account_move(osv.Model):
 
     _columns = {
         'total_debit': fields.function(_sum_credit_debit,
-                               string='Total debit', method=True,
-                               digits_compute=dp.get_precision(
-                                   'Account'),
-            type='float', multi="total_credit_debit"),
+                                       string='Total debit', method=True,
+                                       digits_compute=dp.get_precision(
+                                           'Account'),
+                                       type='float', multi="total_credit_debit"),
         'total_credit': fields.function(_sum_credit_debit,
-                                string='Total credit', method=True,
-                                digits_compute=dp.get_precision(
-                                    'Account'),
-            type='float', multi="total_credit_debit"),
+                                        string='Total credit', method=True,
+                                        digits_compute=dp.get_precision(
+                                            'Account'),
+                                        type='float', multi="total_credit_debit"),
     }

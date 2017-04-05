@@ -1,11 +1,10 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 from openerp.osv import fields, osv
 
 
-class sale_order(osv.Model):
+class SaleOrder(osv.Model):
 
-    """
-    sale_order
+    """sale_order
     """
 
     def _get_commision(self, price, cost):
@@ -57,14 +56,14 @@ class sale_order(osv.Model):
                 if line.purchase_price:
                     res[line.id] = round((line.price_unit *
                                           line.product_uos_qty *
-                                         (100.0 - line.discount) / 100.0) -
-                                        (line.purchase_price *
-                                         line.product_uos_qty), 2)
+                                          (100.0 - line.discount) / 100.0) -
+                                         (line.purchase_price *
+                                          line.product_uos_qty), 2)
                 else:
                     res[line.id] = round((line.price_unit * line.product_uos_qty
                                           * (100.0 - line.discount) / 100.0) -
-                                        (line.product_id.standard_price *
-                                         line.product_uos_qty), 2)
+                                         (line.product_id.standard_price *
+                                          line.product_uos_qty), 2)
         return res
 
     _inherit = 'sale.order'

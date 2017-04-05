@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://www.vauxoo.com>).
@@ -25,7 +25,7 @@
 from openerp.osv import osv, fields
 
 
-class purchase_order(osv.Model):
+class PurchaseOrder(osv.Model):
 
     _inherit = 'purchase.order'
     _columns = {
@@ -45,28 +45,27 @@ class purchase_order(osv.Model):
         if user_id:
             ru_brw = ru_obj.browse(cr, uid, user_id, context=context)
             department_id = (ru_brw.employee_ids
-                and ru_brw.employee_ids[0].department_id
-                and ru_brw.employee_ids[0].department_id.id or False)
+                             and ru_brw.employee_ids[0].department_id
+                             and ru_brw.employee_ids[0].department_id.id or False)
             res.update({'value': {'department_id': department_id}})
         return res
 
 
-class purchase_requisition(osv.Model):
+class PurchaseRequisition(osv.Model):
 
     _inherit = "purchase.requisition"
 
     def make_purchase_order(self, cur, uid, ids, partner_id, context=None):
-        """
-        Over write the method to also extract the department_id from the
+        """Over write the method to also extract the department_id from the
         purchase requisition.
         """
         context = context or {}
-        res = super(purchase_requisition, self).make_purchase_order(
+        res = super(PurchaseRequisition, self).make_purchase_order(
             cur, uid, ids, partner_id, context=context)
         if res:
             req_id = res.keys()[0]
             req_brw = self.browse(cur, uid, req_id, context=context)
             po_obj = self.pool.get('purchase.order')
             po_obj.write(cur, uid, res[req_id], {'department_id':
-                req_brw.department_id.id}, context=context)
+                                                 req_brw.department_id.id}, context=context)
         return res

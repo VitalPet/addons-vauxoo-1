@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://www.vauxoo.com>).
@@ -26,12 +26,12 @@
 from openerp.osv import fields, osv
 
 
-class account_analytic_line(osv.Model):
+class AccountAnalyticLine(osv.Model):
 
     _inherit = 'account.analytic.line'
 
     _columns = {
         'analytic_group_id': fields.related('account_id', 'analytic_group_id',
-            type='many2one', relation='account.analytic.group', string='Analytic Group',
-            store=True, readonly=True),
+                                            type='many2one', relation='account.analytic.group', string='Analytic Group',
+                                            store=True, readonly=True),
     }

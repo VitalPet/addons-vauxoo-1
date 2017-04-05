@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) 2013 Vauxoo (<http://vauxoo.com>).
@@ -25,9 +25,9 @@ from openerp.osv import osv, fields
 import ast
 
 
-class email_template(osv.Model):
+class MailTemplate(osv.Model):
 
-    _inherit = "email.template"
+    _inherit = "mail.template"
 
     _columns = {
         'att_default': fields.boolean(
@@ -39,7 +39,7 @@ class email_template(osv.Model):
     }
 
 
-class mail_compose_message(osv.TransientModel):
+class MailComposeMessage(osv.TransientModel):
     _inherit = 'mail.compose.message'
 
     def onchange_template_id(self, cr, uid, ids, template_id,
@@ -47,9 +47,12 @@ class mail_compose_message(osv.TransientModel):
         if not context:
             context = {}
 
-        template_obj = self.pool.get('email.template')
+        template_obj = self.pool.get('mail.template')
 
-        res = super(mail_compose_message,
+        if template_id and isinstance(template_id, list):
+            template_id = template_id[0]
+
+        res = super(MailComposeMessage,
                     self).onchange_template_id(
                         cr, uid, ids, template_id,
                         composition_mode, model, res_id, context=context)
@@ -71,6 +74,6 @@ class mail_compose_message(osv.TransientModel):
                     "[" + att_field_render + "]") if att_field_render]
 
         attach += res.get('value', {}).pop('attachment_ids', [])
-        res.get('value', {}).update({'attachment_ids': [(6, 0, attach)]})
+        res.get('value', {}).update({'attachment_ids': attach})
 
         return res

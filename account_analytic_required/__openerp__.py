@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -24,27 +24,25 @@
 #
 ##############################################################################
 {
-    "name": "Account Analytic Required", 
-    "version": "1.0", 
-    "author": "Vauxoo", 
-    "category": "Generic Modules", 
-    "description": """
-    Add field analytic_required, for when is select required an account analytic to the validate an account.move
-    """, 
-    "website": "http://www.vauxoo.com/", 
-    "license": "AGPL-3", 
+    "name": "Account Analytic Required",
+    "version": "8.0.0.1.6",
+    "author": "Vauxoo",
+    'category': 'Generic Modules/Accounting',
+    "website": "http://www.vauxoo.com/",
+    "license": "AGPL-3",
     "depends": [
-        "account"
-    ], 
-    "demo": [], 
+        "account",
+    ],
+    "demo": [
+
+    ],
     "data": [
-        "account_view.xml"
-    ], 
-    "test": [], 
-    "js": [], 
-    "css": [], 
-    "qweb": [], 
-    "installable": True, 
-    "auto_install": False, 
-    "active": False
+        "view/account_view.xml",
+    ],
+    "test": [],
+    "js": [],
+    "css": [],
+    "qweb": [],
+    "installable": False,
+    "auto_install": False,
 }

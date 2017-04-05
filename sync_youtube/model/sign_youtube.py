@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 #
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -24,18 +24,20 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 #
-from openerp.osv import osv, fields
-from openerp.tools.translate import _
 import logging
 import urlparse
+
+from openerp.osv import fields, osv
+from openerp.tools.translate import _
+
 _logger = logging.getLogger("SignYouTube")
 try:
     from gdata.youtube import service
-except:
+except ImportError:
     _logger.error("You need the gdata library ---> sudo pip install gdata")
 
 
-class sign_youtube_conf(osv.Model):
+class SignYoutubeConf(osv.Model):
     _name = 'sign.youtube.conf'
 
     _columns = {
@@ -62,9 +64,8 @@ class sign_youtube_conf(osv.Model):
     }
 
     def get_items(self, entry):
-        '''
-        Return the video details
-        '''
+        """Return the video details
+        """
         youtube_id = ''
         if entry:
             youtube_url = entry.GetHtmlLink().href
@@ -106,9 +107,8 @@ class sign_youtube_conf(osv.Model):
         return True
 
     def load_videos(self, cr, uid, ids, filters_name=None, context=None):
-        '''
-        Load the videos for your account and added in the config lines
-        '''
+        """Load the videos for your account and added in the config lines
+        """
         if context is None:
             context = {}
         line = self.pool.get('sign.youtube.conf.line')
@@ -135,10 +135,10 @@ class sign_youtube_conf(osv.Model):
                     index += max_results
 
                 entry_datas = []
-            except Exception, e:
+            except BaseException, e:
                 _logger.error(
-                    """Connection error, login to Youtube we got this error %s please veriry the
-                    parameters and try again""" % e)
+                    "Connection error, login to Youtube we got this " +
+                    "error %s please verify the parameters and try again", e)
             for entry in userfeed_entry:
                 item = self.get_items(entry)
                 line_ids = line.search(
@@ -177,7 +177,7 @@ class sign_youtube_conf(osv.Model):
         return entry_datas
 
 
-class sign_youtube_conf_line(osv.Model):
+class SignYoutubeConfLine(osv.Model):
     _name = 'sign.youtube.conf.line'
 
     _columns = {
@@ -205,7 +205,7 @@ class sign_youtube_conf_line(osv.Model):
         'description': fields.text('Description', help='Description added for this video when was '
                                    'created'),
         'public_information': fields.text('Public Information', help='This information accept html'
-                                   'and is the information that will be used in the portal page.'),
+                                          'and is the information that will be used in the portal page.'),
     }
     _defaults = {
         'update': 0,
@@ -213,9 +213,8 @@ class sign_youtube_conf_line(osv.Model):
     _order = 'views desc'
 
     def load_url(self, cr, uid, ids, context=None):
-        '''
-        Launch a new window where you can the watch the video
-        '''
+        """Launch a new window where you can the watch the video
+        """
         if context is None:
             context = {}
         for wzr in self.browse(cr, uid, ids, context=context):
@@ -226,9 +225,8 @@ class sign_youtube_conf_line(osv.Model):
             }
 
     def show_on_inbox(self, cr, uid, ids, context=None):
-        '''
-        Generate a new windows to add a message for then send it to the inbox message
-        '''
+        """Generate a new windows to add a message for then send it to the inbox message
+        """
         if context is None:
             context = {}
         for wzr in self.browse(cr, uid, ids, context=context):
@@ -255,9 +253,8 @@ class sign_youtube_conf_line(osv.Model):
             }
 
     def send_to_inbox(self, cr, uid, ids, context=None):
-        '''
-        Send the message to the inbox for the specific group
-        '''
+        """Send the message to the inbox for the specific group
+        """
         if context is None:
             context = {}
         message_obj = self.pool.get('mail.group')
@@ -266,13 +263,13 @@ class sign_youtube_conf_line(osv.Model):
         for wzr in self.browse(cr, uid, ids, context=context):
             attachment_ids = [i.id for i in wzr.attachment_ids]
             try:
-                (model, mail_group_id) = data_obj.get_object_reference(cr, uid, 'portal_gallery',
+                (dummy, mail_group_id) = data_obj.get_object_reference(cr, uid, 'portal_gallery',
                                                                        'company_gallery_feed')
-            except:
-                (model, mail_group_id) = data_obj.get_object_reference(cr, uid, 'mail',
+            except BaseException:
+                (dummy, mail_group_id) = data_obj.get_object_reference(cr, uid, 'mail',
                                                                        'group_all_employees')
-            message_id = message_obj.message_post(cr, uid, [mail_group_id],
-                                                  body=wzr.message, subject=wzr.name,
-                                                  attachment_ids=attachment_ids,
-                                                  subtype='mail.mt_comment', context=context)
+            dummy = message_obj.message_post(cr, uid, [mail_group_id],
+                                             body=wzr.message, subject=wzr.name,
+                                             attachment_ids=attachment_ids,
+                                             subtype='mail.mt_comment', context=context)
         return {'type': 'ir.actions.act_window_close'}

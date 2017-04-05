@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -23,11 +23,11 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp.osv import fields, osv
 import openerp.addons.decimal_precision as dp
+from openerp.osv import fields, osv
 
 
-class hr_payslip(osv.osv):
+class HrPayslip(osv.osv):
     _inherit = 'hr.payslip'
 
     def _amount_residual(self, cr, uid, ids, name, args, context=None):
@@ -36,7 +36,6 @@ class hr_payslip(osv.osv):
             context = {}
         result = {}
         for payslip in self.browse(cr, uid, ids, context=context):
-            nb_inv_in_partial_rec = max_invoice_id = 0
             result[payslip.id] = 0.0
             if payslip.move_id:
                 for aml in payslip.move_id.line_id:
@@ -57,27 +56,29 @@ class hr_payslip(osv.osv):
                     move[line2.move_id.id] = True
         payslip_ids = []
         if move:
-            payslip_ids = self.pool.get('hr.payslip').search(cr, uid, [('move_id', 'in', move.keys())], context=context)
+            payslip_ids = self.pool.get('hr.payslip').search(
+                cr, uid, [('move_id', 'in', move.keys())], context=context)
         return payslip_ids
 
     def _get_payslip_from_reconcile(self, cr, uid, ids, context=None):
         move = {}
-        for r in self.pool.get('account.move.reconcile').browse(cr, uid, ids, context=context):
-            for line in r.line_partial_ids:
+        for move_reconcile_pool in self.pool.get('account.move.reconcile').browse(cr, uid, ids, context=context):
+            for line in move_reconcile_pool.line_partial_ids:
                 move[line.move_id.id] = True
-            for line in r.line_id:
+            for line in move_reconcile_pool.line_id:
                 move[line.move_id.id] = True
 
         payslip_ids = []
         if move:
-            payslip_ids = self.pool.get('hr.payslip').search(cr, uid, [('move_id', 'in', move.keys())], context=context)
+            payslip_ids = self.pool.get('hr.payslip').search(
+                cr, uid, [('move_id', 'in', move.keys())], context=context)
         return payslip_ids
 
     _columns = {
         'residual': fields.function(_amount_residual, digits_compute=dp.get_precision('Account'), string='Balance',
-            store={
-                'hr.payslip': (lambda self, cr, uid, ids, c={}: ids, [], 50),
-                'account.move.line': (_get_payslip_from_line, None, 50),
-                'account.move.reconcile': (_get_payslip_from_reconcile, None, 50),
+                                    store={
+            'hr.payslip': (lambda self, cr, uid, ids, c={}: ids, [], 50),
+            'account.move.line': (_get_payslip_from_line, None, 50),
+            'account.move.reconcile': (_get_payslip_from_reconcile, None, 50),
         },),
     }

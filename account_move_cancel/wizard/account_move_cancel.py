@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://openerp.com.ve>).
@@ -25,27 +25,26 @@
 from openerp.osv import osv, fields
 from openerp.tools.translate import _
 
-import openerp.netsvc as netsvc
+import openerp.workflow as workflow
 #~ from DateTime import DateTime
 
 
-class account_move_cancel(osv.TransientModel):
+class AccountMoveCancel(osv.TransientModel):
 
     _name = 'account.move.cancel'
     _columns = {
         'invoice_ids': fields.many2many('account.invoice', 'invoice_rel',
-                            'invoice1', 'invoice2', 'Invoices',
-                            help="Select the invoices to account move cancel"),
+                                        'invoice1', 'invoice2', 'Invoices',
+                                        help="Select the invoices to account move cancel"),
 
     }
 
     def cancel_account_move(self, cr, uid, ids, context=None,
                             invoice_ids=False):
-        '''
-            Cancel invoices to delete account move
+        """Cancel invoices to delete account move
             @param invoice_ids, ids list of invoices to method apply
             @param ids, ids of wizard if called from this
-        '''
+        """
         if context is None:
             context = {}
         invo_obj = self.pool.get('account.invoice')
@@ -55,7 +54,7 @@ class account_move_cancel(osv.TransientModel):
         iva_ids = []
         islr_ids = []
         journal_ids = []
-        wf_service = netsvc.LocalService("workflow")
+        wf_service = workflow
         print "context", context
         if not invoice_ids:
             invo_brw = self.browse(cr, uid, ids, context=context)
@@ -105,7 +104,7 @@ class account_move_cancel(osv.TransientModel):
                     i) for i in iva_ids]
 
                 len(iva_ids) == 1 and wf_service.trg_validate(uid,
-                            'account.wh.iva', iva_ids[0], 'cancel', cr) or \
+                                                              'account.wh.iva', iva_ids[0], 'cancel', cr) or \
                     [wf_service.trg_validate(
                      uid, 'account.wh.iva', i, 'cancel', cr) for i in iva_ids]
 
@@ -116,7 +115,7 @@ class account_move_cancel(osv.TransientModel):
                     i) for i in islr_ids]
 
                 len(islr_ids) == 1 and wf_service.trg_validate(uid,
-                            'islr.wh.doc', islr_ids[0], 'act_cancel', cr) or \
+                                                               'islr.wh.doc', islr_ids[0], 'act_cancel', cr) or \
                     [wf_service.trg_validate(
                         uid, 'islr.wh.doc', i, 'act_cancel', cr)
                         for i in islr_ids]
@@ -127,7 +126,8 @@ class account_move_cancel(osv.TransientModel):
                 raise osv.except_osv(_('Invalid action !'), _(
                     "Impossible invoice(s) cancel %s  because is/are paid!"
                     % (' '.join(names))))
-            invo_obj.action_cancel(cr, uid, invo_ids, context=context)  # correccion estaba llegando tupla () al unlink
+            # correccion estaba llegando tupla () al unlink
+            invo_obj.action_cancel(cr, uid, invo_ids, context=context)
             invo_obj.write(cr, uid, invo_ids, {
                            'cancel_true': True}, context=context)
             hasattr(journal_obj.browse(cr, uid, journal_ids[0],

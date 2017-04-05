@@ -1,27 +1,23 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 {
-    "name": "Commision against Margin", 
-    "version": "0.1", 
-    "author": "Vauxoo", 
-    "category": "Sales & Purchases", 
-    "description": """
-    Show and control commision against margins
-                    """, 
-    "website": "http://vauxoo.com", 
-    "license": "", 
+    "name": "Commision against Margin",
+    "version": "8.0.0.0.6",
+    "author": "Vauxoo",
+    "category": "Sales & Purchases",
+    "website": "http://vauxoo.com",
+    "license": "",
     "depends": [
-        "sale", 
+        "sale",
         "sale_margin"
-    ], 
-    "demo": [], 
+    ],
+    "demo": [],
     "data": [
         "commision_view.xml"
-    ], 
-    "test": [], 
-    "js": [], 
-    "css": [], 
-    "qweb": [], 
-    "installable": True, 
-    "auto_install": False, 
-    "active": False
+    ],
+    "test": [],
+    "js": [],
+    "css": [],
+    "qweb": [],
+    "installable": False,
+    "auto_install": False,
 }

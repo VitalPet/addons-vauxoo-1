@@ -1,24 +1,24 @@
+# coding: utf-8
 {
-    "name": "stock_picking_security_force", 
-    "version": "1.1", 
-    "author": "Vauxoo", 
-    "category": "Stock", 
-    "description": """ Add security to the button Force Availability, module stock.picking """, 
-    "website": "www.vauxoo.com", 
-    "license": "", 
+    "name": "Force Availabity Secure",
+    "summary": "Add security to the button Force Availability",
+    "version": "8.0.0.1.6",
+    "author": "Vauxoo",
+    "category": "Stock",
+    "website": "www.vauxoo.com",
+    "license": "",
     "depends": [
         "stock"
-    ], 
-    "demo": [], 
+    ],
+    "demo": [],
     "data": [
-        "stock_picking_security_force_view.xml", 
+        "stock_picking_security_force_view.xml",
         "security/groups.xml"
-    ], 
-    "test": [], 
-    "js": [], 
-    "css": [], 
-    "qweb": [], 
-    "installable": True, 
-    "auto_install": False, 
-    "active": False
+    ],
+    "test": [],
+    "js": [],
+    "css": [],
+    "qweb": [],
+    "installable": False,
+    "auto_install": False,
 }

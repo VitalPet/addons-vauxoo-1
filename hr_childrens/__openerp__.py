@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -24,28 +24,24 @@
 #
 ##############################################################################
 {
-    "name": "Childrens of Employees", 
-    "version": "1.0", 
-    "author": "Vauxoo", 
-    "category": "hr", 
-    "description": """
-This module add Date Start, SSN and children of employees
----------------------------------------------------------""", 
-    "website": "http://www.vauxoo.com/", 
-    "license": "AGPL-3", 
+    "name": "Childrens of Employees",
+    "version": "8.0.0.1.6",
+    "author": "Vauxoo",
+    "category": "hr",
+    "website": "http://www.vauxoo.com/",
+    "license": "AGPL-3",
     "depends": [
         "hr"
-    ], 
-    "demo": [], 
+    ],
+    "demo": [],
     "data": [
-        "hr_children_view.xml", 
+        "view/hr_children_view.xml",
         "security/ir.model.access.csv"
-    ], 
-    "test": [], 
-    "js": [], 
-    "css": [], 
-    "qweb": [], 
-    "installable": True, 
-    "auto_install": False, 
-    "active": False
+    ],
+    "test": [],
+    "js": [],
+    "css": [],
+    "qweb": [],
+    "installable": False,
+    "auto_install": False,
 }

@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://www.vauxoo.com>).
@@ -27,14 +27,13 @@ from openerp.tools.translate import _
 import time
 
 
-class stock_invoice_onshipping(osv.TransientModel):
+class StockInvoiceOnshipping(osv.TransientModel):
 
     _inherit = 'stock.invoice.onshipping'
 
     def open_invoice(self, cur, uid, ids, context=None):
-        """
-        Overwrite the wizard to first check that the stock picking elements
-        have not expired contract date, if one of then is expired then will
+        """Overwrite the wizard to first check that the stock picking elements
+        have not contract due date, if one of then is expired then will
         raise an exception. If not one is expire will peform the create invoice
         action propertly.
         """
@@ -48,18 +47,18 @@ class stock_invoice_onshipping(osv.TransientModel):
         expire_dates = [
             bool(picking_brw.date_contract_expiry < cr_date)
             for picking_brw in self.pool.get(active_model).browse(cur, uid,
-                active_ids, context=context)
+                                                                  active_ids, context=context)
             if picking_brw.date_contract_expiry]
         done_picking = [
             bool(picking_brw.state == 'done')
             for picking_brw in self.pool.get(active_model).browse(cur, uid,
-                active_ids, context=context)]
+                                                                  active_ids, context=context)]
         if context.get('force_expiry_pickings', False):
             pass
         elif any(expire_dates) or any(done_picking):
             raise osv.except_osv(_('Invalid Procedure'),
-                _('This action can only be peform over not expire contract'
-                 ' date pickings which also are not in done state.'))
-        res = super(stock_invoice_onshipping, self).open_invoice(
+                                 _('This action can only be peform over not contract due'
+                                   ' date pickings which also are not in done state.'))
+        res = super(StockInvoiceOnshipping, self).open_invoice(
             cur, uid, ids, context=context)
         return res

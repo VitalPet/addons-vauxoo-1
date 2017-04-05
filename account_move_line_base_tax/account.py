@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -27,17 +27,17 @@ from openerp.osv import osv, fields
 from openerp.tools.translate import _
 
 
-class account_move_line(osv.Model):
+class AccountMoveLine(osv.Model):
     _inherit = 'account.move.line'
 
     _columns = {
         'amount_base': fields.float('Amount Base', help='Amount base '
-            'without amount tax'),
+                                    'without amount tax'),
         'tax_id_secondary': fields.many2one('account.tax', 'Tax Secondary',
-            help='Tax used for this move'),
+                                            help='Tax used for this move'),
         'not_move_diot': fields.boolean('Not Consider in Diot', help='If'
-            ' this field is active, although of this item have data for DIOT,'
-            ' not be considered.'),
+                                        ' this field is active, although of this item have data for DIOT,'
+                                        ' not be considered.'),
     }
 
     def onchange_tax_secondary(self, cr, uid, ids, account_id=False, context=None):
@@ -57,23 +57,24 @@ class account_move_line(osv.Model):
         if isinstance(ids, (int, long)):
             ids = [ids]
 
-        res = super(account_move_line, self).write(cr, uid, ids, vals,
-            context=context, check=check, update_check=update_check)
+        res = super(AccountMoveLine, self).write(cr, uid, ids, vals,
+                                                 context=context, check=check, update_check=update_check)
         for line in self.browse(cr, uid, ids, context=context):
             if line.tax_id_secondary and line.tax_id_secondary.type_tax_use == 'purchase':
                 cat_tax = line.tax_id_secondary.tax_category_id
                 if cat_tax and cat_tax.name in ('IVA', 'IVA-EXENTO') and line.amount_base <= 0 and\
                         not line.not_move_diot:
                     raise osv.except_osv(_('Warning!'), _('The lines with tax of purchase, need '
-                        'have a value in the amount base.'))
-                elif cat_tax and cat_tax == 'IVA-RET' and line.credit <= 0 and\
+                                                          'have a value in the amount base.'))
+                elif cat_tax and cat_tax.name == 'IVA-RET' and line.credit <= 0 and\
                         not line.not_move_diot:
                     raise osv.except_osv(_('Warning!'), _('The lines with tax of purchase, need '
-                        'have a value in the credit.'))
+                                                          'have a value in the credit.'))
         return res
 
     def onchange_account_id(self, cr, uid, ids, account_id=False, partner_id=False, context=None):
-        res = super(account_move_line, self).onchange_account_id(cr, uid, ids, account_id, partner_id, context=context)
+        res = super(AccountMoveLine, self).onchange_account_id(
+            cr, uid, ids, account_id, partner_id, context=context)
         acc_tax_obj = self.pool.get('account.tax')
         tax_acc = acc_tax_obj.search(cr, uid, [
             ('account_paid_voucher_id', '=', account_id)], context=context)
@@ -82,16 +83,17 @@ class account_move_line(osv.Model):
         return res
 
 
-class account_invoice_tax(osv.Model):
+class AccountInvoiceTax(osv.Model):
     _inherit = "account.invoice.tax"
 
     def move_line_get(self, cr, uid, invoice_id, context=None):
         res = []
-        super(account_invoice_tax, self).move_line_get(cr, uid, invoice_id)
+        super(AccountInvoiceTax, self).move_line_get(cr, uid, invoice_id)
         tax_invoice_ids = self.search(cr, uid, [
             ('invoice_id', '=', invoice_id)], context=context)
         for inv_t in self.browse(cr, uid, tax_invoice_ids, context=context):
-            if not inv_t.amount and not inv_t.tax_code_id and not inv_t.tax_amount:
+            if not inv_t.base_amount and not inv_t.tax_code_id and not\
+                    inv_t.tax_amount:
                 continue
             res.append({
                 'type': 'tax',
@@ -103,18 +105,18 @@ class account_invoice_tax(osv.Model):
                 'tax_code_id': inv_t.tax_code_id.id or False,
                 'tax_amount': inv_t.tax_amount or False,
                 'account_analytic_id': inv_t.account_analytic_id.id or False,
-                'amount_base': inv_t.base_amount or 0.0,
+                'amount_base': abs(inv_t.base_amount) or 0.0,
                 'tax_id_secondary': inv_t.tax_id.id or False,
             })
         return res
 
 
-class account_invoice(osv.Model):
+class AccountInvoice(osv.Model):
     _inherit = 'account.invoice'
 
     def line_get_convert(self, cr, uid, value, part, date, context=None):
-        res = super(account_invoice, self).line_get_convert(cr, uid, value, part,
-            date, context=context)
+        res = super(AccountInvoice, self).line_get_convert(cr, uid, value, part,
+                                                           date, context=context)
         res.update({
             'amount_base': value.get('amount_base', False),
             'tax_id_secondary': value.get('tax_id_secondary', False),

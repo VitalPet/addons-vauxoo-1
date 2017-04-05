@@ -1,7 +1,8 @@
-# -*- encoding: utf-8 -*-
-from openerp.osv import osv, fields
+# coding: utf-8
+from openerp import models, fields, api, _
 from openerp.tools.safe_eval import safe_eval
 from openerp import SUPERUSER_ID
+from . import rst2html
 
 import re
 
@@ -19,7 +20,7 @@ def clean_name(name):
     return text
 
 
-class hr_timesheet_reports_base(osv.Model):
+class HrTimesheetReportsBase(models.Model):
 
     _name = "hr.timesheet.reports.base"
     _inherit = ['mail.thread']
@@ -114,22 +115,26 @@ class hr_timesheet_reports_base(osv.Model):
         all_ids = ent_ids + cons_ids + train_ids
         for gbc in grouped_by_currency:
             currency = gbc['currency_id']
-            inv_line_ids = invoice_obj.search(cr, uid,
-                                              dom_inv +  [('currency_id', 'in', [currency[0]])],
-                                              context=context)
-            group_prod = inv_line_obj.read_group(cr, uid,
-                                                 [('invoice_id', 'in', inv_line_ids)],
-                                                 ['product_id', 'price_subtotal', ],
-                                                 ['product_id', 'price_subtotal', ],
-                                                 context=context)
-            total_ent = sum([gr['price_subtotal'] for gr in group_prod if gr['product_id'][0] in ent_ids])
-            total_cons = sum([gr['price_subtotal'] for gr in group_prod if gr['product_id'][0] in cons_ids])
-            total_train = sum([gr['price_subtotal'] for gr in group_prod if gr['product_id'][0] in train_ids])
-            total_others = sum([gr['price_subtotal'] for gr in group_prod if gr['product_id'][0] not in all_ids])
+            inv_line_ids = invoice_obj.search(
+                cr, uid, dom_inv + [('currency_id', 'in', [currency[0]])],
+                context=context)
+            group_prod = inv_line_obj.read_group(
+                cr, uid, [('invoice_id', 'in', inv_line_ids)],
+                ['product_id', 'price_subtotal', ],
+                ['product_id', 'price_subtotal', ], context=context)
+            total_ent = sum([gr['price_subtotal'] for gr in group_prod
+                             if gr['product_id'][0] in ent_ids])
+            total_cons = sum([gr['price_subtotal'] for gr in group_prod
+                              if gr['product_id'][0] in cons_ids])
+            total_train = sum([gr['price_subtotal'] for gr in group_prod
+                               if gr['product_id'][0] in train_ids])
+            total_others = sum([gr['price_subtotal'] for gr in group_prod
+                                if gr['product_id'][0] not in all_ids])
             total = total_ent + total_ent + total_train + total_others
             curr_from = wzr_brw.currency_id.id
             curr_to = currency[0]
-            curr_from_brw = curr_obj.browse(cr, uid, curr_from, context=context)
+            curr_from_brw = curr_obj.browse(cr, uid, curr_from,
+                                            context=context)
             curr_to_brw = curr_obj.browse(cr, uid, curr_to, context=context)
             rate = curr_obj._get_conversion_rate(cr, uid,
                                                  curr_from_brw,
@@ -143,15 +148,15 @@ class hr_timesheet_reports_base(osv.Model):
                 'pending': total_train,
                 'total': total,
                 'rate': rate,
-                'total_in_control': round(total/rate, 2),
-                'total_cons': round(total_cons/rate, 2),
-                'total_train': round(total_train/rate, 2),
-                'total_others': round(total_others/rate, 2),
-                'total_lic': round(total_ent/rate, 2),
-                'conversion_rate': curr_obj._get_conversion_rate(cr, uid,
-                                                                 curr_obj.browse(cr, uid, curr_from, context=context),
-                                                                 curr_obj.browse(cr, uid, curr_to, context=context)
-                                                                 ),
+                'total_in_control': round(total / rate, 2),
+                'total_cons': round(total_cons / rate, 2),
+                'total_train': round(total_train / rate, 2),
+                'total_others': round(total_others / rate, 2),
+                'total_lic': round(total_ent / rate, 2),
+                'conversion_rate': curr_obj._get_conversion_rate(
+                    cr, uid, curr_obj.browse(cr, uid, curr_from,
+                                             context=context),
+                    curr_obj.browse(cr, uid, curr_to, context=context)),
             }
         #  TODO: This must be a better way to achieve this list directly from
         #  search group on v8.0 for now the simplest way make a list with
@@ -161,7 +166,8 @@ class hr_timesheet_reports_base(osv.Model):
                                           context=context)
         # Getting resumed numbers
         resumed_numbers = {
-            'total_invoiced': sum([ grouped_by_product[i]['total_in_control'] for i in grouped_by_product])
+            'total_invoiced': sum([grouped_by_product[i]['total_in_control']
+                                   for i in grouped_by_product])
         }
         return (elements, grouped_by_currency,
                 invoices_brw, grouped_by_product,
@@ -219,7 +225,8 @@ class hr_timesheet_reports_base(osv.Model):
         res = []
         timesheet_brws = timesheet_obj.browse(cr, uid, timesheet_ids,
                                               context=context)
-        res = [self._prepare_data(cr, uid, ids, tb, context=context) for tb in timesheet_brws]
+        res_result = [self._prepare_data(cr, uid, ids, tb, context=context) for tb in timesheet_brws]  # noqa
+        res = sorted(res_result, key=lambda k: k['issue'], reverse=True)
         grouped = timesheet_obj.read_group(cr, uid, dom,
                                            ['account_id',
                                             'unit_amount',
@@ -245,8 +252,9 @@ class hr_timesheet_reports_base(osv.Model):
 
     def _get_total_inv_amount(self, cr, uid, ids, grouped, context=None):
         pending = sum([gro['invoiceables_hours'] for gro in grouped])
-        pending_inv = round(pending * self.browse(cr, uid, ids,
-                                                    context=context)[0].product_id.list_price, 2)
+        pending_inv = round(
+            pending * self.browse(
+                cr, uid, ids, context=context)[0].product_id.list_price, 2)
         return pending_inv
 
     def _get_result_ids(self, cr, uid, ids, context=None):
@@ -254,7 +262,7 @@ class hr_timesheet_reports_base(osv.Model):
         gi, gbc, ibrw, gbp, rn = self._get_report_inv(cr, uid, ids, context=context)  # noqa
         grouped, gbm, projects, res, gbu = self._get_report_ts(cr, uid,
                                                                ids, context=context)  # noqa
-        rn['pending'] = self._get_total_inv_amount(cr, uid, ids, grouped, context)
+        rn['pending'] = self._get_total_inv_amount(cr, uid, ids, grouped, context)  # noqa
         info = {
             'data': {},
             'resume': grouped,
@@ -278,93 +286,108 @@ class hr_timesheet_reports_base(osv.Model):
             info['data'][proj] = [r for r in res if r['analytic'] == proj]
         return info
 
-    _columns = {
-        'name': fields.char('Report Title'),
-        'comment_invoices': fields.text('Comment about Invoices',
-                                        help="It will appear just above "
-                                        "list of invoices."),
-        'comment_timesheet': fields.text('Comment about Timesheets',
-                                         help='It will appear just above '
-                                         'the resumed timesheets.'),
-        'comment_issues': fields.text('Comment about Timesheets',
-                                      help='It will appear just above '
-                                      'the resumed issues.'),
-        'comment_hu': fields.text('Comment about Timesheets',
-                                  help='It will appear just above '
-                                  'the resumed hu status.'),
-        'user_id': fields.many2one(
-            'res.users', 'Responsible',
-            help='Owner of the report, generally the person that create it.'),
-        'partner_id': fields.many2one(
-            'res.partner', 'Contact',
-            help='Contact which you will send this report.'),
-        'filter_hu_id': fields.many2one(
-            'ir.filters', 'User Stories',
-            domain=[('model_id', 'ilike', 'user.story')],
-            help='Set the filter for issues TIP: go to issues and look for '
-            'the filter that adjust to your needs of issues to be shown.'),
-        'filter_issue_id': fields.many2one(
-            'ir.filters', 'Issues',
-            domain=[('model_id', 'ilike', 'project.issue')],
-            help='Set the filter for issues TIP: go to issues and look for '
-            'the filter that adjust to your needs of issues to be shown.'),
-        'filter_invoice_id': fields.many2one(
-            'ir.filters', 'Invoices',
-            domain=[('model_id', 'ilike', 'account.invoice')],
-            help='Filter of Invoices to be shown TIP: '
-            'Go to Accounting/Customer '
-            'Invoices in order to create the filter you want to show on this'
-            'report.',),
-        'filter_id': fields.many2one(
-            'ir.filters', 'Filter',
-            domain=[('model_id', 'ilike', 'hr.analytic.timesheet')],
-            help="Filter should be by date, group_by is ignored, the model "
-            "which the filter should belong to is timesheet."),
-        'show_details': fields.boolean('Show Detailed Timesheets'),
-        'records': fields.function(_get_print_data,
-                                   string='Records', type="text"),
-        'state': fields.selection([('draft', 'Draft'),
-                                   ('sent', 'Sent')],
-                                  'Status',
-                                  help='Message sent already to customer '
-                                  '(it will block edition)'),
-        'company_id': fields.many2one(
-            'res.company', 'Company',
-            help='Company which this report belongs to'),
-        'product_id': fields.many2one(
-            'product.product', 'Product to Compute Totals',
-            help='This product will be used to compute totals'),
-        'currency_id': fields.many2one(
-            'res.currency', 'Currency',
-            help='This product will be used to compute totals'),
-        'prod_ent_ids': fields.many2many('product.product',
-                                         'prod_report_timesheet_rel1',
-                                         'report_id', 'prod_ent_id',
-                                         'Products for Enterprises',
-                                         help="All lines on invoices the "
-                                         "have this product will "
-                                         "be ignored as Effectivally "
-                                         "Invoiced time already invoiced"),
-        'prod_train_ids': fields.many2many('product.product',
-                                           'prod_report_timesheet_rel2',
-                                           'report_id', 'prod_train_id',
-                                           'Products for Training',
-                                           help="All lines that have this "
-                                           "products will "
-                                           "Be ignored due to this is just "
-                                           "for products"),
-        'prod_cons_ids': fields.many2many('product.product',
-                                          'prod_report_timesheet_rel3',
-                                          'report_id', 'prod_cons_id',
-                                          'Products for Consultancy',
-                                          help="All products here will be "
-                                          "considered as consultancy"
-                                          "then it will be compared by "
-                                          "currency and by "
-                                          "considering the product "
-                                          "in this reports to use "
-                                          "the unit_price and the currency"),
-    }
+    @api.one
+    @api.depends('comment_timesheet',
+                 'comment_invoices',
+                 'comment_issues',
+                 'comment_hu')
+    def _comment2html(self):
+        self.cts2html = rst2html.html.rst2html(self.comment_timesheet)
+        self.ci2html = rst2html.html.rst2html(self.comment_invoices)
+        self.ciss2html = rst2html.html.rst2html(self.comment_issues)
+        self.chu2html = rst2html.html.rst2html(self.comment_hu)
+
+    name = fields.Char('Report Title')
+    comment_invoices = fields.Text('Comment about Invoices',
+                                   help="It will appear just above "
+                                   "list of invoices.")
+    ci2html = fields.Text('Comments Invoices html',
+                          compute='_comment2html',
+                          help='It will appear just above '
+                          'the resumed timesheets.')
+    comment_timesheet = fields.Text('Comment about Timesheets',
+                                    help='It will appear just above '
+                                    'the resumed timesheets.')
+    cts2html = fields.Text('Comments TS html',
+                           compute='_comment2html',
+                           help='It will appear just above '
+                           'the resumed timesheets.')
+    comment_issues = fields.Text('Comment about Timesheets',
+                                 help='It will appear just above '
+                                 'the resumed issues.')
+    ciss2html = fields.Text('Comments Issues html',
+                            compute='_comment2html',
+                            help='It will appear just above '
+                            'the resumed timesheets.')
+    comment_hu = fields.Text('Comment about Timesheets',
+                             help='It will appear just above '
+                             'the resumed hu status.')
+    chu2html = fields.Text('Comments User Stories html',
+                           compute='_comment2html',
+                           help='It will appear just above '
+                           'the resumed timesheets.')
+    user_id = fields.Many2one(
+        'res.users', 'Responsible',
+        help='Owner of the report, generally the person that create it.')
+    partner_id = fields.Many2one(
+        'res.partner', 'Contact',
+        help='Contact which you will send this report.')
+    filter_hu_id = fields.Many2one(
+        'ir.filters', 'User Stories',
+        domain=[('model_id', 'ilike', 'user.story')],
+        help='Set the filter for issues TIP = go to issues and look for '
+        'the filter that adjust to your needs of issues to be shown.')
+    filter_issue_id = fields.Many2one(
+        'ir.filters', 'Issues',
+        domain=[('model_id', 'ilike', 'project.issue')],
+        help='Set the filter for issues TIP = go to issues and look for '
+        ' the filter that adjust to your needs of issues to be shown.')
+    filter_invoice_id = fields.Many2one(
+        'ir.filters', 'Invoices',
+        domain=[('model_id', 'ilike', 'account.invoice')],
+        help='Filter of Invoices to be shown TIP = '
+        'Go to Accounting/Customer '
+        'Invoices in order to create the filter you want to show on this'
+        'report.',)
+    filter_id = fields.Many2one('ir.filters', 'Filter',
+                                domain=[
+                                    ('model_id', 'ilike', 'hr.analytic.timesheet')],
+                                help="Filter should be by date, group_by is ignored, the model "
+                                "which the filter should belong to is timesheet.")
+    show_details = fields.Boolean('Show Detailed Timesheets')
+    records = fields.Text('Records', compute='_get_print_data',)
+    state = fields.Selection([('draft', 'Draft'), ('sent', 'Sent')], 'Status',
+                             help='Message sent already to customer (it will block edition)')
+    company_id = fields.Many2one(
+        'res.company', 'Company', help='Company which this report belongs to')
+    product_id = fields.Many2one(
+        'product.product', 'Product to Compute Totals', help='This product will be used to compute totals')
+    currency_id = fields.Many2one(
+        'res.currency', 'Currency', help='This product will be used to compute totals')
+    prod_ent_ids = fields.Many2many('product.product', 'prod_report_timesheet_rel1', 'report_id', 'prod_ent_id', 'Products for Enterprises',
+                                    help="All lines on invoices the "
+                                    "have this product will "
+                                    "be ignored as Effectivally "
+                                    "Invoiced time already invoiced")
+    prod_train_ids = fields.Many2many('product.product',
+                                      'prod_report_timesheet_rel2',
+                                      'report_id', 'prod_train_id',
+                                      'Products for Training',
+                                      help="All lines that have this "
+                                      "products will "
+                                      "Be ignored due to this is just "
+                                      "for products")
+    prod_cons_ids = fields.Many2many('product.product',
+                                     'prod_report_timesheet_rel3',
+                                     'report_id', 'prod_cons_id',
+                                     'Products for Consultancy',
+                                     help="All products here will be "
+                                     "considered as consultancy"
+                                     "then it will be compared by "
+                                     "currency and by "
+                                     "considering the product "
+                                     "in this reports to use "
+                                     "the unit_price and the currency")
 
     _defaults = {
         'state': lambda * a: 'draft',
@@ -373,14 +396,9 @@ class hr_timesheet_reports_base(osv.Model):
     }
 
     def do_report(self, cr, uid, ids, context=None):
-        return {'type': 'ir.actions.report.xml',
-                'name': 'hr.timesheet.reports.explain',
-                'report_name': 'Resumed Project Status',
-                'report_type': "webkit",
-                'string': "Hr timesheet reports base",
-                'file': "hr_timesheet_reports/model/hr_timesheet_reports_base.mako",  # noqa
-                'nodestroy': True,
-               }
+        return self.pool['report'].\
+            get_action(cr, uid, ids, 'hr_timesheet_reports.'
+                       'timesheet_report_vauxoo', context=context)
 
     def go_to_timesheet(self, cr, uid, ids, context=None):
         if context is None:
@@ -396,7 +414,7 @@ class hr_timesheet_reports_base(osv.Model):
                 'view_mode': 'tree,form',
                 'domain': report.filter_id.domain,
                 'context': context,
-               }
+                }
 
     def go_to_invoices(self, cr, uid, ids, context=None):
         if context is None:
@@ -412,7 +430,7 @@ class hr_timesheet_reports_base(osv.Model):
                 'view_mode': 'tree,form',
                 'domain': report.filter_invoice_id.domain,
                 'context': context,
-               }
+                }
 
     def go_to_issues(self, cr, uid, ids, context=None):
         if context is None:
@@ -428,7 +446,7 @@ class hr_timesheet_reports_base(osv.Model):
                 'view_mode': 'tree,form',
                 'domain': report.filter_issue_id.domain,
                 'context': context,
-               }
+                }
 
     def go_to_hu(self, cr, uid, ids, context=None):
         if context is None:
@@ -444,7 +462,7 @@ class hr_timesheet_reports_base(osv.Model):
                 'view_mode': 'tree,form',
                 'domain': report.filter_hu_id.domain,
                 'context': context,
-               }
+                }
 
     def send_by_email(self, cr, uid, ids, context=None, cdsm=None):
         ir_model_data = self.pool.get('ir.model.data')
@@ -480,10 +498,9 @@ class hr_timesheet_reports_base(osv.Model):
         return True
 
     def clean_timesheet(self, cr, uid, ids, context=None):
-        '''
-        To be sure all timesheet lines are at least setted as billable
+        """To be sure all timesheet lines are at least setted as billable
         100% in order to show correct first approach of numbers.
-        '''
+        """
         timesheet_obj = self.pool.get('hr.analytic.timesheet')
         report = self.browse(cr, uid, ids, context=context)[0]
         domain = report.filter_id.domain

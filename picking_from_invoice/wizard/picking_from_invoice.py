@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://openerp.com.ve>).
@@ -26,13 +26,13 @@ from openerp.osv import osv, fields
 from openerp.tools.translate import _
 
 
-class picking_from_invoice(osv.TransientModel):
+class PickingFromInvoice(osv.TransientModel):
 
     _name = 'picking.from.invoice'
     _columns = {
         'invoice_ids': fields.many2many('account.invoice', 'invoice_rel',
-            'invoice1', 'invoice2', 'Invoices',
-            help="Select the invoices to account move cancel"),
+                                        'invoice1', 'invoice2', 'Invoices',
+                                        help="Select the invoices to account move cancel"),
 
     }
 
@@ -55,10 +55,10 @@ class picking_from_invoice(osv.TransientModel):
             for line in invoice.invoice_line:
                 if invoice.type in ('in_invoice', 'out_invoice'):
                     pick_name = self.pool.get('ir.sequence').get(cr,
-                                uid, 'stock.picking.%s' % (invoice and
-                                      invoice.type == 'in_invoice' and
-                                      'in' or invoice.type == 'out_invoice' and
-                                      'out'))
+                                                                 uid, 'stock.picking.%s' % (invoice and
+                                                                                            invoice.type == 'in_invoice' and
+                                                                                            'in' or invoice.type == 'out_invoice' and
+                                                                                            'out'))
                     picking_id = self.pool.get('stock.picking').create(cr, uid, {
                         'name': pick_name,
                         'origin': invoice.name,

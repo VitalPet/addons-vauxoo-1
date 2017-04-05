@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -24,29 +24,25 @@
 #
 ##############################################################################
 {
-    "name": "Decimal Precision to Rate Tax", 
-    "version": "0.1", 
-    "author": "Vauxoo", 
-    "category": "Administracion/Personalizacion/Estructura de la base de datos/Precision Decimal", 
-    "description": """
-                    This module, add decimal  precision format to Rate Tax.
-                    """, 
-    "website": "http://vauxoo.com", 
-    "license": "", 
+    "name": "Decimal Precision to Rate Tax",
+    "version": "8.0.0.0.6",
+    "author": "Vauxoo",
+    "category": "Administracion/Personalizacion/Estructura de la base de datos/Precision Decimal",
+    "website": "http://vauxoo.com",
+    "license": "",
     "depends": [
-        "base", 
-        "decimal_precision", 
+        "base",
+        "decimal_precision",
         "account"
-    ], 
-    "demo": [], 
+    ],
+    "demo": [],
     "data": [
         "data/decimal_precision_tax.xml"
-    ], 
-    "test": [], 
-    "js": [], 
-    "css": [], 
-    "qweb": [], 
-    "installable": True, 
-    "auto_install": False, 
-    "active": False
+    ],
+    "test": [],
+    "js": [],
+    "css": [],
+    "qweb": [],
+    "installable": False,
+    "auto_install": False,
 }

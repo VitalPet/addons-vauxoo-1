@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://openerp.com.ve>).
@@ -37,7 +37,7 @@ Entonces escriba:  1, 12, 123, 1234, 1234567
 '''
 
 
-class account_order_wizard_pattern(osv.TransientModel):
+class AccountOrderWizardPattern(osv.TransientModel):
     _name = 'account.order.wizard.pattern'
     _rec_name = 'pattern'
     _columns = {
@@ -47,7 +47,7 @@ class account_order_wizard_pattern(osv.TransientModel):
     }
 
 
-class account_order_wizard(osv.TransientModel):
+class AccountOrderWizard(osv.TransientModel):
     _name = 'account.order.wizard'
     _columns = {
         'select_patter': fields.selection([
@@ -78,7 +78,7 @@ class account_order_wizard(osv.TransientModel):
         def t(s, p='x'):
             return s.replace(p, '_')
         return [t(i.pattern.strip()) for i in self.browse(cr,
-                                                    uid, id, context).patterns]
+                                                          uid, id, context).patterns]
 
     def _get_pattern(self, lista):
         patron = []
@@ -87,15 +87,14 @@ class account_order_wizard(osv.TransientModel):
         return patron
 
     def _ordering(self, cr, uid, patron, len_patron, dict, dict_i0, k, i=0):
-        '''
-        patron: es una lista de enteros indicando la longitud de cada patron
+        """patron: es una lista de enteros indicando la longitud de cada patron
         len_patron: es el numero de patrones con el cual se estara trabajando
         dict: es un diccionario con una lista en cada clave
         [codigo, parent_flag, parent_id] dict_i0: codigo que se envia para
         hacer el ordenamiento, funge de codigo padre
         k:  es el id del codigo padre,
         i: es el contador para hacer el recorrido sobre el patron
-        '''
+        """
         for j in dict.keys():
             #~ la similitud del codigo con la similutud del patron
             #~
@@ -233,13 +232,13 @@ class account_order_wizard(osv.TransientModel):
                           from account_account
                           where id <> %s and code like '%s'
                           order by code''' %
-                      (parent_id, str(code).ljust(int(level), '_')))
+                       (parent_id, str(code).ljust(int(level), '_')))
         else:
             cr.execute('''select id, code
                           from account_account
                           where code like '%s'
                           order by code''' %
-                      (str(code).ljust(int(level), '_')))
+                       (str(code).ljust(int(level), '_')))
 
         return cr.dictfetchall()
 
@@ -264,6 +263,6 @@ class account_order_wizard(osv.TransientModel):
                 codex = codes.pop(0)
                 codex.get(
                     'code') != 0 and self.order_without_pattern(cr, uid, ids,
-                                context, codex.get('code'), codex.get('id'))
+                                                                context, codex.get('code'), codex.get('id'))
 
         return True

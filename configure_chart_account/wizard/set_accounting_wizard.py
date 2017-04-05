@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -27,27 +27,27 @@
 from openerp.osv import fields, osv
 
 
-class set_accounting_data_wizard(osv.osv_memory):
+class SetAccountingDataWizard(osv.osv_memory):
     _name = 'set.accounting.data.wizard'
 
     _columns = {
         'account_ids': fields.many2many('account.account',
-            'account_account_partner_rel', 'parent_id', 'account_id',
-            'Account'),
+                                        'account_account_partner_rel', 'parent_id', 'account_id',
+                                        'Account'),
         'parent_id': fields.many2one('account.account', 'Parent',
-            help='This account will be assigned as parent for '
-            'the accounts selects in the previous field.',
-            ondelete='cascade', domain=[('type', '=', 'view')]),
+                                     help='This account will be assigned as parent for '
+                                     'the accounts selects in the previous field.',
+                                     ondelete='cascade', domain=[('type', '=', 'view')]),
         'account_analytic_ids': fields.many2many('account.analytic.account',
-            'account__analytic_account_partner_rel', 'parent_id', 'account_id',
-            'Account'),
+                                                 'account__analytic_account_partner_rel', 'parent_id', 'account_id',
+                                                 'Account'),
         'parent_analytic_id': fields.many2one('account.analytic.account',
-            'Parent', help='This account will be assigned as parent for '
-            'the analytic accounts selects in the previous field.',
-            ondelete='cascade', domain=[('type', '=', 'view')]),
+                                              'Parent', help='This account will be assigned as parent for '
+                                              'the analytic accounts selects in the previous field.',
+                                              ondelete='cascade', domain=[('type', '=', 'view')]),
         'type_accounts': fields.selection([('accounts', 'Accounts'),
-            ('analytic_accounts', 'Analytic Accounts')], 'Type Accounts',
-            required=True),
+                                           ('analytic_accounts', 'Analytic Accounts')], 'Type Accounts',
+                                          required=True),
     }
 
     _defaults = {
@@ -55,10 +55,9 @@ class set_accounting_data_wizard(osv.osv_memory):
     }
 
     def set_accounting_company(self, cr, uid, ids, context=None):
-        '''
-        This wizard assigns a partner account and change your account
+        """This wizard assigns a partner account and change your account
         type to root/view .
-        '''
+        """
         data = self.browse(cr, uid, ids, context=context)[0]
         if data.type_accounts == 'accounts':
             cr.execute("""
@@ -70,11 +69,11 @@ class set_accounting_data_wizard(osv.osv_memory):
             for acc in data.account_ids:
                 if acc.id != data.parent_id.id:
                     self.pool.get('account.account').write(cr, uid, [acc.id],
-                        {'parent_id': data.parent_id.id})
+                                                           {'parent_id': data.parent_id.id})
 
         if data.type_accounts == 'analytic_accounts':
             for acc in data.account_analytic_ids:
                 if acc != data.parent_analytic_id.id:
                     self.pool.get('account.analytic.account').write(cr, uid,
-                        [acc.id], {'parent_id': data.parent_analytic_id.id})
+                                                                    [acc.id], {'parent_id': data.parent_analytic_id.id})
         return True

@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://www.vauxoo.com>).
@@ -26,17 +26,17 @@
 from openerp.osv import fields, osv
 
 
-class account_analytic_line(osv.Model):
+class AccountAnalyticLine(osv.Model):
 
     _inherit = 'account.analytic.line'
 
     _columns = {
         'tax_code_id': fields.many2one('account.tax.code', 'Tax Account',
-            help="The Account can either be a base tax code or a tax code account."),
+                                       help="The Account can either be a base tax code or a tax code account."),
     }
 
 
-class account_move_line(osv.Model):
+class AccountMoveLine(osv.Model):
 
     _inherit = "account.move.line"
 
@@ -45,7 +45,8 @@ class account_move_line(osv.Model):
             context = {}
         ids = isinstance(ids, (int, long)) and [ids] or ids
 
-        res = super(account_move_line, self).create_analytic_lines(cr, uid, ids, context=context)
+        res = super(AccountMoveLine, self).create_analytic_lines(
+            cr, uid, ids, context=context)
 
         analytic_line_obj = self.pool.get('account.analytic.line')
         for move_line in self.browse(cr, uid, ids, context=context):

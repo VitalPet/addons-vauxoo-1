@@ -1,3 +1,4 @@
+# coding: utf-8
 # #############################################################################
 #
 #    OpenERP, Open Source Management Solution
@@ -24,7 +25,7 @@ from openerp.osv import osv
 from openerp.tools.translate import _
 
 
-class sale_order_line(osv.Model):
+class SaleOrderLine(osv.Model):
 
     _inherit = 'sale.order.line'
 
@@ -45,5 +46,5 @@ class sale_order_line(osv.Model):
                 'target': 'current',
                 'nodestroy': True, }
         else:
-            raise osv.except_osv(_('Error!'),
-                                 _("This sale order is not in draft state"))
+            raise osv.except_osv(_('Error!'), _(
+                "This sale order is not in draft state"))

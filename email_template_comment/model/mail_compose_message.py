@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) 2013 Vauxoo (<http://vauxoo.com>).
@@ -18,13 +18,13 @@
 #
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-################################################################################
+##########################################################################
 
 
 from openerp.osv import osv
 
 
-class mail_compose_message(osv.TransientModel):
+class MailComposeMessage(osv.TransientModel):
 
     _inherit = 'mail.compose.message'
 
@@ -32,12 +32,14 @@ class mail_compose_message(osv.TransientModel):
         if context is None:
             context = {}
 
-        email_template_obj = self.pool.get('email.template')
-        result = super(mail_compose_message, self).default_get(cr, uid, fields, context=context)
+        email_template_obj = self.pool.get('mail.template')
+        result = super(MailComposeMessage, self).default_get(
+            cr, uid, fields, context=context)
 
         template_id = context.get('default_template_id', [])
 
-        template_id = isinstance(template_id, (int, long)) and [template_id] or template_id
+        template_id = isinstance(template_id, (int, long)) and [
+            template_id] or template_id
         for template in email_template_obj.browse(cr, uid, template_id, context=context):
             if template.composition_mode_comment:
                 result['composition_mode'] = 'comment'

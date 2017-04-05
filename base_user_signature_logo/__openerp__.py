@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -24,26 +24,23 @@
 #
 ##############################################################################
 {
-    "name": "Add signature logo in user", 
-    "version": "1.0", 
-    "author": "Vauxoo", 
-    "category": "Vauxoo", 
-    "description": """This module add in user a field to insert signature_logo
-    """, 
-    "website": "http://www.vauxoo.com/", 
-    "license": "AGPL-3", 
+    "name": "Add signature logo in user",
+    "version": "8.0.0.1.6",
+    "author": "Vauxoo",
+    "category": "Vauxoo",
+    "website": "http://www.vauxoo.com/",
+    "license": "AGPL-3",
     "depends": [
         "base"
-    ], 
-    "demo": [], 
+    ],
+    "demo": [],
     "data": [
         "res_users_view.xml"
-    ], 
-    "test": [], 
-    "js": [], 
-    "css": [], 
-    "qweb": [], 
-    "installable": True, 
-    "auto_install": False, 
-    "active": False
+    ],
+    "test": [],
+    "js": [],
+    "css": [],
+    "qweb": [],
+    "installable": False,
+    "auto_install": False,
 }

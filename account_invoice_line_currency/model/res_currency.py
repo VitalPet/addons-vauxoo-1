@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://openerp.com.ve>).
@@ -25,14 +25,13 @@
 from openerp.osv import osv
 
 
-class res_currency(osv.Model):
+class ResCurrency(osv.Model):
 
     _inherit = "res.currency"
 
     def exchange(self, cr, uid, ids, from_amount, to_currency_id,
                  from_currency_id, exchange_date, context=None):
-        """
-        Exchange an amount between the two currencies. Return the amount
+        """Exchange an amount between the two currencies. Return the amount
         with the conversion.
         @param from_amount: the amount where the exchange will be done.
         @param to_currency_id: id of the currency to be convert.
@@ -42,6 +41,7 @@ class res_currency(osv.Model):
         will indicate the conversio rate to use.
         """
         context = context or {}
+        context = dict(context)
         if from_currency_id == to_currency_id:
             return from_amount
         context['date'] = exchange_date

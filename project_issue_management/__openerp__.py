@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) Vauxoo (<http://vauxoo.com>).
@@ -24,34 +24,17 @@
 ###########################################################################
 {
     "name": "Issue Management enhancement.",
-    "version": "0.1",
+    "version": "8.0.0.0.6",
     "author": "Vauxoo",
     "category": "Generic Modules",
-    "description": """
-Improvements that this module does.
-===================================
-
-- Add the possibility to make consistent task - issue and contact, adding a
-button that propose set the same analytic account for the 3 of them.
-
-- Add a button to add the function "Take for me." it allows with a simple click
-assign to the user connected the issue.
-
-TODO:
------
-
-This module will have all features specific to solve little issues in the
-project_issue module.
-    """,
     "website": "http://vauxoo.com",
+    "license": "AGPL-3",
     "depends": [
         "project",
         "project_issue",
         "project_issue_sheet",
     ],
-    "demo": [
-        "demo/demo.xml",
-    ],
+    "demo": [],
     "data": [
         "security/groups.xml",
         "view/project_issue_view.xml",
@@ -61,7 +44,6 @@ project_issue module.
     "js": [],
     "css": [],
     "qweb": [],
-    "installable": True,
+    "installable": False,
     "auto_install": False,
-    "active": False
 }

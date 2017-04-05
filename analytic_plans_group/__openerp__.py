@@ -1,13 +1,13 @@
-# -*- encoding: utf-8 -*-
-###############################################################################
+# coding: utf-8
+# #############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://www.vauxoo.com>).
 #    All Rights Reserved
-############# Credits #########################################################
+# ########### Credits #########################################################
 #    Coded by: Yanina Aular <yani@vauxoo.com>
 #    Planified by: Humberto Arocha <hbto@vauxoo.com>
 #    Audited by: Humberto Arocha <hbto@vauxoo.com>
-###############################################################################
+# #############################################################################
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as published
 #    by the Free Software Foundation, either version 3 of the License, or
@@ -20,38 +20,29 @@
 #
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-###############################################################################
+# #############################################################################
 {
-    "name": "Analytic Plans Group", 
-    "version": "1.0", 
-    "author": "Vauxoo", 
-    "category": "", 
-    "description": """
-Analytic Plans Group
---------------------
-
-This module adds analytic_group_id field in analytic account for grouping of
-analytics entry lines in future.
-
-""", 
-    "website": "http://www.vauxoo.com/", 
-    "license": "", 
+    "name": "Analytic Plans Group",
+    "version": "8.0.0.1.6",
+    "author": "Vauxoo",
+    "category": "",
+    "website": "http://www.vauxoo.com/",
+    "license": "",
     "depends": [
-        "analytic", 
-        "account_analytic_plans", 
+        "analytic",
+        "account_analytic_plans",
         "purchase_analytic_plans"
-    ], 
-    "demo": [], 
+    ],
+    "demo": [],
     "data": [
-        "data/res_groups.xml", 
-        "security/ir.model.access.csv", 
+        "data/res_groups.xml",
+        "security/ir.model.access.csv",
         "view/account_analytic_plans_view.xml"
-    ], 
-    "test": [], 
-    "js": [], 
-    "css": [], 
-    "qweb": [], 
-    "installable": True, 
-    "auto_install": False, 
-    "active": False
+    ],
+    "test": [],
+    "js": [],
+    "css": [],
+    "qweb": [],
+    "installable": False,
+    "auto_install": False,
 }

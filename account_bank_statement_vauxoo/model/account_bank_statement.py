@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
@@ -24,13 +24,20 @@ from openerp.osv import fields, osv
 from openerp.addons.decimal_precision import decimal_precision as dp
 from openerp.tools.translate import _
 
+import logging
+
+_logger = logging.getLogger(__name__)
+
 # Excel Stuff
-import xlrd
+try:
+    import xlrd
+except ImportError:
+    _logger.info('account_bank_statement_vauxoo: needs xlrd library')
 import base64
 from datetime import date, datetime, timedelta
 
 
-class account_bank_statement(osv.Model):
+class AccountBankStatement(osv.Model):
     _inherit = 'account.bank.statement'
 
     def _fromto(self, cr, uid, ids, field, arg, context=None):
@@ -51,20 +58,20 @@ class account_bank_statement(osv.Model):
 
     _columns = {
         'bs_line_ids': fields.one2many('bank.statement.imported.lines',
-                            'bank_statement_id', 'Statement', required=False),
+                                       'bank_statement_id', 'Statement', required=False),
         'fname': fields.char('File Name Imported', 128, required=False,
-            help="Name of file imported, to be able to do that add as attach\
+                             help="Name of file imported, to be able to do that add as attach\
                  ment an xls file with the corect format directly imported\
                  from Banco Nacional"),
         'from_to_file': fields.function(_fromto, string='Date Range on file',
-                        type='char',
-                        help="Date range read on xls file imported from your\
+                                        type='char',
+                                        help="Date range read on xls file imported from your\
                  attachments"),
         'lines_toreview': fields.function(_linestoreview,
-                              string='Lines to Review', type='integer',
-                              help="Quantity of lines to verify from file."),
+                                          string='Lines to Review', type='integer',
+                                          help="Quantity of lines to verify from file."),
         'move': fields.many2one('account.move', 'Move Temp to conciliate',
-                readonly=True, help="This account move is the used to make the\
+                                readonly=True, help="This account move is the used to make the\
              conciliation throught the bank statement imported with excel"),
     }
 
@@ -88,11 +95,10 @@ class account_bank_statement(osv.Model):
             return True
 
     def file_verify_cr(self, cr, uid, ids, context={}):
-        '''
-        Verification of format Files.
+        """Verification of format Files.
         For CR Banco Nacional
         #Oficina    FechaMovimiento NumDocumento    Debito  Credito Descripcion
-        '''
+        """
         sheet = context.get('xls_sheet')
         if sheet:
             if sheet.cell(0, 0).value == 'Oficina' and \
@@ -162,10 +168,9 @@ class account_bank_statement(osv.Model):
         return date_range
 
     def set_counterpart(self, cr, uid, ids, context=None):
-        '''
-        Return account_id to set the line in bank statement
+        """Return account_id to set the line in bank statement
         TODO: Make better doc
-        '''
+        """
         bsl = self.pool.get('bank.statement.imported.lines').browse(
             cr, uid, context.get('bsl_id', []), context=context)
         a_obj = self.pool.get('account.account')
@@ -182,8 +187,8 @@ class account_bank_statement(osv.Model):
         # Not Default ones.
         ######
         rec = p_obj.search(cr, uid, [('key', 'ilike', 'bs_default'),
-                          ('key', '<>', 'receivable_bs_default'),
-            ('key', '<>', 'payable_bs_default')])
+                                     ('key', '<>', 'receivable_bs_default'),
+                                     ('key', '<>', 'payable_bs_default')])
         ############################################################
         # Reviewing date on journals
         ############################################################
@@ -367,10 +372,9 @@ class account_bank_statement(osv.Model):
         return True
 
 
-class bank_statement_imported_lines(osv.Model):
+class BankStatementImportedLines(osv.Model):
 
-    """
-    OpenERP Model : ClassName
+    """OpenERP Model : ClassName
     """
 
     _name = 'bank.statement.imported.lines'
@@ -406,7 +410,7 @@ class bank_statement_imported_lines(osv.Model):
                               digits_compute=dp.get_precision(
                                   'Account'), required=True),
         'invo_move_line': fields.boolean('Chek',
-                        help='Chek if invoice and account move line exist'),
+                                         help='Chek if invoice and account move line exist'),
         'move_id': fields.many2one('account.move', 'Account Move'),
         'credit': fields.float('Credit',
                                digits_compute=dp.get_precision(
@@ -414,20 +418,20 @@ class bank_statement_imported_lines(osv.Model):
         'office': fields.char('Office', size=16, required=False,
                               readonly=False),
         'bank_statement_id': fields.many2one('account.bank.statement',
-                                        'Bank Statement', required=True),
+                                             'Bank Statement', required=True),
         'acc_move_line_ids': fields.many2many('account.move.line',
-                                'account_move_line_rel', 'aml_ids', 'aml_id'),
+                                              'account_move_line_rel', 'aml_ids', 'aml_id'),
         'company_id': fields.many2one('res.company', 'Company',
                                       required=False),
         'aml_ids': fields.one2many('account.move.line', 'stff_id',
                                    'Account Move Lines'),
         'counterpart_id': fields.many2one('account.account',
-              'Account Counterpart', required=False,
-              help="This will be the account to make the account move line as\
+                                          'Account Counterpart', required=False,
+                                          help="This will be the account to make the account move line as\
              counterpart."),
         'partnercounterpart_id': fields.many2one('res.partner',
-                         'Partner Counterpart', required=False,
-                         help="This will be the partner to make written on the\
+                                                 'Partner Counterpart', required=False,
+                                                 help="This will be the partner to make written on the\
              account move line as counterpart., if you change this value,\
              the account payable or receivable will be automatic selected on\
              Account Move Lines related, specially usefull when you pay\
@@ -441,8 +445,8 @@ class bank_statement_imported_lines(osv.Model):
              useability issues',
             readonly=True, select=True),
         'invoice_ids': fields.many2many('account.invoice', 'bs_invoice_rel',
-                            'st_id_id', 'invoice_id', 'Invoices',
-                            help="Invoices to be reconciled with this line",
+                                        'st_id_id', 'invoice_id', 'Invoices',
+                                        help="Invoices to be reconciled with this line",
                                         ),  # TODO: Resolve: We should use date as filter, is a question of POV
         #'balance':fields.function(_balance,method=True,digits_compute=dp.get_precision('Account'),type='float',string='Balance',store=False),
     }
@@ -532,7 +536,7 @@ class bank_statement_imported_lines(osv.Model):
 
                     total = aml.debit or aml.credit
                     for aml_id in account_move_line_obj.browse(cr, uid,
-                                                    aml_ids, context=context):
+                                                               aml_ids, context=context):
                         if aml_id.date_maturity and\
                                 aml_id.date_maturity < abs_brw.date or True:
                             partner_id = aml_id.partner_id and\
@@ -553,27 +557,27 @@ class bank_statement_imported_lines(osv.Model):
                                             'partner_id': aml_id.partner_id and
                                             aml_id.partner_id.id,
                                             '%s' % (aml.debit > 0 and
-                                                'debit' or aml.credit > 0 and
-                                                'credit'):
+                                                    'debit' or aml.credit > 0 and
+                                                    'credit'):
                                             (aml_id.reconcile_partial_id and
                                                 aml_id.invoice and
                                                 aml_id.invoice.residual or
                                                 aml_id[aml.debit and
-                                            'credit' or 'debit'])}),
+                                                       'credit' or 'debit'])}),
                                      aml_id.id))
 
                             elif total > 0 and (aml_id.reconcile_partial_id and
-                                aml_id.invoice and aml_id.invoice.residual or
-                                aml_id[aml.debit and
-                                                'credit' or 'debit']) >= total:
+                                                aml_id.invoice and aml_id.invoice.residual or
+                                                aml_id[aml.debit and
+                                                       'credit' or 'debit']) >= total:
                                 res.append(
                                     (account_move_line_obj.copy(
                                         cr, uid, aml.id, {
                                             'partner_id': aml_id.partner_id and
                                             aml_id.partner_id.id,
                                             '%s' % (aml.debit > 0 and
-                                                'debit' or aml.credit > 0 and
-                                                'credit'): total}),
+                                                    'debit' or aml.credit > 0 and
+                                                    'credit'): total}),
                                      aml_id.id))
                                 total = 0
 
@@ -583,8 +587,8 @@ class bank_statement_imported_lines(osv.Model):
                 if total > 0 and res:
                     account_move_line_obj.copy(
                         cr, uid, aml.id, {'partner_id': partner_id,
-                            '%s' % (aml.debit > 0 and
-                            'debit' or aml.credit > 0 and 'credit'): total})
+                                          '%s' % (aml.debit > 0 and
+                                                  'debit' or aml.credit > 0 and 'credit'): total})
                 res and account_move_line_obj.unlink(
                     cr, uid, [aml.id], context=context)
 
@@ -597,15 +601,15 @@ class bank_statement_imported_lines(osv.Model):
                         res.append(
                             account_move_line_obj.search(
                                 cr, uid, [('move_id', '=', abs_brw.move_id.id),
-                                  ('account_id', '=', invoice.account_id.id)]))
+                                          ('account_id', '=', invoice.account_id.id)]))
 
                     else:
                         res.append(
                             account_move_line_obj.search(
                                 cr, uid, [('invoice', 'in', invoice_ids),
-                                  ('account_id', '=',
-                                   invoice.account_id.id),
-                                ]))
+                                          ('account_id', '=',
+                                           invoice.account_id.id),
+                                          ]))
                     res.append('%s' % (
                         aml.debit > 0 and
                                'debit' or aml.credit > 0 and 'credit'))
@@ -616,7 +620,7 @@ class bank_statement_imported_lines(osv.Model):
                     res.append(
                         account_move_line_obj.search(
                             cr, uid, [('move_id', '=', abs_brw.move_id.id),
-                              ('account_id', '=', move.account_id.id)]))
+                                      ('account_id', '=', move.account_id.id)]))
                     res.append('%s' % (
                         aml.debit > 0 and
                         'debit' or aml.credit > 0 and 'credit'))
@@ -675,7 +679,7 @@ class bank_statement_imported_lines(osv.Model):
         context.update({'cancel': True})
         for abs_brw in self.browse(cr, uid, ids, context=context):
             account_move_obj.button_cancel(cr, uid, [abs_brw.move_id
-                                    and abs_brw.move_id.id], context=context)
+                                                     and abs_brw.move_id.id], context=context)
 
         res = self.prepare(cr, uid, ids, context=context)
         if res and res[0]:
@@ -714,10 +718,10 @@ class bank_statement_imported_lines(osv.Model):
         return {}
 
 
-class account_move_line(osv.Model):
+class AccountMoveLine(osv.Model):
 
     _inherit = 'account.move.line'
     _columns = {
         'stff_id': fields.many2one('bank.statement.imported.lines',
-        'Statement from File line'),
+                                   'Statement from File line'),
     }

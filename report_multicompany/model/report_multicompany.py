@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 #
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -26,7 +26,7 @@
 from openerp.osv import osv, fields
 
 
-class report_multicompany(osv.Model):
+class ReportMulticompany(osv.Model):
 
     _name = 'report.multicompany'
     _order = 'sequence, id desc'
@@ -66,13 +66,12 @@ class report_multicompany(osv.Model):
         return {'value': {'model': model_id}}
 
     def report_multicompany_create(self, cr, uid, report_id, company_id=False, sequence=False, context=None):
-        '''
-            This function adds or updates a record in a report associated
+        """This function adds or updates a record in a report associated
             with a company in which if the record exists and performs
             an upgrade assigning the sequence minimal and subtract one.
             If this record not exist are creates and
             assigns in the sequence sequence minimal and subtract one
-        '''
+        """
         if context is None:
             context = {}
 

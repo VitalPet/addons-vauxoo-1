@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -26,27 +26,24 @@
 ##############################################################################
 #~ "security/ir.model.access.csv",
 {
-    "name": "Product Price Visible", 
-    "version": "1.0", 
-    "author": "Vauxoo", 
-    "category": "Product", 
-    "description": """This module add group to products prices
-    """, 
-    "website": "www.vauxoo.com", 
-    "license": "AGPL-3", 
+    "name": "Product Price Visible",
+    "version": "8.0.0.1.6",
+    "author": "Vauxoo",
+    "category": "Product",
+    "website": "www.vauxoo.com",
+    "license": "AGPL-3",
     "depends": [
-        "stock"
-    ], 
-    "demo": [], 
+        "stock_account",
+    ],
+    "demo": [],
     "data": [
-        "security/product_price_visible.xml", 
+        "security/product_price_visible.xml",
         "product_view.xml"
-    ], 
-    "test": [], 
-    "js": [], 
-    "css": [], 
-    "qweb": [], 
-    "installable": True, 
-    "auto_install": False, 
-    "active": False
+    ],
+    "test": [],
+    "js": [],
+    "css": [],
+    "qweb": [],
+    "installable": False,
+    "auto_install": False,
 }

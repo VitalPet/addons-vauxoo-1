@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #
@@ -27,20 +27,22 @@ from openerp.osv import osv, fields
 from openerp.addons.decimal_precision import decimal_precision as dp
 
 
-class mrp_production(osv.Model):
+class MrpProduction(osv.Model):
     _inherit = 'mrp.production'
 
     _columns = {
         'bom_qty': fields.related('bom_id', 'product_qty', type='float',
-                string='Bom Qty', store=True,
-                digits_compute=dp.get_precision('Product UoM'),
-                readonly=True, states={'draft': [('readonly', False)]},
-                help="BoM's Quantity to change from production order"
+                                  string='Bom Qty', store=True,
+                                  digits_compute=dp.get_precision(
+                                      'Product UoM'),
+                                  readonly=True, states={
+                                      'draft': [('readonly', False)]},
+                                  help="BoM's Quantity to change from production order"
                                   ),
         'bom_uom': fields.related('bom_id', 'product_uom', type='many2one',
-                relation='product.uom', string='Bom UoM',
-                store=True, readonly=True,
-                states={'draft': [('readonly', False)]},
-            help="BoM's UoM to change from production order"
-        ),
+                                  relation='product.uom', string='Bom UoM',
+                                  store=True, readonly=True,
+                                  states={'draft': [('readonly', False)]},
+                                  help="BoM's UoM to change from production order"
+                                  ),
     }

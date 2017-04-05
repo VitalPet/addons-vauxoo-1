@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://openerp.com.ve>).
@@ -9,8 +9,8 @@
 #    Audited by: Vauxoo C.A.
 #############################################################################
 #    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
+#    it under the terms of the GNU Affero General Public License as published
+#    by the Free Software Foundation, either version 3 of the License, or
 #    (at your option) any later version.
 #
 #    This program is distributed in the hope that it will be useful,
@@ -25,27 +25,28 @@
 from openerp.osv import osv
 from openerp.tools.translate import _
 
-import openerp.netsvc as netsvc
+import openerp.workflow as workflow
 
 
-class account_invoice(osv.Model):
+class AccountInvoice(osv.Model):
 
     _inherit = 'account.invoice'
 
-    #~ def action_cancel_draft(self, cr, uid, ids, *args):
-#~
-    #~ wf_service = netsvc.LocalService("workflow")
-    #~ res = super(account_invoice, self).action_cancel_draft(cr, uid, ids, ())
-    #~ for i in self.browse(cr,uid,ids,context={}):
-    #~ if i.wh_iva_id:
-    #~ wf_service.trg_validate(uid, 'account.wh.iva',i.wh_iva_id.id, 'set_to_draft', cr)
-    #~ return res
+# ~ def action_cancel_draft(self, cr, uid, ids, *args):
+# ~
+    # ~ wf_service = workflow
+    # ~ res = super(account_invoice, self).action_cancel_draft(
+    # ~     cr, uid, ids, ())
+    # ~ for i in self.browse(cr,uid,ids,context={}):
+    # ~ if i.wh_iva_id:
+    # ~ wf_service.trg_validate(uid, 'account.wh.iva',i.wh_iva_id.id,
+    # ~                         'set_to_draft', cr)
+    # ~ return res
     def action_number(self, cr, uid, ids, context=None):
-        '''
-        Modified to witholding vat validate
-        '''
-        wf_service = netsvc.LocalService("workflow")
-        res = super(account_invoice, self).action_number(cr, uid, ids)
+        """Modified to witholding vat validate
+        """
+        wf_service = workflow
+        res = super(AccountInvoice, self).action_number(cr, uid, ids)
         iva_line_obj = self.pool.get('account.wh.iva.line')
         invo_brw = self.browse(cr, uid, ids, context=context)[0]
         state = [('draft', 'set_to_draft'), (
@@ -85,7 +86,7 @@ class account_invoice(osv.Model):
                 'prev_state': invo_brw.wh_iva_id.state},
                 context=context)
 
-        res = super(account_invoice, self).invoice_cancel(
+        res = super(AccountInvoice, self).invoice_cancel(
             cr, uid, ids, context=context)
 
         return res

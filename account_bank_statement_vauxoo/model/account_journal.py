@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
@@ -22,10 +22,10 @@
 
 from openerp.osv import fields, osv
 
-import openerp.netsvc as netsvc
+import openerp.workflow as workflow
 
 
-class account_journal(osv.Model):
+class AccountJournal(osv.Model):
     _inherit = 'account.journal'
     _columns = {
         'default_interim_account_id': fields.many2one('account.account',
@@ -56,10 +56,10 @@ class account_journal(osv.Model):
     }
 
 
-class account_journal_bs_config(osv.Model):
+class AccountJournalBsConfig(osv.Model):
     _name = 'account.journal.bs.config'
     _order = 'sequence asc'
-    logger = netsvc.Logger()
+    # logger = netsvc.Logger()
 
     _columns = {
         'sequence': fields.integer('Label'),
@@ -79,8 +79,7 @@ class account_journal_bs_config(osv.Model):
     }
 
     def _check_expresion(self, cr, user, ids, context=None):
-        """
-        A user defined constraints listed in {_constraints}
+        """A user defined constraints listed in {_constraints}
         @param cr: cursor to database
         @param user: id of current user
         @param ids: list of record ids on which constraints executes
@@ -90,18 +89,19 @@ class account_journal_bs_config(osv.Model):
         try:
             exp_ = self.browse(cr, user, ids, context=context)[0].expresion
             exp = eval(exp_)
-            self.logger.notifyChannel('Chain. ' + str(exp), netsvc.LOG_DEBUG,
-                                      'Succefully Validated')
+            # self.logger.notifyChannel('Chain. ' + str(exp), netsvc.LOG_DEBUG,
+            #                           'Succefully Validated')
             if type(exp) is list:
                 return True
             else:
-                self.logger.notifyChannel(
-                    'Chain. ' + str(exp_), netsvc.LOG_ERROR,
-                    'Fail With You must use a list')
+                # self.logger.notifyChannel(
+                #     'Chain. ' + str(exp_), netsvc.LOG_ERROR,
+                #     'Fail With You must use a list')
                 return False
         except Exception, var:
-            self.logger.notifyChannel('Chain. ' + str(exp_), netsvc.LOG_ERROR,
-                                      'Fail With %s' % var)
+            # self.logger.notifyChannel('Chain. ' + str(exp_),
+            #                           netsvc.LOG_ERROR,
+            #                           'Fail With %s' % var)
             return False
 
     _constraints = [

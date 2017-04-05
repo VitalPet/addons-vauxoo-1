@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) 2013 Vauxoo (<http://vauxoo.com>).
@@ -18,17 +18,17 @@
 #
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-################################################################################
+##########################################################################
 
 
 from openerp.osv import osv, fields
 
 
-class email_template(osv.Model):
+class EmailTemplate(osv.Model):
 
-    _inherit = 'email.template'
+    _inherit = 'mail.template'
 
     _columns = {
         'composition_mode_comment': fields.boolean('Composition Mode',
-            help='Create Composition mode like comment'),
+                                                   help='Create Composition mode like comment'),
     }

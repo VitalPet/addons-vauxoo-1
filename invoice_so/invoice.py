@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://openerp.com.ve>).
@@ -25,14 +25,11 @@
 from openerp.osv import fields, osv
 
 
-class account_invoice(osv.Model):
+class AccountInvoice(osv.Model):
     _inherit = 'account.invoice'
     _columns = {
         'sale_ids': fields.many2many('sale.order', 'sale_order_invoice_rel',
-            'invoice_id', 'order_id',
-            'Sale Orders',
-            help='This is the list of sale orders that generated this invoice')
+                                     'invoice_id', 'order_id',
+                                     'Sale Orders',
+                                     help='This is the list of sale orders that generated this invoice')
     }
-
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://www.vauxoo.com>).
@@ -25,13 +25,12 @@
 from openerp.osv import osv
 
 
-class account_voucher(osv.Model):
+class AccountVoucher(osv.Model):
 
     _inherit = 'account.voucher'
 
     def button_draft_voucher(self, cr, uid, ids, context=None):
-        """
-        method used in the new button used when paying the account voucher.
+        """method used in the new button used when paying the account voucher.
         @return close the pop up window.
         """
         context = context or {}

@@ -1,5 +1,4 @@
-#!/usr/bin/python
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://www.vauxoo.com>).
@@ -31,30 +30,8 @@ purchase_order_type = [
 ]
 
 
-class stock_picking(osv.Model):
+class StockPicking(osv.Model):
     _inherit = 'stock.picking'
-    _columns = {
-        'transaction_type': fields.selection(
-            purchase_order_type,
-            'Transaction Type',
-            help=('Indicate the type of Transaction in the purchase order:'
-                  ' materials or service')),
-    }
-
-
-class stock_picking_in(osv.Model):
-    _inherit = 'stock.picking.in'
-    _columns = {
-        'transaction_type': fields.selection(
-            purchase_order_type,
-            'Transaction Type',
-            help=('Indicate the type of Transaction in the purchase order:'
-                  ' materials or service')),
-    }
-
-
-class stock_picking_out(osv.Model):
-    _inherit = 'stock.picking.out'
     _columns = {
         'transaction_type': fields.selection(
             purchase_order_type,

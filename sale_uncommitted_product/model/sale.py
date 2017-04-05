@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###########################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://openerp.com.ve>).
@@ -28,7 +28,7 @@ from openerp.tools.translate import _
 import time
 
 
-class sale_order(osv.Model):
+class SaleOrder(osv.Model):
     _inherit = "sale.order"
 
     _columns = {
@@ -59,8 +59,8 @@ class sale_order(osv.Model):
 
     def action_commit(self, cr, uid, ids, context=None):
         self.write(cr, uid, ids, {'state': 'committed',
-                   'date_committed': time.strftime(
-                                  '%Y-%m-%d %H:%M:%S')}, context=context)
+                                  'date_committed': time.strftime(
+                                      '%Y-%m-%d %H:%M:%S')}, context=context)
         return True
 
     def _check_so(self, cr, uid, id, context=None):

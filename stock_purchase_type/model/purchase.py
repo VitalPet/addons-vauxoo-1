@@ -1,5 +1,4 @@
-#!/usr/bin/python
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 ###############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://www.vauxoo.com>).
@@ -26,17 +25,16 @@
 from openerp.osv import osv
 
 
-class purchase_order(osv.Model):
+class PurchaseOrder(osv.Model):
     _inherit = 'purchase.order'
 
     def _prepare_order_picking(self, cur, uid, order, context=None):
-        """
-        Overwirthe the method that create the values for the picking creation
+        """Overwirthe the method that create the values for the picking creation
         and add the purchase order date_contract_expiry field to the stock
         picking element.
         """
         context = context or {}
-        res = super(purchase_order, self)._prepare_order_picking(
+        res = super(PurchaseOrder, self)._prepare_order_picking(
             cur, uid, order, context=context)
         res['transaction_type'] = order.type
         return res

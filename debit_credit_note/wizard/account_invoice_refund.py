@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
@@ -22,10 +22,12 @@
 
 from openerp.osv import osv
 from openerp.tools.translate import _
-import netsvc
+# Commented due to migration process, please when this module is migrated to v8
+# to ensure the functionaliity is working bring alive this import.
+# import workflow
 
 
-class account_invoice_refund(osv.osv_memory):
+class AccountInvoiceRefund(osv.osv_memory):
 
     """Refunds invoice"""
     _inherit = 'account.invoice.refund'
@@ -55,7 +57,7 @@ class account_invoice_refund(osv.osv_memory):
         # remove the entry with key 'form_view_ref', otherwise fields_view_get
         # crashes
         context.pop('form_view_ref', None)
-        res = super(account_invoice_refund, self).\
+        res = super(AccountInvoiceRefund, self).\
             fields_view_get(cr, uid,
                             view_id=view_id,
                             view_type=view_type,
@@ -81,8 +83,7 @@ class account_invoice_refund(osv.osv_memory):
         return res
 
     def _get_period(self, cr, uid, context={}):
-        """
-        Return  default account period value
+        """Return  default account period value
         """
         account_period_obj = self.pool.get('account.period')
         ids = account_period_obj.find(cr, uid, context=context)
@@ -92,8 +93,7 @@ class account_invoice_refund(osv.osv_memory):
         return period_id
 
     def _get_orig(self, cr, uid, inv, context={}):
-        """
-        Return  default origin value
+        """Return  default origin value
         """
         nro_ref = ''
         if inv.type == 'out_invoice':
@@ -103,8 +103,7 @@ class account_invoice_refund(osv.osv_memory):
         return orig
 
     def compute_refund(self, cr, uid, ids, mode='refund', context=None):
-        """
-        @param cr: the current row, from the database cursor,
+        """@param cr: the current row, from the database cursor,
         @param uid: the current user’s ID for security checks,
         @param ids: the account invoice refund’s ID or list of IDs
 
@@ -114,7 +113,7 @@ class account_invoice_refund(osv.osv_memory):
         account_m_line_obj = self.pool.get('account.move.line')
         mod_obj = self.pool.get('ir.model.data')
         act_obj = self.pool.get('ir.actions.act_window')
-        wf_service = netsvc.LocalService('workflow')
+        wf_service = workflow
         inv_tax_obj = self.pool.get('account.invoice.tax')
         inv_line_obj = self.pool.get('account.invoice.line')
         res_users_obj = self.pool.get('res.users')
@@ -160,7 +159,7 @@ class account_invoice_refund(osv.osv_memory):
                                             where y.id=p.fiscalyear_id \
                                 and date(%s) between p.date_start AND
                                 p.date_stop and y.company_id = %s limit 1""",
-                                      (date, company.id,))
+                                       (date, company.id,))
                         else:
                             cr.execute("""SELECT id
                                     from account_period where date(%s)
@@ -278,8 +277,3 @@ class account_invoice_refund(osv.osv_memory):
                                 'filter_refund'],
                                 context=context)[0]['filter_refund']
         return self.compute_refund(cr, uid, ids, data_refund, context=context)
-
-
-account_invoice_refund()
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 # #############################################################################
 #    Module Writen to OpenERP, Open Source Management Solution
 #    Copyright (C) OpenERP Venezuela (<http://openerp.com.ve>).
@@ -21,11 +21,12 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ###############################################################################
+from openerp import api
 from openerp.osv import fields, osv
 from openerp.addons import decimal_precision as dp
 
 
-class hr_expense_expense(osv.Model):
+class HrExpenseExpense(osv.Model):
     _inherit = "hr.expense.expense"
     _columns = {
         'fully_applied_vat': fields.boolean(
@@ -36,21 +37,21 @@ class hr_expense_expense(osv.Model):
             digits_compute=dp.get_precision('Account'))
     }
 
-    def copy(self, cr, uid, ids, default=None, context=None):
+    @api.one
+    def copy(self, default=None):
         if default is None:
             default = {}
         default = default.copy()
         default.update({'fully_applied_vat': False,
                         })
-        return super(hr_expense_expense, self).copy(cr, uid, ids, default,
-                                                    context=context)
+        return super(HrExpenseExpense, self).copy(default)
 
     def payment_reconcile(self, cr, uid, ids, context=None):
         """ It reconcile the expense advance and expense invoice account move
         lines.
         """
         context = context or {}
-        res = super(hr_expense_expense, self).payment_reconcile(
+        res = super(HrExpenseExpense, self).payment_reconcile(
             cr, uid, ids, context=context)
         self.create_her_tax_pay_adv(cr, uid, ids, context=context)
         return res
@@ -66,8 +67,8 @@ class hr_expense_expense(osv.Model):
                 if voucher_brw.state == 'posted':
                     context.update({'payment_amount': voucher_brw.amount,
                                     'date_voucher': voucher_brw.date})
-                    self.create_her_tax(cr, uid, exp.id, aml={},
-                                        context=context)
+                    self.create_her_tax(
+                        cr, uid, exp.id, aml={}, context=context)
             self.apply_round_tax(cr, uid, exp.id, context=context)
         return True
 
@@ -80,9 +81,11 @@ class hr_expense_expense(osv.Model):
         ids = isinstance(ids, (int, long)) and [ids] or ids
         exp = self.browse(cr, uid, ids, context=context)[0]
 
-        company_currency = self._get_company_currency(cr, uid, exp.id, context)
+        company_currency = self._get_company_currency(
+            cr, uid, exp.id, context)
 
-        current_currency = self._get_current_currency(cr, uid, exp.id, context)
+        current_currency = self._get_current_currency(
+            cr, uid, exp.id, context)
 
         # if exp.fully_applied_vat:
         #     return True
@@ -105,17 +108,15 @@ class hr_expense_expense(osv.Model):
         percent_pay = expense_amount and advance_amount / expense_amount or 1
 
         # amount_tax_inv = sum(
-        #   [invoice.amount_tax for invoice in exp.invoice_ids] )
+        # [invoice.amount_tax for invoice in exp.invoice_ids] )
+        # amount_tax_pay = sum( [move_line_tax.debit for move_line_tax in\
+        #                          aml_obj.browse(cr, uid,
+        # self.move_tax_expense(cr, uid, exp, context=context))] )
+
+        # print amount_tax_inv,'amount_tax_invamount_tax_inv'
+        # print amount_tax_pay,'amount_tax_payamount_tax_payamount_tax_pay'
         #
-        # amount_tax_pay = sum(
-        #     [move_line_tax.debit for move_line_tax in aml_obj.browse(
-        #          cr, uid, self.move_tax_expense(
-        #              cr, uid, exp, context=context))] )
-        #       print amount_tax_inv,'amount_tax_invamount_tax_inv'
-        #       print amount_tax_pay,
-        #       'amount_tax_payamount_tax_payamount_tax_pay'
-        #
-        #    if amount_tax_inv > amount_tax_pay:
+        # if amount_tax_inv > amount_tax_pay:
 
         for invoice in exp.invoice_ids:
             for tax in invoice.tax_line:
@@ -216,7 +217,7 @@ class hr_expense_expense(osv.Model):
         return True
 
 
-class account_voucher(osv.Model):
+class AccountVoucher(osv.Model):
     _inherit = 'account.voucher'
 
     def proforma_voucher(self, cr, uid, ids, context=None):
@@ -233,11 +234,11 @@ class account_voucher(osv.Model):
                             'date_voucher': voucher_brw.date})
             hr_expense_obj.create_her_tax(
                 cr, uid, dat[0]['expense_id'], aml={}, context=context)
-        return super(account_voucher,
+        return super(AccountVoucher,
                      self).proforma_voucher(cr, uid, ids, context=context)
 
 
-class account_move_line(osv.osv):
+class AccountMoveLine(osv.osv):
     _inherit = "account.move.line"
 
     # pylint: disable = W0622
@@ -254,17 +255,20 @@ class account_move_line(osv.osv):
             for expense in expense_obj.browse(cr, uid, expense_ids,
                                               context=context):
                 context['apply_round'] = True
-                res = super(account_move_line, self).reconcile(
-                    cr, uid, ids, type=type, writeoff_acc_id=writeoff_acc_id,
+                res = super(AccountMoveLine, self).reconcile(
+                    cr, uid, ids, type=type,
+                    writeoff_acc_id=writeoff_acc_id,
                     writeoff_period_id=writeoff_period_id,
-                    writeoff_journal_id=writeoff_journal_id, context=context)
+                    writeoff_journal_id=writeoff_journal_id,
+                    context=context)
                 if expense.state == "paid":
                     expense_obj.apply_round_tax(cr, uid, expense.id,
                                                 context=context)
                     expense_obj.write(cr, uid, expense.id,
                                       {'fully_applied_vat': True})
                 return res
-        return super(account_move_line, self).reconcile(
+        return super(AccountMoveLine, self).reconcile(
             cr, uid, ids, type=type, writeoff_acc_id=writeoff_acc_id,
             writeoff_period_id=writeoff_period_id,
-            writeoff_journal_id=writeoff_journal_id, context=context)
+            writeoff_journal_id=writeoff_journal_id,
+            context=context)
